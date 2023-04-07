@@ -1,17 +1,17 @@
 <template>
   <div class="container-fluid  px-0 wow fadeIn" data-wow-delay="0.1s">
   
-        <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
+        <!-- <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
           <div class="col-lg-6 px-5 text-start">
            
           
           </div>
           
-        </div>
+        </div>  -->
   
         <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
           <router-link to="/" class="navbar-brand ms-4 ms-lg-0" >
-            <h1 class="fw-bold text-primary m-0">Vegan<span class="text-secondary">place</span></h1>
+            <h1 class="fw-bold text-primary m-0">Vegan<span class="text-secondary">Plate</span></h1>
           </router-link>
           <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -45,6 +45,15 @@
             </div>
           </div>
         </nav>
+
+
+        <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
+          <div class="col-lg-6 px-5 text-start">
+           
+          
+          </div>
+          
+        </div> 
       </div>
 </template>
 
