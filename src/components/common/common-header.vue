@@ -11,16 +11,17 @@
   
         <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
           <router-link to="/" class="navbar-brand ms-4 ms-lg-0" >
-            <h1 class="fw-bold text-primary m-0">Vegan<span class="text-secondary">Plate</span></h1>
+            <!-- <h1 class="fw-bold text-primary m-0">Catch<span class="text-secondary">Vegan</span></h1> -->
+            <img src="@/assets/img/mainlogo.png" id="logoimg">
           </router-link>
           <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <a href="index.html" class="nav-item nav-link active">Home</a>
-              <a href="about.html" class="nav-item nav-link">About Us</a>
-              <a href="product.html" class="nav-item nav-link">Products</a>
+              <router-link to="/" class="nav-item nav-link active">Home</router-link>
+              <router-link to="/member/join" class="nav-item nav-link">회원가입</router-link>
+              <router-link to="" class="nav-item nav-link">로그인</router-link>
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu m-0">
@@ -32,7 +33,7 @@
               </div>
               <a href="contact.html" class="nav-item nav-link">Contact Us</a>
             </div>
-            <div class="d-none d-lg-flex ms-2">
+            <!-- <div class="d-none d-lg-flex ms-2">
               <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
                 <small class="fa fa-search text-body"></small>
               </a>
@@ -42,18 +43,18 @@
               <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
                 <small class="fa fa-shopping-bag text-body"></small>
               </a>
-            </div>
+            </div> -->
           </div>
         </nav>
 
 
-        <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
+        <!-- <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
           <div class="col-lg-6 px-5 text-start">
            
           
           </div>
           
-        </div> 
+        </div>  -->
       </div>
 </template>
 
@@ -64,5 +65,8 @@ export default {
 </script>
 
 <style>
-
+#logoimg{
+  width: 300px;
+  height: 65px;
+}
 </style>
