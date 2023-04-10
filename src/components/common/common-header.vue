@@ -20,9 +20,9 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
               <router-link to="/" class="nav-item nav-link active">Home</router-link>
-              <router-link to="/member/join" class="nav-item nav-link">회원가입</router-link>
+              <router-link to="/member/signup" class="nav-item nav-link">회원가입</router-link>
               <router-link to="" class="nav-item nav-link">로그인</router-link>
-              <div class="nav-item dropdown">
+              <!-- <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu m-0">
                   <a href="blog.html" class="dropdown-item">Blog Grid</a>
@@ -31,7 +31,7 @@
                   <a href="404.html" class="dropdown-item">404 Page</a>
                 </div>
               </div>
-              <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+              <a href="contact.html" class="nav-item nav-link">Contact Us</a> -->
             </div>
             <!-- <div class="d-none d-lg-flex ms-2">
               <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
