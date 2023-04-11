@@ -15,22 +15,27 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
-            path: "/",
+            path: "/Catchvegan",
             name: "Main",
             component: Main
         },
         {
-            path: "/restaurant/detail",
+            path: "/Catchvegan/restaurant/detail",
             name: "Detail",
             component: Detail    
         },
         {
-            path: "/member/signup",
+            path: "/Catchvegan/member/signup",
             name: "Signup",
             component: Signup    
         },
         {
-            path: "/restaurant/search",
+            path: "/Catchvegan/member/login",
+            name: "Login",
+            component: Login
+        },
+        {
+            path: "/Catchvegan/restaurant/search",
             name: "Search",
             component: Search    
         },
