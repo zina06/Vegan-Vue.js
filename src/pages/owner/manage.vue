@@ -64,7 +64,7 @@
   
   </div>
   <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0" style="text-align: center;">
-
+      방문상태화긴
   </div>
  
 </div>
