@@ -20,7 +20,7 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
               <router-link to="/Catchvegan" class="nav-item nav-link active">Home</router-link>
-              <router-link to="/Catchvegan/member/join" class="nav-item nav-link">회원가입</router-link>
+              <router-link to="/Catchvegan/member/signup" class="nav-item nav-link">회원가입</router-link>
               <router-link to="/Catchvegan/member/login" class="nav-item nav-link">로그인</router-link>
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>

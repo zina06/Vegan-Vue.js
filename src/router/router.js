@@ -25,9 +25,9 @@ const router = createRouter({
             component: Detail    
         },
         {
-            path: "/Catchvegan/member/join",
-            name: "Join",
-            component: Join    
+            path: "/Catchvegan/member/signup",
+            name: "Signup",
+            component: Signup    
         },
         {
             path: "/Catchvegan/member/login",
