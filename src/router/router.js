@@ -3,26 +3,32 @@ import Main from '@/pages/Main.vue';
 import Join from '@/pages/member/join.vue';
 import Detail from '@/pages/restaurant/detail.vue';
 import Search from '@/pages/restaurant/search.vue';
+import Login from '@/pages/member/login.vue';
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
-            path: "/",
+            path: "/Catchvegan",
             name: "Main",
             component: Main
         },
         {
-            path: "/restaurant/detail",
+            path: "/Catchvegan/restaurant/detail",
             name: "Detail",
             component: Detail    
         },
         {
-            path: "/member/join",
+            path: "/Catchvegan/member/join",
             name: "Join",
             component: Join    
         },
         {
-            path: "/restaurant/search",
+            path: "/Catchvegan/member/login",
+            name: "Login",
+            component: Login
+        },
+        {
+            path: "/Catchvegan/restaurant/search",
             name: "Search",
             component: Search    
         },
