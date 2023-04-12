@@ -10,7 +10,7 @@
         </div>  -->
   
         <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-          <router-link to="/" class="navbar-brand ms-4 ms-lg-0" >
+          <router-link to="/Catchvegan" class="navbar-brand ms-4 ms-lg-0" >
             <!-- <h1 class="fw-bold text-primary m-0">Catch<span class="text-secondary">Vegan</span></h1> -->
             <img src="@/assets/img/mainlogo.png" id="logoimg">
           </router-link>
@@ -19,10 +19,10 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <router-link to="/" class="nav-item nav-link active">Home</router-link>
-              <router-link to="/member/signup" class="nav-item nav-link">회원가입</router-link>
-              <router-link to="" class="nav-item nav-link">로그인</router-link>
-              <!-- <div class="nav-item dropdown">
+              <router-link to="/Catchvegan" class="nav-item nav-link active">Home</router-link>
+              <router-link to="/Catchvegan/member/signup" class="nav-item nav-link">회원가입</router-link>
+              <router-link to="/Catchvegan/member/login" class="nav-item nav-link">로그인</router-link>
+              <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu m-0">
                   <a href="blog.html" class="dropdown-item">Blog Grid</a>
