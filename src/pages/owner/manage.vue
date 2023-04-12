@@ -72,6 +72,8 @@
 
 <script>
 import { ref } from 'vue';
+import axios from 'axios';
+import {useRoute, useRouter} from 'vue-router';
 export default {
 
 setup(){
@@ -79,6 +81,10 @@ setup(){
   const minDate = ref(new Date());
   const reserveDate = ref(new Date());
   const text =ref('');
+  const route = useRoute();
+  const router=useRouter();
+  const restaurantIdx=route.params.restaurantIdx;
+  
   const date = (context) => {
     console.log(context);
     console.log("예약날짜 : "+context.target.ariaLabel);
@@ -97,12 +103,25 @@ setup(){
     console.log(reserveDate.value);
     console.log(match.value);
   }
+    const getMemberlist = async() =>{
+        
+        const res = await axios.get(`/Catchvegan/manager/reservemember/${restaurantIdx}`).then((member)=>{
+      
+        
+          console.log(member.data);
+
+
+
+        })
+      };
+      getMemberlist();
   return{
     date,
     reserveDate,
     text,
     minDate,
-    isDisabled
+    isDisabled,
+    getMemberlist
   }
 }
 }
