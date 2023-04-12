@@ -1,158 +1,363 @@
 <template>
     <div>
-        <form action="doJoin" method="POST" class="joinForm" onsubmit="DoJoinForm__submit(this); return false;">                                                                                         
-            <h2>회원가입</h2>
-                <div class="textForm">
-                    <input name="loginId" type="text" class="id" placeholder="아이디">
-                    <button type="button" class="btn-dupcheck">아이디 중복확인</button>
+        <form action="/member/signup" method="POST" name="member">
+            <div style="text-align: center;">            
+              <h2>회원 가입</h2>
+            </div>
+            <br>
+                <div class="textForm" style="position: relative;">
+                <input name="id" type="text" class="form-control" placeholder="아이디" v-model="id" />
+                  <button class="btn-idcheck" type="button" id="checkbutton" @click="checkId()">아이디 중복 확인</button>
+                </div>
+                <br>
+                <div>
+                  <div id="canpost" hidden="hidden" data-validation='false'></div>
+                  <span id="valid" hidden="hidden" style="color : red">이미 존재하는 아이디입니다.</span>
+                  <span id="valid2" hidden="hidden" style="color : red">아이디를 입력해주세요</span>
+                  <span id="valid3" hidden="hidden" style="color : green">가입 가능한 아이디입니다</span>
                 </div>
                 <div class="textForm">
-                    <input name="loginPw" type="password" class="pw" placeholder="비밀번호">
+                  <input type="password" name="password"  class="form-control" placeholder="비밀번호" data-pw="cant" v-model="password"/>
+                  <div>특수문자 / 문자 / 숫자 포함 형태의 8~15자리</div>
+                  <div id="canpassword" v-if="passwordNull" style="color : green">비밀번호를 입력해주세요.</div>
+                  <div id="cantpassword" hidden="hidden" style="color : red">비밀번호 형식이다릅니다.</div>
+                </div>
+                <br>
+                <div class="textForm">
+                    <input type="password" name="confirm_password" class="form-control" placeholder="비밀번호 확인" v-model="password2" />
+                  <div id="passok" hidden="hidden" style="color : red">비밀번호가 다릅니다.</div>
                 </div>
                 <div class="textForm">
-                    <input name="loginPwConfirm" type="password" class="pw" placeholder="비밀번호 확인">
+                  <button class="btn btn-md btn-primary btn-block signup-btn" type="button" id="checkbutton" @click="checkPwd()">비밀번호 확인</button>
+                <br>
                 </div>
+                <span id="confirmMsg"></span>
                 <div class="textForm">
-                    <input name="name" type="password" class="name" placeholder="이름">
+                <input type="text" name="name"  class="form-control" placeholder="이름" v-model="name"/>
+                  <div id="namenull" style="color : red" v-if="nameNull">이름을 입력해주세요.</div>
                 </div>
+                <br>
                 <div class="textForm">
-                    <input name="email" type="text" class="email" placeholder="이메일">
+                  <input name="email" type="text" class="form-control" placeholder="이메일" v-model="email">
                 </div>
+                <br>
+                <div class="textForm" style="position: relative;">
+                  <input name="phone" type="text" class="form-control" placeholder="전화번호" v-model="phone">
+                  <button type="button" class="btn-sendauth">인증번호 요청</button>
+                </div>
+                <br>
                 <div class="textForm">
-                    <input name="cellphoneNo" type="number" class="cellphoneNo" placeholder="전화번호">
-                    <button type="button" class="btn-sendauth">인증번호 요청</button>
+                  <input name="authNo" type="text" class="form-control" placeholder="인증번호 입력" v-model="authNo">
                 </div>
-                <div class="textForm">
-                    <input name="authNo" type="text" class="authNo" placeholder="인증번호 입력">
-                </div>
-            <input type="submit" class="joinbtn" value="J O I N"/>
+                <br>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <button id="add" class="joinbtn" @click.prevent="signin()">계정 생성</button>
         </form>
     </div>
 </template>
 
 <script>
-export default {
+import axios from 'axios';
+import {ref} from 'vue'
+import { useRoute, useRouter } from 'vue-router';
 
+export default {
+  setup(){
+    const router = useRouter();
+    const id = ref('');
+    const password = ref('');
+    const password2 = ref('');
+    const name = ref('');
+    const email = ref('');
+    const phone = ref('');
+    const authNo = ref('');
+    let passok = false;
+    let idok=false;
+    const Swal = require('sweetalert2');
+
+    const checkPwd = () => {
+      if(password.value == password2.value && password.value != ''){
+        Swal.fire({
+          icon: 'success',
+          title: '비밀번호가 일치합니다'     
+      })
+        passok=true;
+        return;
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: '비밀번호가 일치하지 않습니다',
+          text: '다시 확인해주세요',
+        })
+        return;
+      }
+    }
+
+    const signin = () => {
+      if(id.value == '' || password.value == '' || password2.value == '' || name.value == ''
+      || email.value == '' || phone.value == '' || authNo.value =='' ){
+        Swal.fire({
+          icon: 'error',
+          title: '모든 항목을 작성해주세요',
+        })
+        return;
+      }
+      if(passok == false){
+         Swal.fire({
+          icon: 'error',
+          title: '비밀번호 확인 버튼을 눌러주세요',
+        })
+        return;
+      }
+      if(idok == false){
+         Swal.fire({
+          icon: 'error',
+          title: '아이디 중복확인을 해주세요',
+        })
+        return;
+      }
+      const signup = async () =>{
+          const res = await axios
+            .post('/member/signup',{
+                              id : id.value,                     
+                              password : password.value,
+                              name : name.value,
+                              phone : phone.value,
+                              email : email.value,
+                            })
+            .then((result)=>{
+              if(result.status==201){
+                 Swal.fire({
+                  icon:'success',
+                  title:'회원가입이 완료되었습니다',
+              })
+                router.push("/Catchvegan");
+              }
+              if(result.data == 'success'){
+                idok=true;
+                Swal.fire({
+                  icon:'success',
+                  title:'사용가능한 아이디입니다'
+              })
+              }
+          }).catch((result) =>{
+            console.log(result);
+          })
+        }
+        signup();
+    }
+    const checkId = () =>{
+      const checkidid = async () =>{
+          const res = await axios
+            .post('/checkid',{
+                              id : id.value
+                            })
+            .then((result)=>{
+              if(result.data == 'success'){
+                Swal.fire({
+                icon: 'error',
+                title: '사용이 불가능한 아이디입니다',
+                })
+                return;
+              }
+              if(result.data=='fail'){
+                Swal.fire({
+                  icon: 'success',
+                  title:'사용가능한 아이디입니다',
+               })
+                idok=true;
+                return;
+              }
+          }).catch((result) =>{
+            console.log(result);
+          })
+        }
+        checkidid();
+    }
+
+    return{
+      id,
+      password,
+      password2,
+      name,
+      email,
+      phone,
+      authNo,
+      checkPwd,
+      signin,
+      checkId
+    }
+  }
 }
 </script>
 
-<style>
-* {
-  margin: 0px;
-  padding: 0px;
-  text-decoration: none;
-  font-family:sans-serif;
+<style scoped>
+    /* Add your custom styles here */
 
+  div {
+    max-width: 600px; /* 원하는 폼의 최대 너비로 설정 */
+    margin: 0 auto; /* 가운데 정렬을 위한 margin 설정 */
+  }
+
+  .btn-idcheck {
+  position: absolute;
+  top: 0;
+  right: 0;
+  top: 6px;
+  right: 5px;
+  padding: 5px;
+  background-color: #00FF00;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+  }
+
+  .btn-sendauth {
+  position: absolute;
+  top: 0;
+  right: 0;
+  top: 7px;
+  right: 5px;
+  padding: 5px;
+  background-color: #00FF00;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
 }
 
-body {
-  background-image:#34495e;
-} 
 
-.joinForm {
-  width: 700px;
-  height: auto;
-  padding: 30px, 20px;
-  background-color:#ffffff;
-  text-align:center;
-  top:40%;
-  left:50%; 
-  margin: auto;
-  border-radius: 15px;
-} 
-
-.joinForm h2 {
-  text-align: center;
-  margin: 30px;
-}
-
-.textForm {
-  border-bottom: 2px solid #adadad;
-  margin: 30px;
-  padding: 10px 10px;
-}
-
-
-.id {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
-
-.pw {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
-
-.name {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
-
-.email {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
-
-.nickname {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
-
-.cellphoneNo {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
 
 .joinbtn {
-  position:relative;
-  left:40%;
-  transform: translateX(-50%);
-  margin-bottom: 40px;
-  width:80%;
-  height:40px;
-  background: linear-gradient(125deg,#9bc53d,#4e7d0e,#9bc53d);
-  background-position: left;
-  background-size: 200%;
-  color:white;
+  background-image: linear-gradient(to right, #7eff57, #00ff94, #00ff94, #7eff57);
+  background-size: 300% auto;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  animation: gradientAnimation 5s linear infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0%;
+  }
+  50% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: 0%;
+  }
+}
+
+.signup-btn {
+  background-color: #007BFF;
+  color: #FFFFFF;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
   font-weight: bold;
-  border:none;
-  cursor:pointer;
-  transition: 0.4s;
-  display:inline;
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.signup-btn:hover::after {
+  opacity: 1;
 }
 
 .joinbtn:hover {
-  background-position: right;
-} 
+  opacity: 1;
+}
 
+    .textForm {
+        margin-bottom: 10px;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    
+    .btn-primary {
+        color: #fff;
+        background-color: #1ab31a;
+        border-color: #00ff22;
+    }
+    
+    .signup-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .joinbtn {
+        width: 100%;
+        margin-top: 10px;
+        background-color: #1ab31a;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    #valid,
+    #valid2,
+    #valid3,
+    #namenull,
+    #cantpassword,
+    #passok {
+        margin-top: 5px;
+        font-size: 12px;
+    }
+    
+    #valid,
+    #cantpassword,
+    #passok {
+        color: red;
+    }
+    
+    #valid3,
+    #namenull {
+        color: green;
+    }
 </style>

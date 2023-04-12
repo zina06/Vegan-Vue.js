@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="login-page">
-        <form action="doLogin" method="POST" class="loginForm" onsubmit="DoLoginForm__submit(this); return false;">                                                                                         
+        <form action="Login" method="POST" class="loginForm" onsubmit="DoLoginForm__submit(this); return false;">                                                                                         
             <h2>로그인</h2>
                 <div class="textForm">
-                    <input name="loginId" type="text" class="id" placeholder="아이디">
+                    <input name="id" type="text" class="id" placeholder="아이디">
                 </div>
                 <div class="textForm">
-                    <input name="loginPw" type="password" class="pw" placeholder="비밀번호">
+                    <input name="password" type="password" class="password" placeholder="비밀번호">
                 </div>
             <input type="submit" class="loginBtn" value="L O G I N"/>
             <div class="text-center mb-3">
@@ -64,10 +64,15 @@ export default {
 
 .text-center a:hover::before {
   transform: scaleX(1);
+  background-color: #007bff; /* 애니메이션 동작 시 변경될 배경색 */
+}
+
+.text-center a:hover::before {
+  transform: scaleX(1);
 }
 
 
-
+/*
 .login-page {
   height: 100vh;
   display: flex;
@@ -75,6 +80,16 @@ export default {
   justify-content: center;
   align-items: center;
 }
+*/
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+}
+
 
 body {
   background-image:#34495e;
@@ -82,8 +97,7 @@ body {
 } 
 
 .loginForm {
-  width: 700px;
-  height: 500px;
+  width: 600px;
   padding: 30px, 20px;
   background-color: #FFFFFF;
   text-align: center;
@@ -91,6 +105,7 @@ body {
   left: 50%;
   margin: auto;
   border-radius: 15px;
+  border: 2px solid #000; /* 검은색 테두리 선 추가 */
 }
 
 .loginForm h2 {
