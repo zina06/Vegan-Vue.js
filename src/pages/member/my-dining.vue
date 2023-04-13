@@ -59,9 +59,9 @@ export default {
 
 
     const goToReviewPage = function () {
-            router.push(
-                "/member/reviewinsert"
-            )
+                router.push({
+          name:"Login"
+        });
         }
 
     return {
