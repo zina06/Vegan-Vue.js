@@ -48,10 +48,10 @@
 
                 <span class="text-success">{{ amount }}</span>
               </li>
-              <li class="list-group-item d-flex justify-content-between">
+              <!-- <li class="list-group-item d-flex justify-content-between">
                 <span>Total (USD)</span>
                 <strong>$20</strong>
-              </li>
+              </li> -->
             </ul>
 
             <!-- <form class="card p-2">
@@ -157,7 +157,7 @@
 
                   <br>
                   <br>
-                  <div class="w-100">
+                  <div class="w-100" v-if="checkTime">
                     <div class="w-100 text-center">예약가능인원</div>
                     <div class="mx-auto d-flex justify-content-between">
                       <div class="flex-grow-2"></div>
@@ -203,7 +203,7 @@
                 </div>
                 <div class="col-md-6">
                   <label for="country" class="form-label">예약인원</label>
-                  <select class="form-select" id="country" v-model="resCount" required>
+                  <select class="form-select" id="country" v-model="resCount" v-on:change="changePerson" required>
                     <option value="">인원을 선택해주세요</option>
                     <option value="1">1 명</option>
                     <option value="2">2 명</option>
@@ -224,7 +224,7 @@
                 </div>
                 <div class="col-6">
                   <label for="email" class="form-label">선결제금액</label>
-                  <input type="email" class="form-control" id="email" placeholder="3억">
+                  <input type="email" class="form-control" id="email" v-model="payFirst" readonly>
                   <div class="invalid-feedback">
                     Please enter a valid email address for shipping updates.
                   </div>
@@ -252,7 +252,7 @@
               <hr class="my-4">
 
               <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="same-address">
+                <input type="checkbox" class="form-check-input" id="same-address" v-model="refundOk">
                 <label class="form-check-label" for="same-address">
                   [필수] 취소 및 환불 규정에 동의합니다.</label>
               </div>
@@ -358,6 +358,8 @@ export default {
     const seven=ref(0);
     const sevenHalf=ref(0);
     const eight=ref(0);
+    const checkTime = ref(false);
+    const Swal = require('sweetalert2');
     // const router = router();
 
     //달력선택 
@@ -377,8 +379,13 @@ export default {
       // const dayOfWeek = match[4];
       const date = new Date(year, month, day);
 
+    
       if (date < new Date()) {
-        alert("예약할 수 없는 날입니다.");
+        
+        Swal.fire({
+          icon : 'error',
+          title : '예약할 수 없는 날입니다.'
+        })
         return;
       }
       reserveDate.value = date;
@@ -390,13 +397,14 @@ export default {
           restaurantIdx : 5,
           reserveDate : reserveDate.value
         }
-        const res = await axios.post(`/reserve/getTime`,data);
+        const res = await axios.post(`/Catchvegan/reserve/getTime`,data);
         console.log(res);
         six.value=res.data.six;
         sixHalf.value = res.data.sixHalf;
         seven.value = res.data.seven;
         sevenHalf.value = res.data.sevenHalf;
         eight.value = res.data.eight;
+        checkTime.value=true;
       }
       canReserve();
 
@@ -409,7 +417,7 @@ export default {
     const amount = ref('');
 
     const getResAndMember = async () => {
-      const res = await axios.get(`/reserve/5`);
+      const res = await axios.get(`/Catchvegan/reserve/5`);
       console.log(res);
       resName.value = res.data.name;
       resInfo.value = res.data.restaurantInfo;
@@ -478,14 +486,63 @@ export default {
 
     const resCount = ref('');
     const reserveTime = ref('');
+    const refundOk = ref(false);
     let paymentResultEventSource = null;
+    
+    //선결제금액 보여주기
+    const payFirst = ref('');
+    const changePerson = () =>{
+      if(resCount.value==''){
+        return;
+      }
+      else{
+        payFirst.value = resCount.value * amount.value
+      }
+    }
+
+
 
     const reserve = async (e) => {
       e.preventDefault();
       console.log(resCount.value);
       console.log(reserveTime.value);
+      console.log(refundOk.value);
+      const canReservePerson = ref('');
       if (resCount.value == '' || reserveTime.value == '') {
-        alert("예약인원과 시간을 선택해주세요");
+        Swal.fire({
+          icon : 'error',
+          title : '예약인원과 시간을 선택해주세요'
+        })
+        return;
+      }
+      if(reserveTime.value == '18:00'){
+        canReservePerson.value = six.value;
+      }
+      if(reserveTime.value == '18:30'){
+        canReservePerson.value = sixHalf.value;
+      }
+      if(reserveTime.value == '19:00'){
+        canReservePerson.value = seven.value;
+      }
+      if(reserveTime.value == '19:30'){
+        canReservePerson.value = sevenHalf.value;
+      }
+      if(reserveTime.value == '20:00'){
+        canReservePerson.value = eight.value;
+      }
+      console.log(canReservePerson.value);
+      if(parseInt(canReservePerson.value)<parseInt(resCount.value)){
+        Swal.fire({
+          icon : 'error',
+          title : '예약가능인원을 초과하였습니다.'
+        })
+        return;
+      }
+      if (!refundOk.value) {
+        Swal.fire({
+          icon : 'error',
+          title : '환불 규정에 동의해주세요'
+        })
         return;
       }
       const [hours, minutes] = reserveTime.value.split(':');
@@ -499,7 +556,7 @@ export default {
         reserveDate: reserveDate.value,
         resCount: parseInt(resCount.value)
       }
-      const res = await axios.post(`/reserve/ready/5`, data);
+      const res = await axios.post(`/Catchvegan/reserve/ready/5`, data);
       console.log(res);
       const url = res.data.next_redirect_pc_url;
       const payUrl = window.open(url, 'newWindow', 'width=500,height=650');
@@ -512,7 +569,16 @@ export default {
         // ...
         if (event.data === 'success') {
           payUrl.close();
-          router.push({ name: 'Mydining' });
+          Swal.fire({
+            icon : 'success',
+            title : '예약이 완료되었습니다!',
+            confirmButtonText: '확인'
+          }).then(res =>{
+            if(res.isConfirmed || !res.isConfirmed){
+              router.push({ name: 'Mydining' });
+            }
+          })
+          // router.push({ name: 'Mydining' });
         } else if (event.data === 'fail') {
           payUrl.close();
           alert('결제에 실패했습니다.');
@@ -553,7 +619,11 @@ export default {
       sixHalf,
       seven,
       sevenHalf,
-      eight
+      eight,
+      checkTime,
+      refundOk,
+      changePerson,
+      payFirst
     }
   }
 }
