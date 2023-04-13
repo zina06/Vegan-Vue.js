@@ -21,7 +21,7 @@ const router = createRouter({
       component: Main,
     },
     {
-      path: "/Catchvegan/restaurant/detail",
+      path: "/Catchvegan/restaurant/detail/:restaurantIdx",
       name: "Detail",
       component: Detail,
     },
