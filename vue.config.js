@@ -5,6 +5,6 @@ module.exports = defineConfig({
 
 module.exports={
   devServer: {
-    proxy : 'http://localhost:8082/Catchvegan'
+    proxy : 'http://localhost:8082'
   }
 }

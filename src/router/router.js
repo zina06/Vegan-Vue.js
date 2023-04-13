@@ -1,77 +1,81 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Main from '@/pages/Main.vue';
-import Signup from '@/pages/member/signup.vue';
-import Detail from '@/pages/restaurant/detail.vue';
-import Search from '@/pages/restaurant/search.vue';
-import Login from '@/pages/member/login.vue';
-import Mydining from '@/pages/member/my-dining.vue';
-import Mypage from '@/pages/member/mypage.vue';
-import Reviewinsert from '@/pages/member/review-insert.vue';
-import Owner from '@/pages/owner/manage.vue';
-import Reserve from '@/pages/reservation/reserve.vue';
-import Confirm from '@/pages/reservation/confirm.vue';
+import Main from "@/pages/Main.vue";
+import Signup from "@/pages/member/signup.vue";
+import Detail from "@/pages/restaurant/detail.vue";
+import Search from "@/pages/restaurant/search.vue";
+import Login from "@/pages/member/login.vue";
+import Mydining from "@/pages/member/my-dining.vue";
+import Mypage from "@/pages/member/mypage.vue";
+import Reviewinsert from "@/pages/member/review-insert.vue";
+import Owner from "@/pages/owner/manage.vue";
+import Reserve from "@/pages/reservation/reserve.vue";
+import Confirm from "@/pages/reservation/confirm.vue";
+import MypageEdit from "@/pages/member/mypage-edit.vue";
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes: [
-        {
-            path: "/",
-            name: "Main",
-            component: Main
-        },
-        {
-            path: "/restaurant/detail",
-            name: "Detail",
-            component: Detail    
-        },
-        {
-            path: "/member/signup",
-            name: "Signup",
-            component: Signup    
-        },
-        {
-            path: "/restaurant/search",
-            name: "Search",
-            component: Search    
-        },
-        {
-            path: "/member/my-dining",
-            name: "Mydining",
-            component: Mydining    
-        },
-        {
-            path: "/member/login",
-            name: "Login",
-            component: Login    
-        },
-        {
-            path: "/member/mypage",
-            name: "Mypage",
-            component: Mypage    
-        },
-        {
-            path: "/member/reviewinsert",
-            name: "Reviewinsert",
-            component: Reviewinsert    
-        },
-        {
-            path: "/manage",
-            name: "Owner",
-            component: Owner    
-        },
-        {
-            path: "/reserve",
-            name: "Reserve",
-            component: Reserve    
-        },
-        {
-            path: "/reserve/confirm",
-            name: "Confirm",
-            component: Confirm    
-        },
-
-        
-    ]
+  history: createWebHistory(),
+  routes: [
+    {
+      path: "/Catchvegan",
+      name: "Main",
+      component: Main,
+    },
+    {
+      path: "/Catchvegan/restaurant/detail/:restaurantIdx",
+      name: "Detail",
+      component: Detail,
+    },
+    {
+      path: "/Catchvegan/member/signup",
+      name: "Signup",
+      component: Signup,
+    },
+    {
+      path: "/Catchvegan/restaurant/search",
+      name: "Search",
+      component: Search,
+    },
+    {
+      path: "/Catchvegan/member/my-dining",
+      name: "Mydining",
+      component: Mydining,
+    },
+    {
+      path: "/Catchvegan/member/login",
+      name: "Login",
+      component: Login,
+    },
+    {
+      path: "/Catchvegan/member/mypage",
+      name: "Mypage",
+      component: Mypage,
+    },
+    {
+      path: "/Catchvegan/member/mypage-edit",
+      name: "Edit",
+      component: MypageEdit,
+    },
+    {
+      path: "/Catchvegan/member/reviewinsert",
+      name: "Reviewinsert",
+      component: Reviewinsert,
+    },
+    {
+      path: "/Catchvegan/manage",
+      name: "Owner",
+      component: Owner,
+    },
+    {
+      path: "/Catchvegan/reserve",
+      name: "Reserve",
+      component: Reserve,
+    },
+    {
+      path: "/Catchvegan/reserve/confirm",
+      name: "Confirm",
+      component: Confirm,
+    },
+  ],
 });
 
 export default router;
