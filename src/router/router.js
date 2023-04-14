@@ -61,7 +61,7 @@ const router = createRouter({
       component: Reviewinsert,
     },
     {
-      path: "/Catchvegan/manage",
+      path: "/Catchvegan/manage/:managerIdx",
       name: "Owner",
       component: Owner,
     },

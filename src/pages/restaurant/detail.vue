@@ -4,45 +4,44 @@
   
   <br>
     <div class="detail-container">
-      <div>
+      <div class="detail">
       
         <img src="@/assets/img/2.jpg" class="detailimg"><br><br>
-        <h4><b>{{restaurantName}}</b>
-        </h4>
-        <br>
-        <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
-            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-          </svg>&nbsp;&nbsp;{{ restauranInfo }}</p>
-        <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
-              <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-            </svg>&nbsp;&nbsp;{{ restauranVeganType }}</p>
-          <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
-              <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-              <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
-            </svg>&nbsp;&nbsp;{{ restauranMenu }}</p><br>
-        <hr>
+        <h3 class="restaurantName"><b>{{restaurantName}}</b>
+        </h3> &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-info gotoreserve" @click="moveReservePage(idx)">예약하기</button>
+        <br><br>
+            <p><b>매장소개</b> <br> {{ restauranInfo }}</p>
+            <p><b>비건유형</b> <br> {{ restauranVeganType }}</p>
+            <p><b>메뉴</b> <br> {{ restauranMenu }}</p>
+        <hr><br>
 
         <div>
             <div id="map"></div>
             
         </div>
          <br> 
-        <button @click="goToKakaoMap" class="btn btn-secondary">길찾기
+        <div @click="goToKakaoMap" class="btn btn-success goToKakaoMap">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-90deg-right" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M14.854 4.854a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 4H3.5A2.5 2.5 0 0 0 1 6.5v8a.5.5 0 0 0 1 0v-8A1.5 1.5 0 0 1 3.5 5h9.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4z"/>
-          </svg>
-        </button>
+          </svg><br>길찾기
+          
+        </div>
       
       
       </div>
 
-    <hr>
+    <hr><br><br>
   </div>
-    <h4 class="review">n건의 리뷰</h4><br>
-    <span class="detail-container">총 별점 &nbsp;&nbsp;별
+        <div class="review">
+          <div>
+            <h4>n건의 리뷰</h4><br>
+            <p>총 별점 &nbsp;&nbsp;별</p>
+          </div>
+        </div>
+      
+
     
-    </span>
     <div class="review-container">
       
       <hr>
@@ -105,7 +104,14 @@ export default {
     // const img_icon = ref(require(""))
     
 
-
+    const moveReservePage = (restaurantIdx) => {
+      router.push({
+          name : "Reserve",
+          params : {
+            idx : restaurantIdx,
+          }
+      });
+    }
 
     return {
 
@@ -116,7 +122,8 @@ export default {
       restauranVeganType,
       restauranMenu,
       longitude,
-      latitude
+      latitude,
+      moveReservePage
     };
   },
  
@@ -194,16 +201,17 @@ export default {
   display: flex; /* Flexbox를 사용 */
   justify-content: left; /* 가로 중앙 정렬 */
   align-items: left; /* 세로 중앙 정렬 */
-  margin-left: 500px;
+
+
 }
 .detailimg{
-  width: 650px;
-  height: 350px;
+  width: 800px;
+  height: 400px;
 }
 
 .review-container{
   width: 650px;
-  height: 300px;
+  height: 200px;
   border: 1px solid lightgray;
   
 }
@@ -221,6 +229,38 @@ export default {
 
 #map{
   width:450px; 
-  height: 400px;
+  height: 300px;
+  float: left;
+  margin-left: 40px;
 }
+.detail,  .review-container, .review{
+  
+  margin: auto;
+}
+
+.goToKakaoMap{
+ margin-left: 50px;
+ margin-top: 100px;
+ border: 1px solid #8c8c8c;
+ border-radius: 100%;
+ background:#8c8c8c;
+
+}
+
+.goToKakaoMap:hover{
+  background:#828282;
+  border: 1px solid #828282;
+
+}
+
+.restaurantName{
+  float: left;
+}
+
+.gotoreserve, .gotoreserve:hover{
+  color: white;
+
+}
+
+
 </style>
