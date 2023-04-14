@@ -73,7 +73,7 @@ export default {
         });
         }
     
-    const memberIdx = 1;
+    const memberIdx = 37;
     //예약정보 불러오기
     const upcomingReservations = ref([]);
     const getReservations = async () =>{
@@ -90,12 +90,12 @@ export default {
     getReservations();
 
     //예약취소
-    const cancelReserve = (idx) =>{
-      // console.log(idx);
-      const cancel = async () =>{
-        const res = async 
-      }
-    }
+    // const cancelReserve = (idx) =>{
+    //   // console.log(idx);
+    //   const cancel = async () =>{
+    //     const res = async 
+    //   }
+    // }
 
 
     return {
@@ -110,7 +110,7 @@ export default {
         { id: 9, title: '예약 8', status: '방문 완료' }
       ],
       goToReviewPage,
-      cancelReserve
+      // cancelReserve
     };
   }
 };
