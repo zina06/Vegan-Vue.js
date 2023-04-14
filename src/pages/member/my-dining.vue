@@ -90,13 +90,14 @@ export default {
     getReservations();
 
     //예약취소
+    /*
     const cancelReserve = (idx) =>{
       // console.log(idx);
       const cancel = async () =>{
         const res = async 
       }
     }
-
+    */
 
     return {
       upcomingReservations,
@@ -109,8 +110,8 @@ export default {
         { id: 8, title: '예약 7', status: '방문 완료' },
         { id: 9, title: '예약 8', status: '방문 완료' }
       ],
-      goToReviewPage,
-      cancelReserve
+      goToReviewPage
+      //cancelReserve
     };
   }
 };

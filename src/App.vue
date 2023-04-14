@@ -1,7 +1,7 @@
 <template>
-  <commonHeader/>
+  <commonHeader v-if="$route.name !== 'Error'"></commonHeader>
   <router-view/>
-  <commonFooter/>
+  <commonFooter v-if="$route.name !== 'Error'"></commonFooter>
 </template>
 
 <script>

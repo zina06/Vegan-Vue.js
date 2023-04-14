@@ -9,7 +9,8 @@
                 <input name="id" type="text" class="form-control" placeholder="아이디" v-model="id" />
                   <button class="btn-idcheck" type="button" id="checkbutton" @click="checkId()">아이디 중복 확인</button>
                 </div>
-                <div>* 특수문자를 제외한 5~15자리</div>
+                <i>특수문자를 제외한 5~15자리</i>
+                <br>
                 <br>
                 <div>
                   <div id="canpost" hidden="hidden" data-validation='false'></div>
@@ -20,7 +21,7 @@
                 <div class="textForm">
                   <input type="password" name="password"  class="form-control" placeholder="비밀번호" data-pw="cant" v-model="password"/>
                 </div>
-                  <div>* 특수문자 / 문자 / 숫자 포함 형태의 8~15자리</div>
+                  <i>특수문자 / 문자 / 숫자 포함 형태의 8~15자리</i>
                 <div>
                   <div id="canpassword" v-if="passwordNull" style="color : green">비밀번호를 입력해주세요.</div>
                   <div id="cantpassword" hidden="hidden" style="color : red">비밀번호 형식이다릅니다.</div>
@@ -41,20 +42,22 @@
                 <div class="textForm">
                   <input name="email" type="text" class="form-control" placeholder="이메일" v-model="email">
                 </div>
-                <div>* naver,daum,gmail만 가능합니다</div>
+                <i>naver.com , gmail.com , daum.net 만 가능합니다</i>
+                <br>
                 <br>
                 <div class="textForm" style="position: relative;">
                   <input name="phone" type="text" class="form-control" placeholder="전화번호" v-model="phone">
                   <button type="button" class="btn-sendauth">인증번호 요청</button>             
                 </div>
-                <div>* 숫자만 적어주세요</div>
+                <i>숫자만 적어주세요</i>
+                <br>
                 <br>
                 <div class="textForm">
                   <input name="authNo" type="text" class="form-control" placeholder="인증번호 입력" v-model="authNo">
                 </div>
                 <div>
                   <label for="veganType">비건 타입 선택: </label>
-                  <select id="veganType" v-model="vegantype">
+                  <select id="veganType" v-model="veganType">
                     <option value="strict">비건 (Vegan)</option>
                     <option value="lacto">락토 (Lacto Vegan)</option>
                     <option value="ovo">오보 (Ovo-Vegetarian)</option>
@@ -64,7 +67,7 @@
                     <option value="flexi">플렉시테리언 (Flexitarian)</option>
                     <option value="other">기타</option>
                   </select><font-awesome-icon icon="question-circle" @click="showtype"/> 비건 타입이 궁금하다면 클릭
-                  <input class="form-control" type="hidden" name="{{vegantype}}" value="{{vegantype}}" />
+                  <input class="form-control" type="hidden" name="{{veganType}}" value="{{veganType}}" />
                 </div>
                 <br>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -88,7 +91,7 @@ export default {
     const email = ref('');
     const phone = ref('');
     const authNo = ref('');
-    const vegantype = ref('');
+    const veganType = ref('');
     let passok = false;
     let idok=false;
     const Swal = require('sweetalert2');
@@ -153,7 +156,7 @@ export default {
 
     const signin = () => {
       if(id.value == '' || password.value == '' || password2.value == '' || name.value == ''
-      || email.value == '' || phone.value == '' || authNo.value =='' || vegantype.value == ''){
+      || email.value == '' || phone.value == '' || authNo.value =='' || veganType.value == ''){
         Swal.fire({
           icon: 'error',
           title: '모든 항목을 작성해주세요',
@@ -200,7 +203,7 @@ export default {
                               name : name.value,
                               phone : phone.value,
                               email : email.value,
-                              vegantype : vegantype.value
+                              veganType : veganType.value
                             })
             .then((result)=>{
               if(result.status==201){
@@ -208,7 +211,7 @@ export default {
                   icon:'success',
                   title:'회원가입이 완료되었습니다',
               }).then((res)=>{
-             router.push("Main");
+             router.push({name: 'Main'});
              })
               }
               if(result.data == 'success'){
@@ -271,7 +274,7 @@ export default {
       email,
       phone,
       authNo,
-      vegantype,
+      veganType,
       checkPwd,
       signin,
       checkId,
@@ -309,8 +312,8 @@ export default {
   top: 6px;
   right: 5px;
   padding: 5px;
-  background-color: #00FF00;
-  color: #FFFFFF;
+  background-color: #E0E0E0;
+  color: #000000;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -326,8 +329,8 @@ export default {
   top: 6px;
   right: 5px;
   padding: 5px;
-  background-color: #00FF00;
-  color: #FFFFFF;
+  background-color: #E0E0E0;
+  color: #000000;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -343,8 +346,8 @@ export default {
   top: 7px;
   right: 5px;
   padding: 5px;
-  background-color: #00FF00;
-  color: #FFFFFF;
+  background-color: #E0E0E0;
+  color: #000000;
   border: none;
   border-radius: 5px;
   cursor: pointer;
