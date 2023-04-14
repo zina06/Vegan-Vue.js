@@ -200,7 +200,7 @@ export default {
                               name : name.value,
                               phone : phone.value,
                               email : email.value,
-                              vegantype : vegantype.value
+                              veganType : vegantype.value
                             })
             .then((result)=>{
               if(result.status==201){
@@ -208,7 +208,9 @@ export default {
                   icon:'success',
                   title:'회원가입이 완료되었습니다',
               }).then((res)=>{
-             router.push("Main");
+             router.push({
+              name: "Main"
+             });
              })
               }
               if(result.data == 'success'){
