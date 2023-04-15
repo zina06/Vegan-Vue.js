@@ -394,7 +394,7 @@ export default {
       //해당 시간에 예약할 수 있는 인원과 시간 표시
       const canReserve = async() => {
         const data = {
-          restaurantIdx : 5,
+          restaurantIdx : 2,
           reserveDate : reserveDate.value
         }
         const res = await axios.post(`/Catchvegan/reserve/getTime`,data);
@@ -417,7 +417,7 @@ export default {
     const amount = ref('');
 
     const getResAndMember = async () => {
-      const res = await axios.get(`/Catchvegan/reserve/5`);
+      const res = await axios.get(`/Catchvegan/reserve/2`);
       console.log(res);
       resName.value = res.data.name;
       resInfo.value = res.data.restaurantInfo;
@@ -551,12 +551,12 @@ export default {
 
       // 결제 요청 전달
       const data = {
-        memberIdx: 1,
-        restaurantIdx: 5,
+        memberIdx: 37,
+        restaurantIdx: 2,
         reserveDate: reserveDate.value,
         resCount: parseInt(resCount.value)
       }
-      const res = await axios.post(`/Catchvegan/reserve/ready/5`, data);
+      const res = await axios.post(`/Catchvegan/reserve/ready/2`, data);
       console.log(res);
       const url = res.data.next_redirect_pc_url;
       const payUrl = window.open(url, 'newWindow', 'width=500,height=650');

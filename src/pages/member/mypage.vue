@@ -6,55 +6,39 @@
     </div>
     <div class="summaryContainer">
       <div class="item">
-        <div class="number">한예찬</div>
+        <div class="number">{{ user.name }}</div>
         <div>이름</div>
       </div>
       <div class="item">
-        <div class="number">{{userType}}</div>
+        <div class="number">{{ user.veganType }}</div>
         <div>유형</div>
       </div>
       <div class="item">
-        <div class="number">{{userNickname}}</div>
-        <div>닉네임</div>
+        <div class="number">{{ user.email }}</div>
+        <div>이메일</div>
       </div>
       <div class="item">
-        <div class="number">{{userPhoneNumber}}</div>
+        <div class="number">{{ user.phone }}</div>
         <div>전화번호</div>
       </div>
       <div class="item">
-        <button @click="openModal">수정하기</button>
+        <button type="button" @click="openModal">수정하기</button>
       </div>
     </div>
     <div class="listContainer">
-        <div class=""  @click="toggleReviewList">***리뷰목록***
-          <span class="circle"></span>
+      <div class="" @click="toggleReviewList">***리뷰목록***
+        <span class="circle"></span>
+      </div>
+      <div v-if="reviewListOpen">
+        <div>리뷰목록</div>
+        <div v-for="review in reviews" :key="review.reviewIdx">
+          <div>{{ review.reviewIdx }} 리뷰번호</div>
+          <div>{{ review.visitIdx }} 방문번호</div>
+          <div>{{ review.title }} 제목</div>
+          <div>{{ review.content }} 내용</div>
+          <div>{{ review.rating }} 별점</div>
+          <div>{{ review.images }} 사진</div>
         </div>
-    </div>
-    <div v-if="reviewListOpen">
-      <h2>리뷰 목록</h2>
-      <!-- 리뷰 목록을 보여주는 내용을 작성 -->
-    </div>
-  </div>
-  <!-- 모달 창 -->
-  <div v-if="isModalOpen" class="modal-backdrop fade show">
-    <div class="modal-content">
-      <span class="close" @click="closeModal">&times;</span>
-      <h2>프로필 수정</h2>
-      <div class="form-group">
-        <label for="user-type">유형</label>
-        <input id="user-type" type="text" v-model="userType" />
-      </div>
-      <div class="form-group">
-        <label for="user-nickname">닉네임</label>
-        <input id="user-nickname" type="text" v-model="userNickname" />
-      </div>
-      <div class="form-group">
-        <label for="user-phone-number">전화번호</label>
-        <input id="user-phone-number" type="text" v-model="userPhoneNumber" />
-      </div>
-      <div class="form-group">
-        <button @click="modifyUser">저장하기</button>
-        <button @click="closeModal">취소하기</button>
       </div>
     </div>
   </div>
@@ -62,42 +46,115 @@
 
 
 <script>
-import { reactive,ref } from 'vue';
+import { ref } from 'vue';
+import axios from 'axios';
 export default {
   setup() {
+    const memberIdx = 37;
     const reviewListOpen = ref(false);
     const toggleReviewList = () => {
       reviewListOpen.value = !reviewListOpen.value;
       console.log(reviewListOpen.value);
     }
+    const Swal = require('sweetalert2');
     const isModalOpen = ref(false);
     const openModal = () => {
       isModalOpen.value = true;
-      console.log(isModalOpen.value)
-    };
-    const closeModal = () => {
-      isModalOpen.value = false;
-      console.log(isModalOpen.value)
+      let currentPassword = user.value.password; //기존 비밀번호
+      let phone = user.value.phone; // 기존 전화번호
+      let email = user.value.email;
+      let veganType = user.value.veganType; // 기존 비건 유형
+
+      console.log(currentPassword);
+      console.log(phone);
+      console.log(email);
+      console.log(veganType);
+      Swal.fire({
+        title: '회원 정보 수정',
+        html:
+          `
+          <input id="password" class="swal2-input" type="password">
+          <div>비밀번호</div>
+          <input id="phone" class="swal2-input" type="tel" value=${phone}>
+          <div>전화번호</div>
+          <input id="email" class="swal2-input" type="email" value=${email}>
+          <div>이메일</div>
+          <select id="vegan-type" class="swal2-input" defaultValue=${veganType}>
+                <option value="풀비건">풀비건</option>
+                <option value="락토오보">락토오보</option>
+                <option value="락토">락토</option>
+                <option value="락토페스코">락토페스코</option>
+                <option value="페스코">페스코</option>
+              </select>
+              <div>비건 유형</div>`,
+        focusConfirm: false,
+        showCancelButton: true,
+        preConfirm: () => {
+          const password = document.getElementById('password').value;
+          const phone = document.getElementById('phone').value;
+          const email = document.getElementById('email').value;
+          const veganType = document.getElementById('vegan-type').value;
+
+          if (!password || password === currentPassword) {
+            Swal.showValidationMessage('수정된 비밀번호를 입력해주세요');
+            return false;
+          }
+
+
+          return {
+            password,
+            phone,
+            email,
+            veganType
+          }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // 수정사항 저장
+          modifyUser(result.value);
+        }
+        isModalOpen.value = false;
+      });
     };
 
-    const user = reactive({
-      userType: '일반 사용자',
-      userNickname: '닉네임',
-      userPhoneNumber: '010-0000-0000',
-    });
-    const modifyUser = () => {
-      // 사용자 정보 수정 로직 구현
-      closeModal();
+
+    const modifyUser = async (formData) => {
+      try {
+        formData.memberIdx = memberIdx; // memberIdx 추가
+        const response = await axios.put(`/Catchvegan/member/mypage`, formData);
+        console.log('수정된 데이터:', formData);
+        console.log('서버의 응답:', response);
+      } catch (error) {
+        console.error(error);
+      }
     };
+
+
+
+
+
+    //예약정보 불러오기
+    const reviews = ref([]);
+    const user = ref([]);
+    const getReviews = async () => {
+      const res = await axios.get(`/Catchvegan/member/mypage/${memberIdx}`);
+      console.log(res.data[0]);
+      console.log(res.data[0].reviewDTOList);
+
+      reviews.value = res.data[0].reviewDTOList;
+      user.value = res.data[0];
+
+    }
+    getReviews();
 
     return {
       toggleReviewList,
       reviewListOpen,
       isModalOpen,
       openModal,
-      closeModal,
       modifyUser,
       user,
+      reviews
     }
   }
 
@@ -105,7 +162,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body {
   padding: 0;
   margin: 0;
@@ -308,26 +365,26 @@ div {
   margin-bottom: 2px;
 }
 
-.modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+
+button[type="button"],
+button[type="submit"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 3px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.modal-content {
-  background-color: #fff;
-  width: 400px;
-  height: 300px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+button[type="submit"] {
+  background-color: #28a745;
+}
+
+button[type="button"]:hover,
+button[type="submit"]:hover {
+  background-color: #0056b3;
 }
 
 

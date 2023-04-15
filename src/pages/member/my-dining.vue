@@ -36,9 +36,14 @@
     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
       <div class="reservation-list">
         <ul class="ulrow">
-          <li v-for="reservation in completedReservations" :key="reservation.id">
-            <div class="reservation-item">{{ reservation.title }}
-              <div class="text" @click="goToReviewPage()">리뷰 작성하기</div>
+          <li v-for="reservation in completedReservations" :key="reservation.reserveIdx" style="justify-content: flex-start;">
+            <div class="reservation-item">
+              <div>예약일시</div>
+              <div>{{ reservation.reserveDate.getFullYear() }}년 {{ reservation.reserveDate.getMonth()+1 }}월  {{ reservation.reserveDate.getDate() }}일  {{ reservation.reserveDate.getHours() }}시  {{ reservation.reserveDate.getMinutes() }}분</div>
+              <div>{{ reservation.resCount }}</div>
+              <div>{{ reservation.restaurantDTO.name }}</div>
+              <div>{{ reservation.restaurantDTO.city }}</div>
+              <button @click="goToReviewPage()">리뷰 작성하기</button>
             </div>
           </li>
 
@@ -48,8 +53,15 @@
     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
       <div class="reservation-list">
         <ul class="ulrow">
-          <li v-for="reservation in cancelledReservations" :key="reservation.id">
-            <div class="reservation-item">{{ reservation.title }}</div>
+          <li v-for="reservation in cancelledReservations" :key="reservation.reserveIdx" style="justify-content: flex-start;">
+            <div class="reservation-item">
+              <div>예약일시</div>
+              <div>{{ reservation.reserveDate.getFullYear() }}년 {{ reservation.reserveDate.getMonth()+1 }}월  {{ reservation.reserveDate.getDate() }}일  {{ reservation.reserveDate.getHours() }}시  {{ reservation.reserveDate.getMinutes() }}분</div>
+              <div>{{ reservation.resCount }}</div>
+              <div>{{ reservation.restaurantDTO.name }}</div>
+              <div>{{ reservation.restaurantDTO.city }}</div>
+              <button @click="goToReviewPage()">리뷰 작성하기</button>
+            </div>
           </li>
         </ul>
       </div>
@@ -69,7 +81,7 @@ export default {
 
     const goToReviewPage = function () {
                 router.push({
-          name:"Login"
+          name:"Reviewinsert"
         });
         }
     
@@ -98,17 +110,38 @@ export default {
     // }
 
 
+    const completedReservations = ref([]);
+    const getVisitCompleted = async () =>{
+      const res = await axios.get(`/Catchvegan/mydining/getVisitCompleted/${memberIdx}`);
+      console.log(res);
+      completedReservations.value = res.data;
+      const array = [completedReservations.value.length];
+      for(let i=0; i<completedReservations.value.length; i++){
+        array[i] = new Date(completedReservations.value[i].reserveDate);
+        completedReservations.value[i].reserveDate = array[i];
+      }
+      console.log(res);
+    }
+    getVisitCompleted();
+
+    const cancelledReservations = ref([]);
+    const getReserveCancel = async () =>{
+      const res = await axios.get(`/Catchvegan/mydining/getReserveCancel/${memberIdx}`);
+      console.log(res);
+      cancelledReservations.value = res.data;
+      const array = [cancelledReservations.value.length];
+      for(let i=0; i<cancelledReservations.value.length; i++){
+        array[i] = new Date(cancelledReservations.value[i].reserveDate);
+        cancelledReservations.value[i].reserveDate = array[i];
+      }
+      console.log(res);
+    }
+    getReserveCancel();
+
     return {
       upcomingReservations,
-      cancelledReservations: [
-        { id: 5, title: '예약 4', status: '취소/노쇼' },
-        { id: 6, title: '예약 5', status: '취소/노쇼' }
-      ],
-      completedReservations: [
-        { id: 7, title: '예약 6', status: '방문 완료' },
-        { id: 8, title: '예약 7', status: '방문 완료' },
-        { id: 9, title: '예약 8', status: '방문 완료' }
-      ],
+      completedReservations,
+      cancelledReservations,
       goToReviewPage,
       // cancelReserve
     };
