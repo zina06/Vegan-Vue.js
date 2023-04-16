@@ -11,39 +11,69 @@
         </h3> &nbsp;&nbsp;&nbsp;&nbsp;
         <button class="btn btn-info gotoreserve" @click="moveReservePage(idx)">예약하기</button>
         <br><br>
-            <p><b>매장소개</b> <br> {{ restauranInfo }}</p>
-            <p><b>비건유형</b> <br> {{ restauranVeganType }}</p>
+            <p> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
+              <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+              <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+            </svg>&nbsp;&nbsp;{{ restauranInfo }}</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+              <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+              <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+            </svg>{{ address }}</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+              <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+            </svg></p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+              <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+            </svg> &nbsp;{{ restauranVeganType }}</p><hr>
             <p><b>메뉴</b> <br> {{ restauranMenu }}</p>
         <hr><br>
 
         <div>
             <div id="map"></div>
-            
-        </div>
-         <br> 
-        <div @click="goToKakaoMap" class="btn btn-success goToKakaoMap">
+            <div @click="goToKakaoMap" class="btn btn-success goToKakaoMap">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-90deg-right" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M14.854 4.854a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 4H3.5A2.5 2.5 0 0 0 1 6.5v8a.5.5 0 0 0 1 0v-8A1.5 1.5 0 0 1 3.5 5h9.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4z"/>
           </svg><br>길찾기
+        </div>
+        </div>
+        <hr style="width:100%" class="gubun">
+        
+                
+         <div>
+            <div class="rereview">
+              <h4>n건의 리뷰</h4>
+              <div style="margin-bottom:30px;">총 별점 &nbsp;&nbsp;별</div>
+              <img src="@/assets/img/userimg.png" id="memberimg" style="float:left;">
+             
+              <span>회원이름</span><br>
+              <span>별점    날짜</span><br><br>
+              <p>내용</p>
+              <hr>
+            </div>
           
         </div>
-      
-      
+       
+        <div>
+           
+           
+          
+            
+        </div>
       </div>
-
-    <hr><br><br>
   </div>
+<!--         
         <div class="review">
-          <div>
+         
+           
             <h4>n건의 리뷰</h4><br>
             <p>총 별점 &nbsp;&nbsp;별</p>
-          </div>
+          
         </div>
       
 
     
     <div class="review-container">
-      
       <hr>
       <img src="@/assets/img/userimg.png" id="memberimg">
       
@@ -55,7 +85,7 @@
       
     </div>
 
-  
+   -->
   
 </template>
 
@@ -74,8 +104,9 @@ export default {
     const restauranImg=ref('');
     const restauranVeganType=ref('');
     const restauranMenu=ref('');
-    const longitude=ref(0);
-    const latitude=ref(0);
+    const longitude=ref('');
+    const latitude=ref('');
+    const address=ref('');
     const restaurantIdx=route.params.restaurantIdx;
 
 
@@ -85,24 +116,31 @@ export default {
 			const res = await axios.get(`/Catchvegan/reserve/${restaurantIdx}`).then((Restaurant)=>{
 		
 			
-				//console.log(Restaurant.data);
+				console.log(Restaurant.data);
 
         restaurantName.value=Restaurant.data.name;
         restauranInfo.value=Restaurant.data.restaurantInfo;
         restauranImg.value=Restaurant.data.images;
         restauranVeganType.value=Restaurant.data.veganType;
         restauranMenu.value=Restaurant.data.menu;
+        address.value=Restaurant.data.address;
 				longitude.value=Restaurant.data.longitude;
         latitude.value=Restaurant.data.latitude;
         console.log(longitude);
         console.log(latitude);
-
+        // localStorage.setItem('longitude', Restaurant.data.longitude);
+        // localStorage.setItem('latitude', Restaurant.data.latitude);
 
 			})
 		};
 		getRestaurant();
     // const img_icon = ref(require(""))
     
+    // 페이지가 로드될 때, 이전에 저장해 둔 위치 정보를 불러옴
+      // window.onload = () => {
+      //   const savedLongitude = localStorage.getItem('longitude');
+      //   const savedLatitude = localStorage.getItem('latitude');
+      // };
 
     const moveReservePage = (restaurantIdx) => {
       router.push({
@@ -123,12 +161,13 @@ export default {
       restauranMenu,
       longitude,
       latitude,
-      moveReservePage
+      moveReservePage,
+      address
     };
   },
  
   mounted() {
-   
+      
     if(!window.kakao || !window.kakao.maps){
       const script = document.createElement("script");
       script.type='text/javascript'
@@ -139,8 +178,9 @@ export default {
           kakao.maps.load(()=>{
             this.initMap();
             // this.loadMarker();
-        //    console.log("카카오맵확인1");
+           console.log("카카오맵확인1");
         });
+        
       });
       document.head.appendChild(script);
      
@@ -197,6 +237,7 @@ export default {
 
 
 <style>
+
  .review, .detail-container, .review-container {
   display: flex; /* Flexbox를 사용 */
   justify-content: left; /* 가로 중앙 정렬 */
@@ -216,11 +257,15 @@ export default {
   
 }
 
+.review{
+  width: 650px;
+}
+
 #memberimg{
   width: 60px;
   height: 60px;
   border-radius: 100%;
-  margin: 23px;
+  margin-right: 10px;
 }
 
 .content{
@@ -262,5 +307,7 @@ export default {
 
 }
 
-
+.rereview{
+ height: auto;
+}
 </style>
