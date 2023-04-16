@@ -73,7 +73,7 @@ export default {
         });
         }
     
-    const memberIdx = 1;
+    const memberIdx = 37;
     //예약정보 불러오기
     const upcomingReservations = ref([]);
     const getReservations = async () =>{

@@ -211,7 +211,9 @@ export default {
                   icon:'success',
                   title:'회원가입이 완료되었습니다',
               }).then((res)=>{
-             router.push({name: 'Main'});
+             router.push({
+              name: "Main"
+             });
              })
               }
               if(result.data == 'success'){
