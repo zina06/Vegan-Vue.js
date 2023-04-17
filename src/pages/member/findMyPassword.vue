@@ -3,12 +3,12 @@
     <div class="password-page">
       <h2>비밀번호 찾기</h2>
       <br>
-      <form @submit.prevent="submitForm">
-        <input type="text" class="idcheck" v-model="username" placeholder="아이디를 입력하세요" />
+      <form action="/member/findMyPassword" method="POST" name="member">
+        <input type="text" class="idcheck" v-model="id" placeholder="아이디를 입력하세요" />
         <i class="hiddenword">저장되어 있는 휴대폰 번호로 인증번호가 전송됩니다</i>
-        <button type="button" @click="sendVerificationCode">인증번호 전송</button>
-        <input type="text" v-model="verificationCode" placeholder="인증번호를 입력하세요" />
-        <input type="password" v-model="newPassword" placeholder="새 비밀번호를 입력하세요" />
+        <button type="button" @click="sendAuth">인증번호 전송</button>
+        <input type="text" v-model="authNo" placeholder="인증번호를 입력하세요" />
+        <input type="password" v-model="password" placeholder="새 비밀번호를 입력하세요" />
         <button type="submit">비밀번호 변경</button>
       </form>
     </div>
@@ -16,20 +16,63 @@
 </template>
 
 <script>
+import axios from 'axios';
+import {ref} from 'vue'
+import { useRoute, useRouter } from 'vue-router';
+
 export default {
-  data() {
-    return {
-      username: '',
-      verificationCode: '',
-      newPassword: '',
+    setup(){
+    const router = useRouter();
+    const Swal = require('sweetalert2');
+    const id = ref('');
+    const phone = ref('');
+    const authNo = ref('');
+
+    const validatePhone = (phone) => {
+      const phoneRegex = /^\d{9,12}$/;
+      return phoneRegex.test(phone);
     };
-  },
-  methods: {
-    sendVerificationCode() {
-    },
-    submitForm() {
-    },
-  },
+
+    const sendAuth = () =>{
+      if(validatePhone(phone.value) == false){
+        Swal.fire({
+          title: '번호 유효성 검사',
+          text: '옳바른 번호 양식이 아닙니다',
+          icon: 'error',
+          confirmButtonText: '확인',
+        })
+        return;
+      }else{
+        Swal.fire({
+          title: '인증번호가 발송되었습니다',
+          icon: 'success',
+          confirmButtonText: '확인',
+        })
+        sendAuth();
+      }
+    }
+
+    const findMyPassword = async () => {
+      try {
+        const response = await axios.post('findMyPassword'); 
+        if (id.value) {
+          Swal.fire({
+          icon: 'success',
+          title: `아이디는 ${id.value} 입니다`    
+          });
+        } else {
+          Swal.fire({
+          icon: 'error',
+          title: '아이디를 찾을 수 없습니다'   
+          })
+        }
+      } catch (error) {
+        console.error('Failed to fetch ID:', error);
+      }
+    }
+    findMyPassword();
+  }
+
 };
 </script>
 
