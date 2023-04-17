@@ -1,26 +1,26 @@
 <template>
   <br><br>
 <nav class="justify-content-center manage">
-  <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist" style="width: 1200px; margin: 0 auto;">
-    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">예약자 확인</button>
-    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">나의 식당</button>
+  <div class="nav nav-tabs nav-tabs-custom justify-content-center" id="nav-tab" role="tablist" style="width: 1000px; margin: 0 auto;">
+    <button class="nav-link active with-nav-tabs panel-success" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">예약자 관리</button>
+    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">식당 관리</button>
     <!-- <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">방문 상태 </button> -->
    
   </div>
 </nav>
-<div class="tab-content justify-content-center" id="nav-tabContent" >
+<div class="tab-content nav-tabs-custom justify-content-center" id="nav-tabContent" >
   <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0" style="text-align: center;" >
     <br><br><br>
   
-    <VDatePicker class="calendar" style="width: 700px;" @click="date" :attributes='attrs' v-model="minDate"/><br><br>
-      <h4>예약자 목록</h4>
+    <VDatePicker class="calendar" style="width: 800px;" @click="date" :attributes='attrs' v-model="minDate"/><br><br>
+      <h4>예약리스트</h4>
       <h4> {{ formatreserveDate }}</h4><br>
     <div v-if="memberList && memberList.length > 0">
               
-              <table class="table table-bordered" style="width: 800px; margin: auto;" >
-                <thead style="background-color: lightgray;">
+               <table class="table table-bordered" style="width: 800px; margin: auto;" >
+                <thead style="background-color: #ccc;">
                   <tr>
-                  <th>이름</th>
+                  <th>예약자</th>
                   <th>전화번호</th>
                   <th width="80px">예약인원</th>
                   <th>예약시간</th>
@@ -78,7 +78,7 @@
 
   </div>
   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0" style="text-align: center;">
-    <br><br>
+  
     
       <!-- <div class="resmember">
         <h4>예약자 정보 확인 &nbsp;&nbsp;{{ formatreserveDate }}</h4><br>
@@ -120,39 +120,53 @@
 
 
             <br><br><br>
-  
-  <div class="uform-container editform">
-    <div class="inform">
-      <label style="float: left;"><b>식당 이름</b> </label><br> <input name="restaurantname" type="text" class="form-control restaurantname" v-model="restaurantName" required="required"/><br>
-      <img src="@/assets/img/2.jpg" class="detailimg"><br><br> 
-      <label style="float: left;"><b>메인 사진</b> </label><input class="form-control" type="file" id="formFile" name="upload" multiple="multiple"><br>
-      <label style="float: left;"><b>메뉴</b> </label><br> <input name="menu" type="text" class="form-control menu" v-model="menu" required="required"/><br>
-      <label style="float: left; margin-right: 10px;"><b>매장소개</b> </label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" name="restaurantinfo" style="width: 800px; height: 200px;"  v-model="restauranInfo" required="required"></textarea>
-      <p></p>
+  <!--수정폼-->
+  <div class="uform-container editform card" v-if="isEditing">
+    <div class="inform card-body">
+      <label style="text-align: left;"><b>식당 이름</b> </label><br> <input name="name" type="text" class="form-control restaurantname" v-model="restaurantName" required="required"/><br>
+      <label style="float: left;"><b>메인 사진</b> </label><input class="form-control" type="file"  multiple accept="image/*" ref="fileRef" name="file" @change="onChangeFile($event)"><br>
     
-      
+      <div class="images" v-if="files.length > 0">
+       
+        <!-- <div v-for="fileName in files" :key="fileName" class="image">
+          <img :src="`@/assets/uploadimages/${fileName}`" alt="이미지" class="uploadimg">
+        </div> -->
+        <img :src="require(`../../assets/uploadimages/${images}`)" alt="이미지" class="uploadimg">
+      </div>
+      <label style="float: left;"><b>메뉴</b> </label><br> <input name="menu" type="text" class="form-control menu" v-model="menu" required="required"/><br>
+      <label style="float: left;"><b>매장소개</b> </label><br>
+      <textarea class="form-control" id="exampleFormControlTextarea1" name="restaurantinfo" style="width: 100%; height: 200px;"  v-model="restauranInfo" required="required"></textarea><br>
+      <div style="margin: auto; width: 200px;">
+      <button class="btn btn-info update"  v-if="isEditing" style="margin-right: 10px;" @click="uploadAPI()">저장하기</button>
+      <button class="btn btn-secondary update" @click="isEditing = false" v-if="isEditing">취소하기</button>
+      </div>
     </div>
    
   </div>
 
-  <div class="uform-container card detailform">
+  <!--디테일폼-->
+  <div class="uform-container card detailform" v-else>
     <div class="inform card-body">
       <p style="text-align: left;"><b>식당 이름</b> <br> {{ restaurantName }}</p>
-      <!-- <img src="@/assets/img/2.jpg" class="detailimg"><br><br> -->
-    <b>메인 사진</b><img src=""><br><br>
+    <b>메인 사진</b><br>
+ 
+    <img :src="require(`../../assets/uploadimages/${images}`)" alt="이미지" class="uploadimg">
+    <div>
+   
+   </div>
      <br> <p style="text-align: left;"><b>메뉴</b><br> {{ menu }}</p>
      <p style="width: 300px; height: 200px;">  <b>매장소개</b><br>
      
       {{ restauranInfo }}</p>
     
-      <button class="btn btn-info update" style="float: right;">수정하기</button>
+      <button class="btn btn-secondary update" style="margin: auto; display: block;" @click="isEditing = true" v-if="!isEditing">수정하기</button>
     </div>
    
   </div>
   
   </div>
 </div>
+
 </template>
 
 <script>
@@ -170,6 +184,13 @@ setup(){
   const route = useRoute();
   const router=useRouter();
   const managerIdx=route.params.managerIdx;
+  const restaurantDTO = ref({
+    name: '',
+    restauranInfo: '',
+    menu: '',
+    images : ''
+
+  })
   const restaurantName=ref('');
   const restauranInfo=ref('');
   const menu=ref('');
@@ -179,8 +200,119 @@ setup(){
   const attrs = ref([]);
   const memberDateList=ref([]);
   const Swal = require('sweetalert2');
+  const isEditing=ref(false);
+  const files = ref(null);
+  const images=ref('');
+  let file2 = null;
+  // const backendUrl = process.env.VUE_APP_BACKEND_URL;
+
+
+ const file = ref('')
+ const onChangeFile=(e)=>{
+  file.value = console.log(e.target.files[0])
+  files.value = e.target.files[0];
+  file2=e.target.files[0];
+ }
   
-  
+  const fetchFiles = async () => {
+      try {
+        const response = await axios.get(`/files`);
+        
+        files.value =  response.data;
+        console.log("파일이름:"+files.value);
+        // @/assets/uploadimages/${filename}
+      } catch (error) {
+        alert(error.message)
+      }
+    }
+
+
+  // const selectFile = (event) => {
+  //   const formData = new FormData()
+  //   for (const file of event.target.files) {
+  //     formData.append('files', file)
+  //   }
+
+  //   axios.post(`/files`, formData, {
+  //     headers: {'Content-Type': 'multipart/form-data'}
+  //   }).then(() => {
+  //     fetchFiles();
+  //   }).catch(error => {
+  //     alert(error.message)
+  //   })
+  // }
+
+  // const selectFile = (event, dataObj) => {
+  //   const formData = new FormData()
+  //   for (const file of event.target.files) {
+  //     formData.append('files', file)
+  //   }
+
+  //   const blob=new Blob([JSON.stringify(dataObj)],{
+  //     type:'application/json',
+  //   })
+  //   formData.append('info'.blob);
+  //   axios.post(`/files`,'/journey', formData, {
+  //     headers: {'Content-Type': 'multipart/form-data'}
+  //   }).then(() => {
+  //     fetchFiles();
+  //   }).catch(error => {
+  //     alert(error.message)
+  //   })
+  // }
+      const uploadAPI = async () => {
+       
+      try {
+        restaurantDTO.value={
+          name:restaurantName.value,
+          menu:menu.value,
+          restauranInfo:restauranInfo.value,
+          images : file.value
+        }
+
+        // 폼데이터 객체 생성
+        const formData = new FormData();
+        
+        // file 추가
+        
+        formData.append('file', file2);
+       
+        console.log(files.value);
+
+   
+
+        // formData.append('restaurantDTO', blob);
+        const blob = new Blob([JSON.stringify(restaurantDTO.value)], { type: 'application/json' });
+        formData.append('restaurantDTO', blob, 'restaurantDTO.json');
+        formData.append('managerIdx', managerIdx);
+        // formData.append('name', restaurantName.value);
+        // formData.append('menu', menu.value);
+        // formData.append('restaurantInfo', restauranInfo.value);
+        console.log(formData.get('restaurantDTO'));
+        // Content-Type 지정
+        const config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+
+       console.log("formData : " + formData.toString());
+       console.log(formData.entries);
+        const { data } = await axios.post('/file/update',formData);
+        
+     
+        return data?.restaurantIdx;
+      } catch (err) {
+        console.log(err);
+        // console.log( "dto"+formData);
+      }
+      location.reload();
+    };
+// uploadAPI();
+  onMounted(() => {
+      fetchFiles();
+    
+    })
 
   
   const date = (context) => {
@@ -212,7 +344,7 @@ setup(){
 
 
     const getMemberlist = async() =>{
-    
+  
      const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`).then((inform)=>{
         console.log(inform);
         //  restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
@@ -236,7 +368,7 @@ setup(){
     
     const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`).then((inform)=>{
        console.log(inform);
-           
+
         restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
         restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
         menu.value=inform.data.restaurantDTO.menu;  //메뉴
@@ -244,6 +376,9 @@ setup(){
         reservedDate.value=inform.data.reserveDate;
         console.log(memberList.value);
         console.log("길이:"+memberListLength.value);
+        console.log("이미지파일"+inform.data.restaurantDTO.images);
+        images.value=inform.data.restaurantDTO.images;
+        console.log("이미지:"+images.value);
           // //멤버 리스트에서 날짜만 추출하여 배열에 담기
         //   if (inform.data.reservelist) {
         // memberDateList.value=inform.data.reservelist.map((member) => member.reserveDate.slice(0, 10));} 
@@ -307,6 +442,7 @@ setup(){
     
   
   return{
+    onChangeFile,
     date,
     reserveDate,
     formatreserveDate,
@@ -321,7 +457,12 @@ setup(){
     memberListLength,
     attrs,
     updateConfirm,
-
+    isEditing,
+    files,
+    // selectFile,
+    images,
+    uploadAPI,
+    file
   }
 },
 
@@ -329,8 +470,12 @@ setup(){
 </script>
 
 <style>
+.nav-tabs-custom .nav-link.active {
+  background-color: #7fac7d;
+  color: #fff;
+}
 button.nav-link{
-  width: 300px;
+  width: 400px;
 }
 
 .restaurantname{
@@ -344,7 +489,7 @@ button.nav-link{
 
 .uform-container{
  margin: auto;
- width: 500px;
+ width: 800px;
 
 }
 
@@ -358,4 +503,8 @@ button.nav-link{
   color: white;
 }
 
+.uploadimg{
+ max-width: 100%;
+ max-height: 100%;
+}
 </style>
