@@ -34,7 +34,6 @@ export default {
     const sendAuth = async () => {
       try {
         if(validatePhone(phone.value) == false || validatePhone(phone.value) == ''){
-          console.log(phone.value);
           Swal.fire({
             title: '번호 유효성 검사',
             text: '옳바른 번호 양식이 아닙니다',
@@ -42,49 +41,37 @@ export default {
             confirmButtonText: '확인',
           })
           return;
-          }
-        const response = await axios.get('/Catchvegan/authPhone/'+`${phone.value}`); 
-        console.log(response);
-        if(validatePhone(phone.value) == false || validatePhone(phone.value) == ''){
+        }
+        const response = await axios.get('/Catchvegan/authPhone/'+`${phone.value}`);
+        console.log(phone.value);
+       if(`${phone.value}` == phone.value){
           Swal.fire({
-            title: '번호 유효성 검사',
-            text: '옳바른 번호 양식이 아닙니다',
-            icon: 'error',
-            confirmButtonText: '확인',
+          icon: 'success',
+          title: '인증번호가 전송되었습니다'   
           })
-          return;
-         }else if(!phone.value){
-           Swal.fire({
-           icon: 'error',
-           title: '가입되어있는 아이디가 없습니다'   
-           })
-           return;
-         }else{
-           Swal.fire({
-             title: '번호 유효성 검사',
-             text: '옳바른 번호 양식이 아닙니다',
-             icon: 'error',
-             confirmButtonText: '확인',
-         })
         }
       } catch (error) {
-        console.error('Failed to fetch ID:', error);
+        Swal.fire({
+              icon: 'error',
+              title: '가입되어있는 아이디가 없습니다'   
+           })
         return;
       }
     }
-    
+
     const idFind = async () =>{
       try {
-        const response = await axios.get('/member/findMyId'); 
-        if (id.value) {
+        const response = await axios.get('/Catchvegan/member/findMyId'); 
+        console.log(authNo.value);
+        if(authNo.value == `${authNo.value}`) {
           Swal.fire({
-          icon: 'success',
-          title: `아이디는 ${id.value} 입니다`    
+            icon: 'success',
+            title: '아이디는'+id.value+'입니다'    
           });
         } else {
           Swal.fire({
-          icon: 'error',
-          title: '아이디를 찾을 수 없습니다'   
+            icon: 'error',
+            title: '아이디를 찾을 수 없습니다'   
           })
         }
       } catch (error) {
