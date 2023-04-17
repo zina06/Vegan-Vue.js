@@ -92,9 +92,9 @@ export default {
     const phone = ref('');
     const authNo = ref('');
     const veganType = ref('');
-    const sid = process.env.TWILIO_ACCOUNT_SID;
-    const token = process.env.TWILIO_AUTH_TOKEN;
-    const client = require('twilio')(sid, token);
+    //const sid = process.env.TWILIO_ACCOUNT_SID;
+    //const token = process.env.TWILIO_AUTH_TOKEN;
+    //const client = require('twilio')(sid, token);
     let passok = false;
     let idok = false;
     const Swal = require('sweetalert2');
@@ -303,10 +303,7 @@ export default {
       signin,
       checkId,
       showtype,
-      sendSMS,
-      sid,
-      token,
-      client
+      sendSMS
     }
   }
 }

@@ -33,9 +33,19 @@ export default {
   setup(){
     const router = useRouter();
     const Swal = require('sweetalert2');
-    const token = ref('');
+    const token = sessionStorage.getItem("token");
     const id = ref('');
     const password = ref('');
+
+    const errorcheck = async () => {
+      if(token != null){
+        router.push({
+          name:"Main"
+        });
+      }
+    };
+    errorcheck();
+
     const login = () =>{
       console.log(id.value);
       console.log(password.value);
