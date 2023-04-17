@@ -1,22 +1,23 @@
 <template>
     <div>
         <div class="login-page">
-        <form action="Login" method="POST" class="loginForm" onsubmit="DoLoginForm__submit(this); return false;">                                                                                         
+        <form action="/member/login" method="POST" class="loginForm" name="member">                                                                                         
             <h2>로그인</h2>
                 <div class="textForm">
-                    <input name="id" type="text" class="id" placeholder="아이디">
+                    <input name="id" type="text" class="id" placeholder="아이디" v-model="id">
                 </div>
                 <div class="textForm">
-                    <input name="password" type="password" class="password" placeholder="비밀번호">
+                    <input name="password" type="password" class="password" placeholder="비밀번호" v-model="password">
                 </div>
-            <input type="submit" class="loginBtn" value="L O G I N"/>
+            <button class="loginBtn" type="submit" value="L O G I N" @click.prevent="login()">로그인</button>
             <div class="text-center mb-3">
-                <a href="#" class="text-secondary me-3">아이디 찾기</a>
+                <a href="findMyId" class="text-secondary me-3">아이디 찾기</a>
                 <span class="text-secondary">|</span>
-                <a href="#" class="text-secondary ms-3 me-3">비밀번호 찾기</a>
+                <a href="findMyPassword" class="text-secondary ms-3 me-3">비밀번호 찾기</a>
                 <span class="text-secondary">|</span>
-                <a href="#" class="text-secondary ms-3">회원가입</a>
+                <a href="signup" class="text-secondary ms-3">회원가입</a>
             </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form>
         </div>
     </div>
@@ -24,7 +25,57 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+import {ref} from 'vue'
+import axios from 'axios';
+
 export default {
+  setup(){
+    const router = useRouter();
+    const Swal = require('sweetalert2');
+    const token = ref('');
+    const id = ref('');
+    const password = ref('');
+    const login = () =>{
+      console.log(id.value);
+      console.log(password.value);
+      const login2 = async () =>{
+        const res = await axios.post('/Catchvegan/member/login',{
+            id : id.value,
+            password : password.value
+        }).then((result)=>{
+          sessionStorage.setItem("token",result.headers.token);
+          sessionStorage.setItem("id",id.value);
+          Swal.fire({
+          icon: 'success',
+          title: '로그인 성공'     
+          }).then(() => {
+            router.push({ name: 'Main', params: { id: id.value } });
+            location.reload();
+            window.location.href = '/Catchvegan'
+          });            
+          if(result.headers.token == null){
+            Swal.fire({
+            icon: 'error',
+            title: '로그인 실패'
+            })
+          }
+          token.value = result.headers.token;
+        }).catch((result) => {
+          console.log(result);
+        })
+      }
+      login2();
+    }
+
+    return{
+      id,
+      password,
+      login
+    }
+  }
+  
+
 }
 </script>
 

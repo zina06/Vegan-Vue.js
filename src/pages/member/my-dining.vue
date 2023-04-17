@@ -20,8 +20,15 @@
     <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
       <div class="reservation-list">
         <ul class="ulrow">
-          <li v-for="reservation in upcomingReservations" :key="reservation.id" style="justify-content: flex-start;">
-            <div class="reservation-item">{{ reservation.title }}</div>
+          <li v-for="reservation in upcomingReservations" :key="reservation.reserveIdx" style="justify-content: flex-start;">
+            <div class="reservation-item">
+              <div>예약일시</div>
+              <div>{{ reservation.reserveDate.getFullYear() }}년 {{ reservation.reserveDate.getMonth()+1 }}월  {{ reservation.reserveDate.getDate() }}일  {{ reservation.reserveDate.getHours() }}시  {{ reservation.reserveDate.getMinutes() }}분</div>
+              <div>{{ reservation.resCount }}</div>
+              <div>{{ reservation.restaurantDTO.name }}</div>
+              <div>{{ reservation.restaurantDTO.city }}</div>
+              <button @click="cancelReserve(reservation.reserveIdx)"  >취소하기</button>
+            </div>
           </li>
         </ul>
       </div>
@@ -52,6 +59,8 @@
 
 <script>
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import axios from 'axios';
 export default {
   setup() {
 
@@ -59,18 +68,39 @@ export default {
 
 
     const goToReviewPage = function () {
-            router.push(
-                "/member/reviewinsert"
-            )
+                router.push({
+          name:"Login"
+        });
         }
+    
+    const memberIdx = 37;
+    //예약정보 불러오기
+    const upcomingReservations = ref([]);
+    const getReservations = async () =>{
+      const res = await axios.get(`/Catchvegan/mydining/getReserves/${memberIdx}`);
+      console.log(res);
+      upcomingReservations.value = res.data;
+      const array = [upcomingReservations.value.length];
+      for(let i=0; i<upcomingReservations.value.length; i++){
+        array[i] = new Date(upcomingReservations.value[i].reserveDate);
+        upcomingReservations.value[i].reserveDate = array[i];
+      }
+      console.log(res);
+    }
+    getReservations();
+
+    //예약취소
+    /*
+    const cancelReserve = (idx) =>{
+      // console.log(idx);
+      const cancel = async () =>{
+        const res = async 
+      }
+    }
+    */
 
     return {
-      upcomingReservations: [
-        { id: 1, title: '예약 1', status: '방문 예정' },
-        { id: 2, title: '예약 2', status: '방문 예정' },
-        { id: 3, title: '예약 3', status: '방문 예정' },
-        { id: 4, title: '예약 4', status: '방문 예정' }
-      ],
+      upcomingReservations,
       cancelledReservations: [
         { id: 5, title: '예약 4', status: '취소/노쇼' },
         { id: 6, title: '예약 5', status: '취소/노쇼' }
@@ -80,7 +110,8 @@ export default {
         { id: 8, title: '예약 7', status: '방문 완료' },
         { id: 9, title: '예약 8', status: '방문 완료' }
       ],
-      goToReviewPage,
+      goToReviewPage
+      //cancelReserve
     };
   }
 };

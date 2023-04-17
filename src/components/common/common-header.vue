@@ -6,7 +6,11 @@
            
           
           </div>
-          
+                   <router-link to="/Catchvegan" class="nav-item nav-link active">Home</router-link>
+              <router-link to="/Catchvegan/member/signup" class="nav-item nav-link" v-if="headerstate">회원가입</router-link>
+              <router-link to="/Catchvegan/member/login" class="nav-item nav-link" v-if="headerstate">로그인</router-link>
+              <router-link to="/Catchvegan" class="nav-item nav-link" v-if="!headerstate">내정보</router-link>
+              <router-link to="/Catchvegan" class="nav-item nav-link" v-if="!headerstate">마이다이닝</router-link>
         </div>  -->
   
         <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
@@ -19,20 +23,14 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <router-link to="/Catchvegan" class="nav-item nav-link active">Home</router-link>
-              <router-link to="/Catchvegan/member/signup" class="nav-item nav-link">회원가입</router-link>
-              <router-link to="/Catchvegan/member/login" class="nav-item nav-link">로그인</router-link>
-              <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                <div class="dropdown-menu m-0">
-                  <a href="blog.html" class="dropdown-item">Blog Grid</a>
-                  <a href="feature.html" class="dropdown-item">Our Features</a>
-                  <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                  <a href="404.html" class="dropdown-item">404 Page</a>
-                </div>
-              </div>
-              <a href="contact.html" class="nav-item nav-link">Contact Us</a>
-            </div>
+              <button type="button" class="nav-item nav-link active custom-button" @click.prevent="tokentest()">토큰실험용</button>
+              <!-- <strong class="greeting" v-if="!headerstate">{{ sessionid }} 님 반갑습니다!</strong> -->
+              <button type="button" class="nav-item nav-link active custom-button" @click.prevent="main()">HOME</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="headerstate" @click.prevent="signup()">회원가입</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="headerstate" @click.prevent="login()">로그인</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate" @click.prevent="logout()">로그아웃</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate" @click.prevent="mypage()">내정보</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate" @click.prevent="mydining()">마이다이닝</button>
             <!-- <div class="d-none d-lg-flex ms-2">
               <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
                 <small class="fa fa-search text-body"></small>
@@ -44,6 +42,7 @@
                 <small class="fa fa-shopping-bag text-body"></small>
               </a>
             </div> -->
+            </div>
           </div>
         </nav>
 
@@ -59,8 +58,107 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 export default {
-    name: "common-header"
+    name: "common-header",
+
+    setup() {
+      const Swal = require('sweetalert2');
+      const headerstate = ref(false);
+      const token = sessionStorage.getItem("token");
+      const check = () => {
+        if(token == null){
+          headerstate.value = true;
+        }else{
+          console.log(headerstate.value);
+        }
+      }
+      check();
+
+      const logout = () => {
+        let timerInterval
+        Swal.fire({
+          title: '로그아웃하는중',
+          html: '로그아웃하는중',
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading()
+            const b = Swal.getHtmlContainer().querySelector('b')
+            timerInterval = setInterval(() => {
+              b.textContent = Swal.getTimerLeft()
+            }, 100)
+          },
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('로그아웃하는중')
+          }
+        })
+        headerstate.value = true;
+        sessionStorage.clear();
+        location.reload();
+      }
+
+      const router = useRouter();
+
+      const sessionid = sessionStorage.getItem("id");
+
+      const mypage = () => {
+        router.push({
+          name:"Mypage",
+          params:{"id": sessionid}
+        });
+      }
+
+      const login = () => {
+        router.push({
+          name:"Login"
+        });
+      }
+
+      const signup = () => {
+        router.push({
+          name:"Signup"
+        });
+      }
+
+      const main = () => {
+        router.push({
+          name:"Main"
+        });
+      }
+
+      const tokentest = () => {
+        console.log(token);
+        router.push({
+          name:"Aftersignup",
+          params:{"token": token}
+        });
+      }
+
+      const mydining = () => {
+        router.push({
+          name:"Mydining",
+          params:{"id": sessionid}
+        });
+      }
+
+      return{
+        logout,
+        headerstate,
+        mypage,
+        mydining,
+        login,
+        signup,
+        main,
+        sessionid,
+        tokentest
+      }
+    }
 }
 </script>
 
@@ -69,4 +167,28 @@ export default {
   width: 300px;
   height: 65px;
 }
+
+.greeting {
+  font-weight: bold;
+  margin-right: 10px; /* 오른쪽으로 10px의 간격 설정 */
+  padding: 30px 20px;
+}
+
+.custom-button {
+  display: inline-block; /* inline-block 속성으로 링크처럼 보이게 설정 */
+  background-color: #fff; /* 버튼 배경색을 초록색으로 설정 */
+  color: #fff; /* 버튼 텍스트 색상을 흰색으로 설정 */
+  padding: 10px 10px; /* 버튼의 내부 여백 설정 */
+  font-size: 18px; /* 버튼 텍스트 크기 설정 */
+  border: none; /* 버튼 테두리 제거 */
+  border-radius: 4px; /* 버튼 테두리 둥글게 설정 */
+  cursor: pointer; /* 커서를 손가락 모양으로 설정 */
+  transition: transform 0.2s ease-in-out; /* 애니메이션 효과 설정 */
+  text-decoration: none; /* 링크 효과 제거 */
+}
+
+.custom-button:hover {
+  transform: scale(1.1); /* 마우스 호버 시 버튼 크기를 1.1배로 확대하는 애니메이션 설정 */
+}
+
 </style>
