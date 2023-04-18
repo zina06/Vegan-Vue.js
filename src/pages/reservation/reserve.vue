@@ -91,7 +91,7 @@
 
 
                   <div style="display:flex; justify-content:center;">
-                    <VDatePicker v-model="date" :min-date="new Date()" :max-date="maxDate" style="margin:auto"
+                    <VDatePicker v-model="date" :min-date="new Date(Date.now() + 24 * 60 * 60 * 1000)" :max-date="maxDate" style="margin:auto"
                       :clickable="true" @click="onSelectDate" />
                   </div>
 
@@ -102,11 +102,11 @@
                     <table class="table table-responsive table-bordered table-striped"
                       style="width: 500px; text-align: center;">
                       <tr>
-                      <td class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ six }}명</td>
-                      <td class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sixHalf }}명</td>
-                      <td class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ seven }}명</td>
-                      <td class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sevenHalf }}명</td>
-                      <td class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ eight }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ six }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sixHalf }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ seven }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sevenHalf }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ eight }}명</td>
                       </tr>
                       <tr>
                         <td class="col-2" style="width: 100px;">
@@ -240,11 +240,13 @@
 </template>
 
 <script>
+let paymentResultEventSource = null;
 import router from '@/router/router';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 export default {
+  
   setup() {
     const newDate = new Date();
     const maxDate = ref(new Date().setMonth(newDate.getMonth() + 1));
@@ -262,8 +264,9 @@ export default {
     // const router = router();
 
     //달력선택 
+    const alreadyReserve = ref(false);
     const onSelectDate = (context) => {
-
+    
       // console.log(context);
       // console.log(context.target.ariaLabel);
       if (context.target.ariaLabel == null) {
@@ -271,7 +274,7 @@ export default {
       }
       const match = context.target.ariaLabel.match(/(\d+)년 (\d+)월 (\d+)일 (.+)/);
 
-
+      
       const year = parseInt(match[1]);
       const month = parseInt(match[2]) - 1; // JavaScript에서 월은 0부터 시작하므로 1을 뺍니다.
       const day = parseInt(match[3]);
@@ -298,12 +301,21 @@ export default {
         }
         const res = await axios.post(`/Catchvegan/reserve/getTime`, data);
         console.log(res);
+        if(res.data == 'alreadyReserve'){
+          Swal.fire({
+            icon: 'error',
+            title: '해당 날짜에 이미 예약이 존재합니다.'
+          })
+          alreadyReserve.value=false;
+          return;
+        }
         six.value = res.data.six;
         sixHalf.value = res.data.sixHalf;
         seven.value = res.data.seven;
         sevenHalf.value = res.data.sevenHalf;
         eight.value = res.data.eight;
         checkTime.value = true;
+        alreadyReserve.value = true;
       }
       canReserve();
 
@@ -333,7 +345,7 @@ export default {
     const resCount = ref('');
     const reserveTime = ref('');
     const refundOk = ref(false);
-    let paymentResultEventSource = null;
+    // let paymentResultEventSource = null;
 
     //선결제금액 보여주기
     const payFirst = ref('');
@@ -391,6 +403,13 @@ export default {
         })
         return;
       }
+      if(!alreadyReserve.value){
+        Swal.fire({
+          icon: 'error',
+          title: '예약할 수 없는날입니다.'
+        })
+        return;
+      }
       const [hours, minutes] = reserveTime.value.split(':');
       reserveDate.value.setHours(hours, minutes);
       console.log(reserveDate.value);
@@ -431,26 +450,34 @@ export default {
         }
       }
 
-      paymentResultEventSource = new EventSource('http://localhost:8082/Catchvegan/reserve-result');
+      // paymentResultEventSource = new EventSource('http://localhost:8082/Catchvegan/reserve-result');
       paymentResultEventSource.addEventListener('paymentResult', handlePaymentResultEvent);
+      paymentResultEventSource.onclose = function(event) {
+        console.log('SSE connection closed');
+
+        // SSE 연결이 끊어졌을 때, 새로운 요청 보내기
+        paymentResultEventSource.close();
+        paymentResultEventSource = new EventSource('http://localhost:8082/Catchvegan/reserve-result');
+      };
     }
 
-    
+    onMounted(()=>{
+      console.log("onMount");
+      paymentResultEventSource = new EventSource('http://localhost:8082/Catchvegan/reserve-result');
+      setTimeout(() => {
+      alert("페이지가 만료되었습니다.");
+      router.push({
+        name: 'Main'
+      })
+    }, 3600000);
+    })
 
-    const cancelReservation = () => {
-      // 페이지 이동 후에 paymentResultEventSource 객체 제거
+    onBeforeUnmount(()=>{
+      console.log("onBeforeUnmount");
       paymentResultEventSource.close();
       paymentResultEventSource = null;
-    }
+    })
 
-    // 페이지 이동 시 SSE 객체 제거
-    router.beforeEach((to, from, next) => {
-      if (paymentResultEventSource !== null) {
-        paymentResultEventSource.close();
-        paymentResultEventSource = null;
-      }
-      next();
-    });
 
 
     return {
@@ -473,7 +500,8 @@ export default {
       changePerson,
       payFirst,
       userName,
-      userPhone
+      userPhone,
+      alreadyReserve
     }
   }
 
