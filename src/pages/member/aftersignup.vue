@@ -19,14 +19,14 @@ export default{
       }).then((result)=>{
         console.log('result.status'+result.status)
         //성공했을때 코드
-        if(result.status != 200){
+        if(result.status != 200 || result.status != 201){
           router.push({
           name:"Error"
         });
         }
       }).catch((result)=>{
         //에러코드가 왔을때
-        if(result.status != 200){
+        if(result.status != 200 || result.status != 201){
           router.push({
             name:"Error"
           })
