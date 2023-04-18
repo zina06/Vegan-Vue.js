@@ -306,7 +306,14 @@ setup(){
         console.log(err);
         // console.log( "dto"+formData);
       }
-      location.reload();
+      // location.reload();
+        Swal.fire({
+            icon: 'success',
+            title: '수정이 완료되었습니다.'     
+              }).then((result) => {
+          /* Read more about handling dismissals below */
+          window.location.reload(true);
+        })
     };
 // uploadAPI();
   onMounted(() => {
@@ -402,6 +409,8 @@ setup(){
       })
     
   }
+
+
 
 
   

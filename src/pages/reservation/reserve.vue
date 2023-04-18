@@ -1,22 +1,21 @@
 <template>
+  
   <body class="bg-body-tertiary">
-
+   
     <div class="container">
       <main>
-        <div class="py-5 text-center">
-          <h2>Checkout form</h2>
-          <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group
-            has a validation state that can be triggered by attempting to submit the form without completing it.</p>
-        </div>
+       
+        <br><br> 
 
 
 
-
-
-        <div class="row g-5 ">
+        <img src="@/assets/img/reserve.png" style="width:100%">
+        <br><br><br>
+        <div class="row g-5 " style="background: white;">
+          
           <div class="col-md-5 col-lg-4 order-md-last">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-primary">식당정보</span>
+              <span><b>식당정보</b></span>
               <!-- <span class="badge bg-primary rounded-pill">3</span> -->
             </h4>
             <ul class="list-group mb-3">
@@ -41,7 +40,7 @@
                 </div>
                 <span class="text-body-secondary">{{ veganType }}</span>
               </li>
-              <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+              <li class="list-group-item d-flex justify-content-between">
 
                 <h6 class="my-0">1인당 예약금</h6>
                 <!-- <small>EXAMPLECODE</small> -->
@@ -96,12 +95,12 @@
           </div> -->
           </div>
           <div class="col-md-7 col-lg-8">
-            <h4 class="mb-3">예약자 정보</h4>
-            <form class="needs-validation" novalidate>
+            <h4 class="mb-3" style="padding-left: 70px;"><b>* 예약자 정보</b></h4>
+            <form class="needs-validation" novalidate >
               <div class="row g-3">
-                <div class="col-12">
+                <div class="col-12" style="padding-left: 80px;">
                   <label for="firstName" class="form-label">이름</label>
-                  <input type="text" class="form-control" id="firstName" placeholder="" value="" readonly>
+                  <input type="text" class="form-control" id="firstName" placeholder="" value="" readonly style="width: 200px; background-color: #F5F5F5">
                   <div class="invalid-feedback">
                     Valid first name is required.
                   </div>
@@ -119,15 +118,15 @@
                     </div>
                   </div>
                 </div> -->
-
-                <div class="col-12">
+                 
+                <div class="col-12" style="padding-left: 80px;">
                   <label for="email" class="form-label">전화번호</label>
-                  <input type="email" class="form-control" id="email" placeholder="" readonly>
+                  <input type="email" class="form-control" id="email" placeholder="" readonly style="width: 300px; background-color: #F5F5F5" >
                   <div class="invalid-feedback">
                     Please enter a valid email address for shipping updates.
                   </div>
                 </div>
-
+              
                 <!-- <div class="col-12">
                   <label for="address" class="form-label">Address</label>
                   <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
@@ -142,22 +141,22 @@
                   <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
                 </div> -->
 
-
+                 <br><br>
                 <div class="col-md-12">
                   <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-danger" style="margin:auto">예약시간</span>
+                    <span style="padding-left: 80px; padding-top: 50px;"><b>* 예약시간</b></span>
 
                   </h4>
 
 
                   <div style="display:flex; justify-content:center;">
-                    <VDatePicker v-model="date" :min-date="new Date()" :max-date="maxDate" style="margin:auto"
+                    <VDatePicker v-model="date" :min-date="new Date()" :max-date="maxDate" style="margin:auto; width: 700px;"
                       :clickable="true" @click="onSelectDate" />
                   </div>
 
                   <br>
-                  <br>
-                  <div class="w-100" v-if="checkTime">
+                 
+                  <div class="w-100" v-if="checkTime" style="padding-top: 50px;">
                     <div class="w-100 text-center">예약가능인원</div>
                     <div class="mx-auto d-flex justify-content-between">
                       <div class="flex-grow-2"></div>
@@ -178,9 +177,9 @@
                   <div class="btn-group d-flex col-md-12 w-50 justify-content-center align-items-center mx-auto"
                     role="group" aria-label="radio toggle button group">
 
-                    <input type="radio" class="btn-check" value="18:00" name="vbtn-radio" id="vbtn-radio1"
+                     <!-- <input type="radio" class="btn-check" value="18:00" name="vbtn-radio" id="vbtn-radio1"
                       v-model="reserveTime" autocomplete="off">
-                    <label class="btn btn-outline-success" for="vbtn-radio1">18:00</label>
+                    <label class="btn btn-outline-success" for="vbtn-radio1" >18:00</label>
 
                     <input type="radio" class="btn-check" value="18:30" name="vbtn-radio" id="vbtn-radio2"
                       v-model="reserveTime" autocomplete="off">
@@ -196,13 +195,35 @@
 
                     <input type="radio" class="btn-check" value="20:00" name="vbtn-radio" id="vbtn-radio5"
                       v-model="reserveTime" autocomplete="off">
-                    <label class="btn btn-outline-success" for="vbtn-radio5">20:00</label>
+                    <label class="btn btn-outline-success" for="vbtn-radio5">20:00</label>  -->
+                    
+                    <input type="radio" class="btn-check timebtn" value="18:00" name="vbtn-radio" id="vbtn-radio1"
+                      v-model="reserveTime" autocomplete="off">
+                    <label class="btn timebtn">18:00</label>&nbsp;
 
+                    <input type="radio" class="btn-check timebtn" value="18:30" name="vbtn-radio" id="vbtn-radio2"
+                      v-model="reserveTime" autocomplete="off">
+                    <label class="btn timebtn">18:30</label>&nbsp;
+
+                    <input type="radio" class="btn-check timebtn" value="19:00" name="vbtn-radio" id="vbtn-radio3"
+                      v-model="reserveTime" autocomplete="off">
+                    <label class="btn timebtn">19:00</label>&nbsp;
+
+                    <input type="radio" class="btn-check timebtn" value="19:30" name="vbtn-radio" id="vbtn-radio4"
+                      v-model="reserveTime" autocomplete="off">
+                    <label class="btn timebtn">19:30</label>&nbsp;
+
+                    <input type="radio" class="btn-check timebtn" value="20:00" name="vbtn-radio" id="vbtn-radio5"
+                      v-model="reserveTime" autocomplete="off">
+                    <label class="btn timebtn" >20:00</label>
+                   
+                 
                   </div>
 
                 </div>
                 <div class="col-md-6">
-                  <label for="country" class="form-label">예약인원</label>
+                  <label for="country" class="form-label" style="padding-left: 80px; padding-top: 30px;"><b>* 예약인원</b></label>
+                  <div style="padding-left: 80px;">
                   <select class="form-select" id="country" v-model="resCount" v-on:change="changePerson" required>
                     <option value="">인원을 선택해주세요</option>
                     <option value="1">1 명</option>
@@ -218,13 +239,14 @@
                     <option value="11">11 명</option>
                     <option value="12">12 명</option>
                   </select>
+                </div>
                   <div class="invalid-feedback">
                     Please select a valid country.
                   </div>
                 </div>
                 <div class="col-6">
-                  <label for="email" class="form-label">선결제금액</label>
-                  <input type="email" class="form-control" id="email" v-model="payFirst" readonly>
+                  <label for="email" class="form-label" style="padding-top: 30px;"><b>선결제금액</b></label>
+                  <input type="email" class="form-control" id="email" v-model="payFirst" readonly  style="width: 300px;">
                   <div class="invalid-feedback">
                     Please enter a valid email address for shipping updates.
                   </div>
@@ -254,7 +276,7 @@
               <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="same-address" v-model="refundOk">
                 <label class="form-check-label" for="same-address">
-                  [필수] 취소 및 환불 규정에 동의합니다.</label>
+                  &nbsp;&nbsp;[필수] 취소 및 환불 규정에 동의합니다.</label>
               </div>
               <br>
               <div class="col-6 refund">
@@ -271,12 +293,12 @@
 
               <hr class="my-4">
 
-              <h4 class="mb-3">결제</h4>
+              <h4 class="mb-3"><b>결제</b></h4>
 
               <div class="my-3">
                 <div class="form-check">
                   <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                  <label class="form-check-label" for="credit">카카오 페이</label>
+                  <label class="form-check-label" for="credit">&nbsp;카카오 페이</label>
                 </div>
                 <!-- <div class="form-check">
                   <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
@@ -325,20 +347,13 @@
 
               <hr class="my-4">
 
-              <button class="w-100 btn btn-primary btn-lg" @click="reserve">Continue to checkout</button>
+              <button class="w-100 btn btn-primary btn-lg" @click="reserve">예약하기</button>
             </form>
           </div>
         </div>
       </main>
 
-      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
-        <p class="mb-1">&copy; 2017–2023 Company Name</p>
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="#">Privacy</a></li>
-          <li class="list-inline-item"><a href="#">Terms</a></li>
-          <li class="list-inline-item"><a href="#">Support</a></li>
-        </ul>
-      </footer>
+      
     </div>
 
   </body>
@@ -488,7 +503,6 @@ export default {
     const reserveTime = ref('');
     const refundOk = ref(false);
     let paymentResultEventSource = null;
-    
     //선결제금액 보여주기
     const payFirst = ref('');
     const changePerson = () =>{
@@ -630,6 +644,18 @@ export default {
 </script>
 
 <style>
+/* .btn {
+  background:#3CB371 !important; 
+  color: white;
+  border: #3CB371;
+} */
+
+/* .btn-check{
+  width: 100px; 
+  height: 40px;
+ 
+
+} */
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
@@ -709,7 +735,48 @@ export default {
   border: 1px;
   height: auto;
   background-color: rgb(240, 240, 240);
-  border: 2px solid black;
+  border: 1px solidrgb(240, 240, 240);
   padding: 12px;
 }
+.timebtn{
+  background-color: #77af9c;
+    color: #d7fff1;
+    border: 1px solid #77af9c;
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+.timebtn:hover{
+  background-color: #d7fff1 !important;
+  color: #77af9c !important;
+  border: 1px solid #d7fff1 !important;
+}
+
+.timebtn:selected{
+  background-color: #d7fff1 !important;
+  color: #77af9c !important;
+  border: 1px solid #d7fff1 !important;
+}
+
+/* .w-btn, .btn, .btn-hover, btn-check {
+    position: relative;
+    border: none;
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+    
+}
+.w-btn-green, .btn, .btn:hover{
+    background-color: #77af9c;
+    color: #d7fff1;
+   
+} */
 </style>

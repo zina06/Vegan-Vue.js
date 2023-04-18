@@ -68,9 +68,85 @@
 
     </div>
 
+    <!--review start-->
+    <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px; margin-top: 100px;">
+          <h2><b>최근 리뷰</b></h2>
+          <!-- <p>Tempor ut dolore lorem kasd vero ipsum sit eirmod sit. Ipsum diam justo sed rebum vero dolor duo.</p> -->
+        </div>
+    <Carousel :items-to-show="2.5" :wrap-around="true" style="width: 80%; margin: auto;">
+     
+      <Slide v-for="slide in 5" :key="slide">
+        <div class="carousel__item " >
+            <div v-if="slide === 1" style="width: 450px; height: 100%;">
+             
+              <img class="img-fluid" src="@/assets/img/blog-1.jpg" alt="">
+              <div class="bg-light p-4">
+                <a class="d-block h5 lh-base mb-4" href="">How to cultivate organic fruits and vegetables in own firm</a>
+                <div class="text-muted border-top pt-4">
+                  <small class="me-3"><i class="fa fa-user text-primary me-2"></i>Admin</small>
+                  <small class="me-3"><i class="fa fa-calendar text-primary me-2"></i>01 Jan, 2045</small>
+                </div>
+              </div>
+          
+          </div>
+          <div v-if="slide === 2" style="width: 450px; height: 100%;">
+          
+              <img class="img-fluid" src="@/assets/img/blog-1.jpg" alt="">
+              <div class="bg-light p-4">
+                <a class="d-block h5 lh-base mb-4" href="">How to cultivate organic fruits and vegetables in own firm</a>
+                <div class="text-muted border-top pt-4">
+                  <small class="me-3"><i class="fa fa-user text-primary me-2"></i>Admin</small>
+                  <small class="me-3"><i class="fa fa-calendar text-primary me-2"></i>01 Jan, 2045</small>
+                </div>
+              </div>
+           
+          </div>
+        <div v-if="slide === 3" style="width: 450px; height: 100%;">
+          
+            <img class="img-fluid" src="@/assets/img/blog-1.jpg" alt="">
+            <div class="bg-light p-4">
+              <a class="d-block h5 lh-base mb-4" href="">How to cultivate organic fruits and vegetables in own firm</a>
+              <div class="text-muted border-top pt-4">
+                <small class="me-3"><i class="fa fa-user text-primary me-2"></i>Admin</small>
+                <small class="me-3"><i class="fa fa-calendar text-primary me-2"></i>01 Jan, 2045</small>
+              </div>
+            </div>
+        
+        </div>
+        <div v-if="slide === 4" style="width: 450px; height: 100%;">
+         
+            <img class="img-fluid" src="@/assets/img/blog-1.jpg" alt="">
+            <div class="bg-light p-4">
+              <a class="d-block h5 lh-base mb-4" href="">How to cultivate organic fruits and vegetables in own firm</a>
+              <div class="text-muted border-top pt-4">
+                <small class="me-3"><i class="fa fa-user text-primary me-2"></i>Admin</small>
+                <small class="me-3"><i class="fa fa-calendar text-primary me-2"></i>01 Jan, 2045</small>
+              </div>
+            </div>
+          
+        </div>
+        <div v-if="slide === 5" style="width: 450px; height: 100%;">
+        
+            <img class="img-fluid" src="@/assets/img/blog-1.jpg" alt="">
+            <div class="bg-light p-4">
+              <a class="d-block h5 lh-base mb-4" href="">How to cultivate organic fruits and vegetables in own firm</a>
+              <div class="text-muted border-top pt-4">
+                <small class="me-3"><i class="fa fa-user text-primary me-2"></i>Admin</small>
+                <small class="me-3"><i class="fa fa-calendar text-primary me-2"></i>01 Jan, 2045</small>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+      </Slide>
 
+      <template #addons>
+        <Navigation />
+      </template>
+    </Carousel>
+    <!--review end-->
 
-
+    
     <!-- Feature Start -->
     <!-- <div class="container-fluid bg-light bg-icon my-5 py-6">
         <div class="container">
@@ -112,7 +188,7 @@
     <!-- Feature End -->
 
     <!-- Testimonial Start -->
-    <!-- <div class="container-fluid bg-light bg-icon py-6 mb-5">
+    <div class="container-fluid bg-light bg-icon py-6 mb-5">
         <div class="container">
           <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
             <h1 class="display-5 mb-3">Customer Review</h1>
@@ -169,7 +245,7 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
     <!-- Testimonial End -->
 
 
@@ -217,7 +293,7 @@
 
     <!-- Blog End -->
 
-
+    
 
 
 
@@ -230,19 +306,52 @@
 </template>
   
 <script>
+import { defineComponent } from 'vue'
+import { Carousel, Navigation, Slide } from 'vue3-carousel'
+import 'vue3-carousel/dist/carousel.css'
+import axios from 'axios';
+import { ref } from 'vue';
 
+// export default {
+//   name: 'App',
+//   components: {
 
-export default {
-  name: 'App',
+//   }
+// }
+export default defineComponent({
+  name: 'WrapAround',
   components: {
+    Carousel,
+    Slide,
+    Navigation,
+  },
+  setup(){
+    const getRecentReview = async() =>{
+			
+			const res = await axios.get("/Catchvegan/review/recent").then((Review)=>{
+		
+			
+				console.log(Review.data);
+        
 
+ 
+       })
+		};
+    getRecentReview();
+    return{
+      
+    }
   }
-}
+})
+
+
 </script>
   
 <style>
+
 @import url("@/assets/css/style.css");
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
 
 .search {
   position: relative;
@@ -264,6 +373,13 @@ input {
   right: 12px;
   margin: 0;
   cursor: pointer;
+}
+.carousel__next, .carousel__icon{
+  color: white;
+  border: 1px solid white;
+  border-radius: 100%;
+  background: green;
+  border: green;
 }
 </style>
   
