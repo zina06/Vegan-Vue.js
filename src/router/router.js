@@ -39,6 +39,11 @@ const router = createRouter({
       component: Detail,
     },
     {
+      path: "/Catchvegan/reserve/:restaurantIdx",
+      name: "Reserve",
+      component: Reserve,
+    },
+    {
       path: "/Catchvegan/member/findMyId",
       name: "FindMyId",
       component: FindMyId,
@@ -79,13 +84,13 @@ const router = createRouter({
       component: Reviewinsert,
     },
     {
-      path: "/Catchvegan/manage",
+      path: "/Catchvegan/manage/:managerIdx",
       name: "Owner",
       component: Owner,
     },
     {
       path: "/Catchvegan/reserve",
-      name: "Reserve",
+      name: "Reservee",
       component: Reserve,
     },
     {

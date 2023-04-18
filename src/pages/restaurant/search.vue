@@ -1,224 +1,178 @@
 <template>
   <div class="search-container" style="width: 2000px">
     <div class="search" style="border: 4px solid #808080; border-radius: 1%">
-      <input
-        type="text"
-        placeholder="search"
-        style="height: 8%; font-size: medium"
-      />
-      <img
-        src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png"
-        id="searchimg"
-        style="float: left; height: 4%; width: 4%"
-      />
-      <!-- 검색 창   -->
-      <div style="height: 65px; padding-bottom: 1%; background-color: #808080">
-        <div class="icon-box" style="margin-bottom: 5px">
-          <img
-            src="@/assets/img/vegun-icon/vegetable.png"
-            height="40px"
-            alt="Image"
-            style="
-              float: left;
-              border-radius: 5%;
-              margin-left: 2%;
-              margin-top: 3%;
-            "
-          />
-          <div class="form-check" style="margin-top: 6%; float: left">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              style="margin-top: 7px; margin-right: 3px"
-              value=""
-              id="flexCheckVegetable"
-            />
-            <label class="form-check-label" for="flexCheckVegetable">
-              채소
-            </label>
-          </div>
-        </div>
+      <form v-on:submit.prevent="submitForm" @click="checkValue">
+        <input
+          type="text"
+          placeholder="search"
+          list="addressShow"
+          v-model="address"
+          style="height: 8%; font-size: medium"
+        />
 
-        <div class="icon-box" style="margin-bottom: 5px">
-          <img
-            src="@/assets/img/vegun-icon/milk.png"
-            height="40px%"
-            alt="Image"
-            style="
-              float: left;
-              border-radius: 5%;
-              margin-left: 2%;
-              margin-top: 3%;
-            "
-          />
-          <div class="form-check" style="margin-top: 6%; float: left">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              style="margin-top: 7px; margin-right: 3px"
-              value=""
-              id="flexCheckMilk"
-            />
-            <label class="form-check-label" for="flexCheckMilk"> 우유 </label>
-          </div>
-        </div>
+        <img
+          src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png"
+          id="searchimg"
+          style="float: left; height: 4%; width: 4%"
+          @click="submitForm"
+        />
+        <!-- </button> -->
+        <datalist id="addressShow">
+          <option v-for="(address, idx) in addressList" :key="idx">
+            {{ address }}
+          </option>
+        </datalist>
 
-        <div class="icon-box" style="margin-bottom: 5px">
-          <img
-            src="@/assets/img/vegun-icon/egg.png"
-            height="40px%"
-            alt="Image"
-            style="
-              float: left;
-              border-radius: 5%;
-              margin-left: 2%;
-              margin-top: 3%;
-            "
-          />
-          <div class="form-check" style="margin-top: 6%; float: left">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              style="margin-top: 7px; margin-right: 3px"
-              value=""
-              id="flexCheckEgg"
+        <!-- 체크박스 창   -->
+        <div
+          style="height: 65px; padding-bottom: 1%; background-color: #808080"
+        >
+          <div class="icon-box" style="margin-bottom: 5px">
+            <img
+              src="@/assets/img/vegun-icon/vegetable.png"
+              alt="Image"
+              style="
+                float: left;
+                border-radius: 5%;
+                height: 40px;
+                margin-left: 2%;
+                margin-top: 3%;
+              "
             />
-            <label class="form-check-label" for="flexCheckEgg"> 계란 </label>
+            <div class="form-check" style="margin-top: 6%; float: left">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                style="margin-top: 7px; margin-right: 3px"
+                v-model="flexCheckVegetable"
+                id="flexCheckVegetable"
+              />
+              <label class="form-check-label" for="flexCheckVegetable">
+                채소
+              </label>
+            </div>
           </div>
-        </div>
 
-        <div class="icon-box" style="margin-bottom: 5px">
-          <img
-            src="@/assets/img/vegun-icon/fish.png"
-            height="40px%"
-            alt="Image"
-            style="
-              float: left;
-              border-radius: 5%;
-              margin-left: 2%;
-              margin-top: 3%;
-            "
-          />
-          <div class="form-check" style="margin-top: 6%; float: left">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              style="margin-top: 7px; margin-right: 3px"
-              value=""
-              id="flexCheckFish"
+          <div class="icon-box" style="margin-bottom: 5px">
+            <img
+              src="@/assets/img/vegun-icon/milk.png"
+              alt="Image"
+              style="
+                float: left;
+                border-radius: 5%;
+                height: 40px;
+                margin-left: 2%;
+                margin-top: 3%;
+              "
             />
-            <label class="form-check-label" for="flexCheckFish"> 생선 </label>
+            <div class="form-check" style="margin-top: 6%; float: left">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                style="margin-top: 7px; margin-right: 3px"
+                v-model="flexCheckMilk"
+                id="flexCheckMilk"
+              />
+              <label class="form-check-label" for="flexCheckMilk"> 우유 </label>
+            </div>
+          </div>
+
+          <div class="icon-box" style="margin-bottom: 5px">
+            <img
+              src="@/assets/img/vegun-icon/egg.png"
+              alt="Image"
+              style="
+                float: left;
+                border-radius: 5%;
+                height: 40px;
+                margin-left: 2%;
+                margin-top: 3%;
+              "
+            />
+            <div class="form-check" style="margin-top: 6%; float: left">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                style="margin-top: 7px; margin-right: 3px"
+                v-model="flexCheckEgg"
+                id="flexCheckEgg"
+              />
+              <label class="form-check-label" for="flexCheckEgg"> 계란 </label>
+            </div>
+          </div>
+
+          <div class="icon-box" style="margin-bottom: 5px">
+            <img
+              src="@/assets/img/vegun-icon/fish.png"
+              height="40px%"
+              style="
+                float: left;
+                border-radius: 5%;
+                height: 40px;
+                margin-left: 2%;
+                margin-top: 3%;
+              "
+            />
+            <div class="form-check" style="margin-top: 6%; float: left">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                style="margin-top: 7px; margin-right: 3px"
+                v-model="flexCheckFish"
+                id="flexCheckFish"
+              />
+              <label class="form-check-label" for="flexCheckFish"> 생선 </label>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
       <!-- 조건 검색창 END -->
 
       <div class="container" style="height: 400px; font-size: small">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-          <div class="col">
-            <div
-              class="card shadow-sm"
-              style="
-                height: 130px;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <img
-                style="width: 130px; height: 70%; border-radius: 10%"
-                src="@/assets/img/product-1.jpg"
-                alt=""
-              />
-              <div style="width: 130px; height: 40%; margin: auto">
-                방울토마토
+          <div v-for="(item, idx) in markers" :key="idx">
+            <div class="col">
+              <div
+                class="card shadow-sm"
+                style="
+                  height: 170px;
+                  width: 150px;
+                  align-items: center;
+                  justify-content: center;
+                  background-color: #808080;
+                "
+                @click="onClickButton(idx)"
+              >
+                <img
+                  style="
+                    width: 130px;
+                    height: 100px;
+                    border-radius: 10%;
+                    margin: 8px;
+                  "
+                  :src="item.imageSrc"
+                  alt=""
+                />
+                <div
+                  style="
+                    font-size: xx-small;
+                    width: 130px;
+                    height: 40%;
+                    margin: auto;
+                    background-color: whitesmoke;
+                    margin: 4px;
+                    border-radius: 5%;
+                    border-color: black;
+                    border-width: 1px;
+                  "
+                >
+                  <router-link
+                    :to="`/Catchvegan/restaurant/detail/${item.restaurantIdx}`"
+                  >
+                    {{ item.name }}
+                  </router-link>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="col">
-            <div
-              class="card shadow-sm"
-              style="
-                height: 130px;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <img
-                style="width: 130px; height: 70%; border-radius: 10%"
-                src="@/assets/img/product-2.jpg"
-                alt=""
-              />
-              <div style="width: 130px; height: 40%; margin: auto">
-                파인애플
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div
-              class="card shadow-sm"
-              style="
-                height: 130px;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <img
-                style="width: 130px; height: 70%; border-radius: 10%"
-                src="@/assets/img/product-3.jpg"
-                alt=""
-              />
-              <div style="width: 130px; height: 40%; margin: auto">고추</div>
-            </div>
-          </div>
-          <div class="col">
-            <div
-              class="card shadow-sm"
-              style="
-                height: 130px;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <img
-                style="width: 130px; height: 70%; border-radius: 10%"
-                src="@/assets/img/product-4.jpg"
-                alt=""
-              />
-              <div style="width: 130px; height: 40%; margin: auto">딸기</div>
-            </div>
-          </div>
-          <div class="col">
-            <div
-              class="card shadow-sm"
-              style="
-                height: 130px;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <img
-                style="width: 130px; height: 70%; border-radius: 10%"
-                src="@/assets/img/product-5.jpg"
-                alt=""
-              />
-              <div style="width: 130px; height: 40%; margin: auto">오이</div>
-            </div>
-          </div>
-          <div class="col">
-            <div
-              class="card shadow-sm"
-              style="
-                height: 130px;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <img
-                style="width: 130px; height: 70%; border-radius: 10%"
-                src="@/assets/img/product-6.jpg"
-                alt=""
-              />
-              <div style="width: 130px; height: 40%; margin: auto">토마토</div>
             </div>
           </div>
         </div>
@@ -229,21 +183,45 @@
         <nav aria-label="Page navigation example">
           <ul class="pagination" style="margin-left: 5%">
             <li class="page-item">
-              <a class="page-link" href="#">Previous</a>
+              <button
+                class="page-link"
+                v-if="cur_page != 1"
+                @click="onSetMapMarkers(cur_page - 1)"
+              >
+                Previous
+              </button>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            <li class="page-item" v-for="(item, idx) in paging_list" :key="idx">
+              <button
+                class="page-link"
+                :class="item === cur_page ? 'active' : ''"
+                @click="onSetMapMarkers(item)"
+              >
+                {{ item }}
+              </button>
+            </li>
+            <li class="page-item">
+              <button
+                class="page-link"
+                v-if="cur_page != max_page"
+                @click="onSetMapMarkers(cur_page + 1)"
+              >
+                Next
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
       <!-- Page Nation END-->
     </div>
     <div style="width: 100%; height: 66vh; background-color: aqua">
-      <naver-map style="width: 100%; height: 100%" :mapOptions="mapOptions">
+      <naver-map
+        style="width: 100%; height: 100%"
+        :mapOptions="mapOptions"
+        @onLoad="onLoadMap($event)"
+      >
+        <naver-marker :latitude="myLatitude" :longitude="myLongitude">
+        </naver-marker>
         <div v-for="(item, idx) in markers" :key="idx">
           <naver-marker
             @click="onClickButton(idx)"
@@ -255,12 +233,34 @@
           <naver-info-window
             :marker="item.marker"
             :open="item.isOpen"
+            style="font-size: xx-small; background-color: burlywood"
             @onLoad="onLoadInfoWindow($event, idx)"
           >
-            <a href="https://www.naver.com/">abc</a>
-            <div class="infowindow-style">
-              {{ item.longitude }} 1111111111111111111😎
+            <img
+              style="
+                width: 150px;
+                height: 150px;
+                margin: 10px;
+                border-radius: 10%;
+              "
+              :src="item.imageSrc"
+              :alt="item.name"
+            />
+            <div
+              style="
+                margin: 10px;
+                background-color: white;
+                border-radius: 10%;
+                height: 60px;
+              "
+            >
+              <router-link
+                :to="`/Catchvegan/restaurant/detail/${item.restaurantIdx}`"
+              >
+                {{ item.name }}
+              </router-link>
             </div>
+            <div class="infowindow-style"></div>
           </naver-info-window>
         </div>
       </naver-map>
@@ -269,43 +269,74 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { NaverMap, NaverMarker, NaverInfoWindow } from "vue3-naver-maps";
+import axios from "axios";
 
-const markers = ref([
-  {
-    latitude: 37.51347, // 지도 중앙 위도
-    longitude: 127.041722, // 지도 중앙 경도
-    isOpen: false,
-    type: "fish",
-  },
-  {
-    latitude: 37.51347,
-    longitude: 127.051722,
-    isOpen: false,
-    type: "egg",
-  },
-]);
-const isOpen = ref(true);
+//네이버 맵 객체
+const naver_map = ref();
+
+//주소 리스트 저장(ex: 송파구, 금천구, 종로구)
+const addressList = ref([]);
+
+// 지도에 표시될 마커들의 배열
+const markers = ref([]);
+
+//현재 내 위치 위도
+const myLatitude = ref();
+
+//현재 내 위치 경도
+const myLongitude = ref();
+
+const checkValue = ref(); //Checkbox 변화 감지 함수
+const submitForm = ref(); //Ajax 리스트 요청 함수
+
+//지도에 표시될 아이콘 (야채, 계란, 생선, 우유)
+const iconVegetable = ref(require("@/assets/img/vegun-icon/vegetable.png"));
+const iconEgg = ref(require("@/assets/img/vegun-icon/egg.png"));
+const iconFish = ref(require("@/assets/img/vegun-icon/fish.png"));
+const iconMilk = ref(require("@/assets/img/vegun-icon/milk.png"));
+
+//체크박스 인식 조건 (야채, 계란, 생선, 우유)
+const flexCheckVegetable = ref();
+const flexCheckMilk = ref();
+const flexCheckEgg = ref();
+const flexCheckFish = ref();
+
+//검색하고 싶은 위치(ex 송파구, 종로구, 중구)
+const address = ref();
+
+//Get 요청을 보낼 URL
+const getUrl = ref();
+
+//Get 요청의 갯수를 요청할 URl
+const getCountUrl = ref();
+
+const totalCnt = ref(0);
+const max_page = ref(0);
+const cur_page = ref(1);
+const paging_list = ref([]);
+
+const onLoadMap = (mapObject) => {
+  naver_map.value = mapObject;
+};
 
 const onLoadMarker = (markerObject, idx) => {
   markers.value[idx] = Object.assign({}, markers.value[idx], {
     marker: markerObject,
   });
-  if (markers.value[idx].type === "vegetable")
-    markers.value[idx].marker.setIcon(iconVegetable);
-  else if (markers.value[idx].type === "fish")
-    markers.value[idx].marker.setIcon(iconFish);
-  else if (markers.value[idx].type === "egg")
-    markers.value[idx].marker.setIcon(iconEgg);
-  else if (markers.value[idx].type === "milk")
-    markers.value[idx].marker.setIcon(iconMilk);
-};
 
-const onClickButton = (idx) => {
-  for (var i = 0; i < markers.value.length; i++)
-    markers.value[i].isOpen = false;
-  markers.value[idx].isOpen = true;
+  if (markers.value[idx].veganType.indexOf("vegetable") !== -1)
+    markers.value[idx].marker.setIcon(iconVegetable);
+
+  if (markers.value[idx].veganType.indexOf("milk") !== -1)
+    markers.value[idx].marker.setIcon(iconMilk);
+
+  if (markers.value[idx].veganType.indexOf("egg") !== -1)
+    markers.value[idx].marker.setIcon(iconEgg);
+
+  if (markers.value[idx].veganType.indexOf("fish") !== -1)
+    markers.value[idx].marker.setIcon(iconFish);
 };
 
 const onLoadInfoWindow = (infoWindowObject, idx) => {
@@ -314,24 +345,168 @@ const onLoadInfoWindow = (infoWindowObject, idx) => {
   });
 };
 
+submitForm.value = async () => {
+  checkValue.value(); //체크박스 검사
+  onSetMapMarkers(); // Ajax 요청 및 지도 데이터 로드
+};
+
+/////////////////////////////////////
+// 현재 위치 데이터 Load 함수        //
+/////////////////////////////////////
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0,
+};
+
+function success(pos) {
+  var crd = pos.coords;
+  myLatitude.value = crd.latitude;
+  myLongitude.value = crd.longitude;
+}
+
+function error(err) {
+  console.warn("ERROR(" + err.code + "): " + err.message);
+}
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+
+//네이버 맵 객체 로딩 완료후 데이터 Loading
+watch([naver_map], () => {
+  navigator.geolocation.getCurrentPosition(success, error, options);
+  checkValue.value();
+
+  const latLng = new window.naver.maps.LatLng(
+    myLatitude.value,
+    myLongitude.value
+  );
+
+  naver_map.value.setCenter(latLng); // 현재 위치 중심으로 데이터 지도 중심 변경
+
+  setTimeout(() => {
+    onSetMapMarkers();
+  }, 100);
+});
+
+const onSetMapMarkers = (page = 1) => {
+  // 마커 초기화
+  for (var i = 0; i < markers.value.length; i++) {
+    markers.value[i].marker.setMap(null);
+    console.log("marker");
+  }
+  markers.value = [];
+
+  // alert(getCountUrl.value);
+
+  axios
+    .get(getCountUrl.value)
+    .then((res) => {
+      totalCnt.value = res.data;
+    })
+    .then(() => {
+      max_page.value = Math.ceil(totalCnt.value / 6);
+      cur_page.value = page;
+      paging_list.value = [];
+
+      let i = 1;
+      if (cur_page.value >= 3) {
+        i = cur_page.value - 2;
+        if (cur_page.value - 2 >= max_page.value - 4 && max_page.value > 5)
+          i = max_page.value - 4;
+      }
+      for (; i <= max_page.value; i++) {
+        paging_list.value.push(i);
+        if (paging_list.value.length == 5) {
+          break;
+        }
+      }
+    });
+
+  checkValue.value();
+  cur_page.value = page;
+  getUrl.value += "&pageNum=" + cur_page.value;
+
+  // alert(getUrl.value);
+  //새로운 마커 정보 요청
+  axios
+    .get(getUrl.value)
+    .then((res) => {
+      markers.value = res.data;
+    })
+    .then(() => {
+      for (let i = 0; i < markers.value.length; i++) {
+        let imgUrl = require("@/assets/img/restaurant/" +
+          markers.value[i].images);
+        markers.value[i].imageSrc = imgUrl;
+      }
+    })
+    .then(() => {
+      if (markers.value.length >= 1) {
+        const latLng = new window.naver.maps.LatLng(
+          markers.value[0].latitude,
+          markers.value[0].longitude
+        );
+        naver_map.value.setCenter(latLng); // Change Map Center
+      }
+    });
+};
+
+const onClickButton = (idx) => {
+  if (markers.value[idx].isOpen === true) markers.value[idx].isOpen = false;
+  else {
+    for (var i = 0; i < markers.value.length; i++)
+      markers.value[i].isOpen = false;
+    markers.value[idx].isOpen = true;
+  }
+};
+
+checkValue.value = () => {
+  getUrl.value = "http://localhost:8082/Catchvegan/search/";
+  getCountUrl.value = "http://localhost:8082/Catchvegan/search/count/";
+
+  let subStr = "";
+
+  if (addressList.value.indexOf(address.value) !== -1)
+    subStr += "address?keyword=" + address.value;
+  else {
+    subStr +=
+      "location?latitude=" +
+      myLatitude.value +
+      "&" +
+      "longitude=" +
+      myLongitude.value;
+  }
+
+  if (flexCheckVegetable.value === true) subStr += "&typeVege=vegetable";
+  if (flexCheckMilk.value === true) subStr += "&typeMilk=milk";
+  if (flexCheckEgg.value === true) subStr += "&typeEgg=egg";
+  if (flexCheckFish.value === true) subStr += "&typeFish=fish";
+  // console.log(getUrl.value);
+  getUrl.value += subStr;
+  getCountUrl.value += subStr;
+};
+
+axios
+  .get("http://localhost:8082/Catchvegan/search/addressList")
+  .then((res) => {
+    addressList.value = res.data;
+  })
+  .catch((err) => {
+    console.log("Catchvegun address List Get Fail");
+
+    if (!error.response) console.log("Please check your internet connection.");
+    else console.log("Error Status Code : " + err.response.status);
+
+    return Promise.reject(err);
+  });
+
 const mapOptions = {
   latitude: 37.51347, // 지도 중앙 위도
-  longitude: 127.041722, // 지도 중앙 경도
+  longitude: 127.051722, // 지도 중앙 경도
   zoom: 13,
   zoomControl: false,
   zoomControlOptions: { position: "TOP_RIGHT" },
 };
-
-const iconStyle = `<div style="background-color:red;">Hello</div>`;
-
-// const itemImage1 = ref(
-//   window.URL.createObjectURL("@/assets/img/product-6.jpg")
-// );
-
-const iconVegetable = ref(require("@/assets/img/vegun-icon/vegetable.png"));
-const iconEgg = ref(require("@/assets/img/vegun-icon/egg.png"));
-const iconFish = ref(require("@/assets/img/vegun-icon/fish.png"));
-const iconMilk = ref(require("@/assets/img/vegun-icon/milk.png"));
 </script>
 
 <style>
@@ -358,10 +533,10 @@ const iconMilk = ref(require("@/assets/img/vegun-icon/milk.png"));
 
 .infowindow-style {
   color: black;
-  background-color: white;
+  background-color: burlywood;
   text-align: center;
   font-weight: 600;
-  font-size: 20px;
   padding: 6px 8px;
+  border-radius: 10%;
 }
 </style>

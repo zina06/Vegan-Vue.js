@@ -1,107 +1,67 @@
 <template>
+  
   <body class="bg-body-tertiary">
-
+   
     <div class="container">
       <main>
-        <div class="py-5 text-center">
-          <h2>Checkout form</h2>
-          <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group
-            has a validation state that can be triggered by attempting to submit the form without completing it.</p>
-        </div>
+       
+        <br><br> 
 
 
 
-
-
-        <div class="row g-5 ">
+        <img src="@/assets/img/reserve.png" style="width:100%">
+        <br><br><br>
+        <div class="row g-5 " style="background: white;">
+          
           <div class="col-md-5 col-lg-4 order-md-last">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-primary">식당정보</span>
-              <!-- <span class="badge bg-primary rounded-pill">3</span> -->
+              <span class="text-success" style="text-shadow: 1px 1px #ccc; font-weight: bold;" >식당정보</span>
+             
             </h4>
             <ul class="list-group mb-3">
               <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
                   <h6 class="my-0">식당 이름</h6>
-                  <!-- <small class="text-body-secondary">on</small> -->
+               
                 </div>
                 <span class="text-body-secondary">{{ resName }}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
                   <h6 class="my-0">식당 소개</h6>
-                  <!-- <small class="text-body-secondary">Brief description</small> -->
+             
                 </div>
                 <span class="text-body-secondary">{{ resInfo }}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
                   <h6 class="my-0">비건타입</h6>
-                  <!-- <small class="text-body-secondary">Brief description</small> -->
+                 
                 </div>
                 <span class="text-body-secondary">{{ veganType }}</span>
               </li>
-              <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+              <li class="list-group-item d-flex justify-content-between">
 
                 <h6 class="my-0">1인당 예약금</h6>
-                <!-- <small>EXAMPLECODE</small> -->
+          
 
                 <span class="text-success">{{ amount }}</span>
               </li>
-              <!-- <li class="list-group-item d-flex justify-content-between">
-                <span>Total (USD)</span>
-                <strong>$20</strong>
-              </li> -->
+              
             </ul>
 
-            <!-- <form class="card p-2">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Promo code">
-                <button type="submit" class="btn btn-secondary">Redeem</button>
-              </div>
-            </form> -->
 
             <br><br>
 
-            <!-- <div>
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-danger" style="margin:auto">예약시간</span>
-          
-            </h4>
-            
            
-            <div style="display:flex; justify-content:center;">
-              <VDatePicker v-model="date" :min-date="new Date()" :max-date="maxDate" style="margin:auto"/>
-            </div>
-
-            <br>
-            <br>
-            <div class="btn-group d-flex justify-content-between" role="group" aria-label="radio toggle button group">
-              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio1" autocomplete="off" disabled=”disabled”>
-              <label class="btn btn-outline-success" for="vbtn-radio1">18:00</label>
-
-              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio2" autocomplete="off" disabled=”disabled”>
-              <label class="btn btn-outline-success" for="vbtn-radio2">18:30</label>
-
-              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio3" autocomplete="off" disabled=”disabled”>
-              <label class="btn btn-outline-success" for="vbtn-radio3">19:00</label>
-
-              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio4" autocomplete="off" disabled=”disabled”>
-              <label class="btn btn-outline-success" for="vbtn-radio4">19:30</label>
-
-              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio5" autocomplete="off" disabled=”disabled”>
-              <label class="btn btn-outline-success" for="vbtn-radio5">20:00</label>
-            </div>
-
-          </div> -->
           </div>
           <div class="col-md-7 col-lg-8">
-            <h4 class="mb-3">예약자 정보</h4>
+            <h4 class="mb-3 ">예약자 정보</h4>
             <form class="needs-validation" novalidate>
               <div class="row g-3">
-                <div class="col-12">
+                <div class="col-12" style="padding-left: 80px;">
                   <label for="firstName" class="form-label">이름</label>
-                  <input type="text" class="form-control" id="firstName" placeholder="" value="" readonly>
+                  <input type="text" class="form-control" id="firstName" placeholder="" v-model="userName" readonly>
                   <div class="invalid-feedback">
                     Valid first name is required.
                   </div>
@@ -109,100 +69,85 @@
 
 
 
-                <!-- <div class="col-12">
-                  <label for="username" class="form-label">Username</label>
-                  <div class="input-group has-validation">
-                    <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" id="username" placeholder="Username" required>
-                    <div class="invalid-feedback">
-                      Your username is required.
-                    </div>
-                  </div>
-                </div> -->
+               
 
                 <div class="col-12">
                   <label for="email" class="form-label">전화번호</label>
-                  <input type="email" class="form-control" id="email" placeholder="" readonly>
+                  <input type="email" class="form-control" id="email" placeholder="" v-model="userPhone" readonly>
                   <div class="invalid-feedback">
                     Please enter a valid email address for shipping updates.
                   </div>
                 </div>
 
-                <!-- <div class="col-12">
-                  <label for="address" class="form-label">Address</label>
-                  <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-                  <div class="invalid-feedback">
-                    Please enter your shipping address.
-                  </div>
-                </div>
+                
 
-                <div class="col-12">
-                  <label for="address2" class="form-label">Address 2 <span
-                      class="text-body-secondary">(Optional)</span></label>
-                  <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-                </div> -->
-
-
+                 <br><br>
                 <div class="col-md-12">
                   <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-danger" style="margin:auto">예약시간</span>
+                    <span class="text-secondary" style="margin:auto; text-shadow: 1px 1px #ccc; font-weight: bold;">예약시간</span>
 
                   </h4>
 
 
                   <div style="display:flex; justify-content:center;">
-                    <VDatePicker v-model="date" :min-date="new Date()" :max-date="maxDate" style="margin:auto"
+                    <VDatePicker v-model="date" :min-date="new Date(Date.now() + 24 * 60 * 60 * 1000)" :max-date="maxDate" style="margin:auto"
                       :clickable="true" @click="onSelectDate" />
                   </div>
 
                   <br>
                   <br>
-                  <div class="w-100" v-if="checkTime">
-                    <div class="w-100 text-center">예약가능인원</div>
-                    <div class="mx-auto d-flex justify-content-between">
-                      <div class="flex-grow-2"></div>
-                      <div class="flex-grow-2"></div>
-                      <div class="flex-grow-2"></div>
-                      <div class="text-primary">{{six}}명</div>
-                      <div class="text-primary">{{sixHalf}}명</div>
-                      <div class="text-primary">{{seven}}명</div>
-                      <div class="text-primary">{{sevenHalf}}명</div>
-                      <div class="text-primary">{{eight}}명</div>
-                      <div class="flex-grow-2"></div>
-                      <div class="flex-grow-2"></div>
-                      <div class="flex-grow-2"></div>
-                    </div>
+                  
+                  <div class="d-flex justify-content-center" style="margin:auto;">
+                    <table class="table table-responsive table-bordered table-striped"
+                      style="width: 500px; text-align: center;">
+                      <tr>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ six }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sixHalf }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ seven }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sevenHalf }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ eight }}명</td>
+                      </tr>
+                      <tr>
+                        <td class="col-2" style="width: 100px;">
+                          
+
+                            <input type="radio" class="btn-check" value="18:00" name="vbtn-radio" id="vbtn-radio1"
+                              v-model="reserveTime" autocomplete="off">
+                            <label class="btn btn-outline-success" for="vbtn-radio1">18:00</label>
+                        </td>
+                        <td class="col-2" style="width: 100px;">
+                            <input type="radio" class="btn-check" value="18:30" name="vbtn-radio" id="vbtn-radio2"
+                              v-model="reserveTime" autocomplete="off">
+                            <label class="btn btn-outline-success" for="vbtn-radio2">18:30</label>
+                        </td>
+                        <td class="col-2" style="width: 100px;">
+                            <input type="radio" class="btn-check" value="19:00" name="vbtn-radio" id="vbtn-radio3"
+                              v-model="reserveTime" autocomplete="off">
+                            <label class="btn btn-outline-success" for="vbtn-radio3">19:00</label>
+                        </td>
+                        <td class="col-2" style="width: 100px;">
+                            <input type="radio" class="btn-check" value="19:30" name="vbtn-radio" id="vbtn-radio4"
+                              v-model="reserveTime" autocomplete="off">
+                            <label class="btn btn-outline-success" for="vbtn-radio4">19:30</label>
+                          </td>
+                          <td class="col-2" style="width: 100px;">
+                            <input type="radio" class="btn-check" value="20:00" name="vbtn-radio" id="vbtn-radio5"
+                              v-model="reserveTime" autocomplete="off">
+                            <label class="btn btn-outline-success" for="vbtn-radio5">20:00</label>
+
+                          
+                        </td>
+                      </tr>
+                    </table>
                   </div>
                   
-                  
-                  <div class="btn-group d-flex col-md-12 w-50 justify-content-center align-items-center mx-auto"
-                    role="group" aria-label="radio toggle button group">
 
-                    <input type="radio" class="btn-check" value="18:00" name="vbtn-radio" id="vbtn-radio1"
-                      v-model="reserveTime" autocomplete="off">
-                    <label class="btn btn-outline-success" for="vbtn-radio1">18:00</label>
-
-                    <input type="radio" class="btn-check" value="18:30" name="vbtn-radio" id="vbtn-radio2"
-                      v-model="reserveTime" autocomplete="off">
-                    <label class="btn btn-outline-success" for="vbtn-radio2">18:30</label>
-
-                    <input type="radio" class="btn-check" value="19:00" name="vbtn-radio" id="vbtn-radio3"
-                      v-model="reserveTime" autocomplete="off">
-                    <label class="btn btn-outline-success" for="vbtn-radio3">19:00</label>
-
-                    <input type="radio" class="btn-check" value="19:30" name="vbtn-radio" id="vbtn-radio4"
-                      v-model="reserveTime" autocomplete="off">
-                    <label class="btn btn-outline-success" for="vbtn-radio4">19:30</label>
-
-                    <input type="radio" class="btn-check" value="20:00" name="vbtn-radio" id="vbtn-radio5"
-                      v-model="reserveTime" autocomplete="off">
-                    <label class="btn btn-outline-success" for="vbtn-radio5">20:00</label>
-
-                  </div>
+                 
 
                 </div>
                 <div class="col-md-6">
-                  <label for="country" class="form-label">예약인원</label>
+                  <label for="country" class="form-label" style="padding-left: 80px; padding-top: 30px;"><b>* 예약인원</b></label>
+                  <div style="padding-left: 80px;">
                   <select class="form-select" id="country" v-model="resCount" v-on:change="changePerson" required>
                     <option value="">인원을 선택해주세요</option>
                     <option value="1">1 명</option>
@@ -218,35 +163,19 @@
                     <option value="11">11 명</option>
                     <option value="12">12 명</option>
                   </select>
+                </div>
                   <div class="invalid-feedback">
                     Please select a valid country.
                   </div>
                 </div>
                 <div class="col-6">
-                  <label for="email" class="form-label">선결제금액</label>
-                  <input type="email" class="form-control" id="email" v-model="payFirst" readonly>
+                  <label for="email" class="form-label" style="padding-top: 30px;"><b>선결제금액</b></label>
+                  <input type="email" class="form-control" id="email" v-model="payFirst" readonly  style="width: 300px;">
                   <div class="invalid-feedback">
                     Please enter a valid email address for shipping updates.
                   </div>
                 </div>
-                <!-- <div class="col-md-4">
-                  <label for="state" class="form-label">State</label>
-                  <select class="form-select" id="state" required>
-                    <option value="">Choose...</option>
-                    <option>California</option>
-                  </select>
-                  <div class="invalid-feedback">
-                    Please provide a valid state.
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <label for="zip" class="form-label">Zip</label>
-                  <input type="text" class="form-control" id="zip" placeholder="" required>
-                  <div class="invalid-feedback">
-                    Zip code required.
-                  </div>
-                </div> -->
+                
               </div>
 
               <hr class="my-4">
@@ -254,7 +183,7 @@
               <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="same-address" v-model="refundOk">
                 <label class="form-check-label" for="same-address">
-                  [필수] 취소 및 환불 규정에 동의합니다.</label>
+                  &nbsp;&nbsp;[필수] 취소 및 환불 규정에 동의합니다.</label>
               </div>
               <br>
               <div class="col-6 refund">
@@ -271,12 +200,12 @@
 
               <hr class="my-4">
 
-              <h4 class="mb-3">결제</h4>
+              <h4 class="mb-3"><b>결제</b></h4>
 
               <div class="my-3">
                 <div class="form-check">
                   <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                  <label class="form-check-label" for="credit">카카오 페이</label>
+                  <label class="form-check-label" for="credit">&nbsp;카카오 페이</label>
                 </div>
                 <!-- <div class="form-check">
                   <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
@@ -288,83 +217,62 @@
                 </div> -->
               </div>
 
-              <!-- <div class="row gy-3">
-                <div class="col-md-6">
-                  <label for="cc-name" class="form-label">Name on card</label>
-                  <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                  <small class="text-body-secondary">Full name as displayed on card</small>
-                  <div class="invalid-feedback">
-                    Name on card is required
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <label for="cc-number" class="form-label">Credit card number</label>
-                  <input type="text" class="form-control" id="cc-number" placeholder="" required>
-                  <div class="invalid-feedback">
-                    Credit card number is required
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <label for="cc-expiration" class="form-label">Expiration</label>
-                  <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-                  <div class="invalid-feedback">
-                    Expiration date required
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <label for="cc-cvv" class="form-label">CVV</label>
-                  <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-                  <div class="invalid-feedback">
-                    Security code required
-                  </div>
-                </div>
-              </div> -->
+              
 
               <hr class="my-4">
 
-              <button class="w-100 btn btn-primary btn-lg" @click="reserve">Continue to checkout</button>
+              <button class="w-100 btn btn-success btn-lg" @click="reserve">예약 및 결제</button>
             </form>
           </div>
         </div>
       </main>
 
-      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
-        <p class="mb-1">&copy; 2017–2023 Company Name</p>
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="#">Privacy</a></li>
-          <li class="list-inline-item"><a href="#">Terms</a></li>
-          <li class="list-inline-item"><a href="#">Support</a></li>
-        </ul>
-      </footer>
+      
     </div>
 
   </body>
 </template>
 
 <script>
+let paymentResultEventSource = null;
 import router from '@/router/router';
+import { useRoute } from 'vue-router';
 import axios from 'axios';
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 export default {
+  
   setup() {
     const newDate = new Date();
     const maxDate = ref(new Date().setMonth(newDate.getMonth() + 1));
     const reserveDate = ref(new Date());
-    const six=ref(0);
-    const sixHalf=ref(0);
-    const seven=ref(0);
-    const sevenHalf=ref(0);
-    const eight=ref(0);
+    const six = ref(0);
+    const sixHalf = ref(0);
+    const seven = ref(0);
+    const sevenHalf = ref(0);
+    const eight = ref(0);
     const checkTime = ref(false);
+    const route = useRoute();
+    const memberIdx = sessionStorage.getItem("memberIdx");
+    const restaurantIdx = route.params.restaurantIdx;
     const Swal = require('sweetalert2');
-    // const router = router();
+    console.log(restaurantIdx);
+    const token = sessionStorage.getItem("token");
+    console.log(token);
+    const errorcheck = async () => {
+      if(token == null){
+        router.push({
+          name:"Main"
+        });
+      }
+    };
+    errorcheck();
+
+
 
     //달력선택 
+    const alreadyReserve = ref(false);
     const onSelectDate = (context) => {
-
+    
       // console.log(context);
       // console.log(context.target.ariaLabel);
       if (context.target.ariaLabel == null) {
@@ -372,19 +280,19 @@ export default {
       }
       const match = context.target.ariaLabel.match(/(\d+)년 (\d+)월 (\d+)일 (.+)/);
 
-
+      
       const year = parseInt(match[1]);
       const month = parseInt(match[2]) - 1; // JavaScript에서 월은 0부터 시작하므로 1을 뺍니다.
       const day = parseInt(match[3]);
       // const dayOfWeek = match[4];
       const date = new Date(year, month, day);
 
-    
+
       if (date < new Date()) {
-        
+
         Swal.fire({
-          icon : 'error',
-          title : '예약할 수 없는 날입니다.'
+          icon: 'error',
+          title: '예약할 수 없는 날입니다.'
         })
         return;
       }
@@ -392,19 +300,32 @@ export default {
       console.log(reserveDate.value);
 
       //해당 시간에 예약할 수 있는 인원과 시간 표시
-      const canReserve = async() => {
+      const canReserve = async () => {
         const data = {
-          restaurantIdx : 2,
-          reserveDate : reserveDate.value
+          restaurantIdx: restaurantIdx,
+          reserveDate: reserveDate.value
         }
-        const res = await axios.post(`/Catchvegan/reserve/getTime`,data);
+        const res = await axios.post(`/Catchvegan/reserve/getTime`, data , {
+          headers : {
+            'AUTHORIZATION': 'Bearer ' + token
+          }
+        });
         console.log(res);
-        six.value=res.data.six;
+        if(res.data == 'alreadyReserve'){
+          Swal.fire({
+            icon: 'error',
+            title: '해당 날짜에 이미 예약이 존재합니다.'
+          })
+          alreadyReserve.value=false;
+          return;
+        }
+        six.value = res.data.six;
         sixHalf.value = res.data.sixHalf;
         seven.value = res.data.seven;
         sevenHalf.value = res.data.sevenHalf;
         eight.value = res.data.eight;
-        checkTime.value=true;
+        checkTime.value = true;
+        alreadyReserve.value = true;
       }
       canReserve();
 
@@ -415,87 +336,38 @@ export default {
     const resInfo = ref('');
     const veganType = ref('');
     const amount = ref('');
-
+    const userName = ref('');
+    const userPhone = ref('');
     const getResAndMember = async () => {
-      const res = await axios.get(`/Catchvegan/reserve/2`);
+      const res = await axios.get(`/Catchvegan/reserve/${restaurantIdx}/${memberIdx}`,{
+        headers : {
+          'AUTHORIZATION': 'Bearer ' + token
+        }
+      });
       console.log(res);
-      resName.value = res.data.name;
-      resInfo.value = res.data.restaurantInfo;
-      veganType.value = res.data.veganType;
-      amount.value = res.data.reservePay;
+      resName.value = res.data.RestaurantDTO.name;
+      resInfo.value = res.data.RestaurantDTO.restaurantInfo;
+      veganType.value = res.data.RestaurantDTO.veganType;
+      amount.value = res.data.RestaurantDTO.reservePay;
+      userName.value = res.data.MemberDTO.name;
+      userPhone.value = res.data.MemberDTO.phone
+
     }
     getResAndMember();
 
-    //예약진행
-    // const resCount = ref('');
-    // const reserveTime = ref('');
-    // const reserve = (e) => {
-    //   e.preventDefault();
-    //   console.log(resCount.value);
-    //   console.log(reserveTime.value);
-    //   if (resCount.value == '' || reserveTime.value == '') {
-    //     alert("예약인원과 시간을 선택해주세요");
-    //     return;
-    //   }
-    //   const [hours, minutes] = reserveTime.value.split(':');
-    //   reserveDate.value.setHours(hours, minutes);
-    //   console.log(reserveDate.value);
-
-    //   //결제요청전달
-    //   const data = {
-    //     memberIdx: 1,
-    //     restaurantIdx: 3,
-    //     reserveDate: reserveDate.value,
-    //     resCount: parseInt(resCount.value)
-    //   }
-    //   const reserveNow = async () => {
-    //     const res = await axios.post(`/reserve/ready/3`, data)
-    //       .then(res => {
-    //         console.log(res);
-    //         const url = res.data.next_redirect_pc_url;
-    //         const payUrl = window.open(url, 'newWindow', 'width=500,height=650');
-    //         payUrl.focus();
-
-    //       })
-    //   }
-    //   reserveNow();
-
-    // }
-
-
-    // //SSE
-    // function handlePaymentResultEvent(event) {
-    //   console.log(event);
-    //   // 받은 데이터 처리 로직
-    //   // ...
-    //   if (event.data === 'success') {
-    //     router.push({ name: 'Main' });
-    //   } else if (event.data === 'fail') {
-    //     alert('결제에 실패했습니다.');
-    //   }
-    // }
-
-    // let paymentResultEventSource = new EventSource('http://localhost:8082/Catchvegan/reserve-result');
-    // paymentResultEventSource.addEventListener('paymentResult', handlePaymentResultEvent);
-
-    // router.afterEach(() => {
-    //   // 페이지 이동 후에 paymentResultEventSource 객체 제거
-    //   paymentResultEventSource.close();
-    //   paymentResultEventSource = null;
-    // });
 
     const resCount = ref('');
     const reserveTime = ref('');
     const refundOk = ref(false);
-    let paymentResultEventSource = null;
-    
+    // let paymentResultEventSource = null;
+
     //선결제금액 보여주기
     const payFirst = ref('');
-    const changePerson = () =>{
-      if(resCount.value==''){
+    const changePerson = () => {
+      if (resCount.value == '') {
         return;
       }
-      else{
+      else {
         payFirst.value = resCount.value * amount.value
       }
     }
@@ -510,38 +382,45 @@ export default {
       const canReservePerson = ref('');
       if (resCount.value == '' || reserveTime.value == '') {
         Swal.fire({
-          icon : 'error',
-          title : '예약인원과 시간을 선택해주세요'
+          icon: 'error',
+          title: '예약인원과 시간을 선택해주세요'
         })
         return;
       }
-      if(reserveTime.value == '18:00'){
+      if (reserveTime.value == '18:00') {
         canReservePerson.value = six.value;
       }
-      if(reserveTime.value == '18:30'){
+      if (reserveTime.value == '18:30') {
         canReservePerson.value = sixHalf.value;
       }
-      if(reserveTime.value == '19:00'){
+      if (reserveTime.value == '19:00') {
         canReservePerson.value = seven.value;
       }
-      if(reserveTime.value == '19:30'){
+      if (reserveTime.value == '19:30') {
         canReservePerson.value = sevenHalf.value;
       }
-      if(reserveTime.value == '20:00'){
+      if (reserveTime.value == '20:00') {
         canReservePerson.value = eight.value;
       }
       console.log(canReservePerson.value);
-      if(parseInt(canReservePerson.value)<parseInt(resCount.value)){
+      if (parseInt(canReservePerson.value) < parseInt(resCount.value)) {
         Swal.fire({
-          icon : 'error',
-          title : '예약가능인원을 초과하였습니다.'
+          icon: 'error',
+          title: '예약가능인원을 초과하였습니다.'
         })
         return;
       }
       if (!refundOk.value) {
         Swal.fire({
-          icon : 'error',
-          title : '환불 규정에 동의해주세요'
+          icon: 'error',
+          title: '환불 규정에 동의해주세요'
+        })
+        return;
+      }
+      if(!alreadyReserve.value){
+        Swal.fire({
+          icon: 'error',
+          title: '예약할 수 없는날입니다.'
         })
         return;
       }
@@ -551,12 +430,16 @@ export default {
 
       // 결제 요청 전달
       const data = {
-        memberIdx: 37,
-        restaurantIdx: 2,
+        memberIdx: 1,
+        restaurantIdx: 1,
         reserveDate: reserveDate.value,
         resCount: parseInt(resCount.value)
       }
-      const res = await axios.post(`/Catchvegan/reserve/ready/2`, data);
+      const res = await axios.post(`/Catchvegan/reserve/ready/1`, data , {
+        headers : {
+          'AUTHORIZATION': 'Bearer ' + token
+        }
+      });
       console.log(res);
       const url = res.data.next_redirect_pc_url;
       const payUrl = window.open(url, 'newWindow', 'width=500,height=650');
@@ -570,11 +453,11 @@ export default {
         if (event.data === 'success') {
           payUrl.close();
           Swal.fire({
-            icon : 'success',
-            title : '예약이 완료되었습니다!',
+            icon: 'success',
+            title: '예약이 완료되었습니다!',
             confirmButtonText: '확인'
-          }).then(res =>{
-            if(res.isConfirmed || !res.isConfirmed){
+          }).then(res => {
+            if (res.isConfirmed || !res.isConfirmed) {
               router.push({ name: 'Mydining' });
             }
           })
@@ -585,24 +468,34 @@ export default {
         }
       }
 
-      paymentResultEventSource = new EventSource('http://localhost:8082/Catchvegan/reserve-result');
+      // paymentResultEventSource = new EventSource('http://localhost:8082/Catchvegan/reserve-result');
       paymentResultEventSource.addEventListener('paymentResult', handlePaymentResultEvent);
+      paymentResultEventSource.onclose = function(event) {
+        console.log('SSE connection closed');
+
+        // SSE 연결이 끊어졌을 때, 새로운 요청 보내기
+        paymentResultEventSource.close();
+        paymentResultEventSource = new EventSource('http://localhost:8082/Catchvegan/reserve-result');
+      };
     }
 
-    const cancelReservation = () => {
-      // 페이지 이동 후에 paymentResultEventSource 객체 제거
+    onMounted(()=>{
+      console.log("onMount");
+      paymentResultEventSource = new EventSource('http://localhost:8082/Catchvegan/reserve-result');
+      setTimeout(() => {
+      alert("페이지가 만료되었습니다.");
+      router.push({
+        name: 'Main'
+      })
+    }, 3600000);
+    })
+
+    onBeforeUnmount(()=>{
+      console.log("onBeforeUnmount");
       paymentResultEventSource.close();
       paymentResultEventSource = null;
-    }
+    })
 
-    // 페이지 이동 시 SSE 객체 제거
-    router.beforeEach((to, from, next) => {
-      if (paymentResultEventSource !== null) {
-        paymentResultEventSource.close();
-        paymentResultEventSource = null;
-      }
-      next();
-    });
 
 
     return {
@@ -623,13 +516,30 @@ export default {
       checkTime,
       refundOk,
       changePerson,
-      payFirst
+      payFirst,
+      userName,
+      userPhone,
+      alreadyReserve
     }
   }
+
+
 }
 </script>
 
 <style>
+/* .btn {
+  background:#3CB371 !important; 
+  color: white;
+  border: #3CB371;
+} */
+
+/* .btn-check{
+  width: 100px; 
+  height: 40px;
+ 
+
+} */
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
@@ -709,7 +619,48 @@ export default {
   border: 1px;
   height: auto;
   background-color: rgb(240, 240, 240);
-  border: 2px solid black;
+  border: 1px solidrgb(240, 240, 240);
   padding: 12px;
 }
+.timebtn{
+  background-color: #77af9c;
+    color: #d7fff1;
+    border: 1px solid #77af9c;
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+.timebtn:hover{
+  background-color: #d7fff1 !important;
+  color: #77af9c !important;
+  border: 1px solid #d7fff1 !important;
+}
+
+.timebtn:selected{
+  background-color: #d7fff1 !important;
+  color: #77af9c !important;
+  border: 1px solid #d7fff1 !important;
+}
+
+/* .w-btn, .btn, .btn-hover, btn-check {
+    position: relative;
+    border: none;
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+    
+}
+.w-btn-green, .btn, .btn:hover{
+    background-color: #77af9c;
+    color: #d7fff1;
+   
+} */
 </style>
