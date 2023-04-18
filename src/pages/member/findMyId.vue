@@ -46,8 +46,6 @@ export default {
           return;
         }
        const response = await axios.get('/Catchvegan/authPhone/findMyId/'+`${phone.value}`);
-       console.log(`${phone.value}`);
-       console.log(phone.value);
        if(`${phone.value}` == phone.value){          
           confirmId.value=response.data;
           realPhoneNum.value=phone.value;
