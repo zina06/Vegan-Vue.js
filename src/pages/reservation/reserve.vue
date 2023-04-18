@@ -1,19 +1,18 @@
 <template>
+  
   <body class="bg-body-tertiary">
-
+   
     <div class="container">
       <main>
-        <div class="py-5 text-center">
-          <h2>Checkout form</h2>
-          <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group
-            has a validation state that can be triggered by attempting to submit the form without completing it.</p>
-        </div>
+       
+        <br><br> 
 
 
 
-
-
-        <div class="row g-5 ">
+        <img src="@/assets/img/reserve.png" style="width:100%">
+        <br><br><br>
+        <div class="row g-5 " style="background: white;">
+          
           <div class="col-md-5 col-lg-4 order-md-last">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
               <span class="text-success" style="text-shadow: 1px 1px #ccc; font-weight: bold;" >식당정보</span>
@@ -41,7 +40,7 @@
                 </div>
                 <span class="text-body-secondary">{{ veganType }}</span>
               </li>
-              <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+              <li class="list-group-item d-flex justify-content-between">
 
                 <h6 class="my-0">1인당 예약금</h6>
           
@@ -60,7 +59,7 @@
             <h4 class="mb-3 ">예약자 정보</h4>
             <form class="needs-validation" novalidate>
               <div class="row g-3">
-                <div class="col-12">
+                <div class="col-12" style="padding-left: 80px;">
                   <label for="firstName" class="form-label">이름</label>
                   <input type="text" class="form-control" id="firstName" placeholder="" v-model="userName" readonly>
                   <div class="invalid-feedback">
@@ -82,7 +81,7 @@
 
                 
 
-
+                 <br><br>
                 <div class="col-md-12">
                   <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-secondary" style="margin:auto; text-shadow: 1px 1px #ccc; font-weight: bold;">예약시간</span>
@@ -147,7 +146,8 @@
 
                 </div>
                 <div class="col-md-6">
-                  <label for="country" class="form-label">예약인원</label>
+                  <label for="country" class="form-label" style="padding-left: 80px; padding-top: 30px;"><b>* 예약인원</b></label>
+                  <div style="padding-left: 80px;">
                   <select class="form-select" id="country" v-model="resCount" v-on:change="changePerson" required>
                     <option value="">인원을 선택해주세요</option>
                     <option value="1">1 명</option>
@@ -163,13 +163,14 @@
                     <option value="11">11 명</option>
                     <option value="12">12 명</option>
                   </select>
+                </div>
                   <div class="invalid-feedback">
                     Please select a valid country.
                   </div>
                 </div>
                 <div class="col-6">
-                  <label for="email" class="form-label">선결제금액</label>
-                  <input type="email" class="form-control" id="email" v-model="payFirst" readonly>
+                  <label for="email" class="form-label" style="padding-top: 30px;"><b>선결제금액</b></label>
+                  <input type="email" class="form-control" id="email" v-model="payFirst" readonly  style="width: 300px;">
                   <div class="invalid-feedback">
                     Please enter a valid email address for shipping updates.
                   </div>
@@ -182,7 +183,7 @@
               <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="same-address" v-model="refundOk">
                 <label class="form-check-label" for="same-address">
-                  [필수] 취소 및 환불 규정에 동의합니다.</label>
+                  &nbsp;&nbsp;[필수] 취소 및 환불 규정에 동의합니다.</label>
               </div>
               <br>
               <div class="col-6 refund">
@@ -199,12 +200,12 @@
 
               <hr class="my-4">
 
-              <h4 class="mb-3">결제</h4>
+              <h4 class="mb-3"><b>결제</b></h4>
 
               <div class="my-3">
                 <div class="form-check">
                   <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                  <label class="form-check-label" for="credit">카카오 페이</label>
+                  <label class="form-check-label" for="credit">&nbsp;카카오 페이</label>
                 </div>
                 <!-- <div class="form-check">
                   <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
@@ -226,14 +227,7 @@
         </div>
       </main>
 
-      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
-        <p class="mb-1">&copy; 2017–2023 Company Name</p>
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="#">Privacy</a></li>
-          <li class="list-inline-item"><a href="#">Terms</a></li>
-          <li class="list-inline-item"><a href="#">Support</a></li>
-        </ul>
-      </footer>
+      
     </div>
 
   </body>
@@ -259,9 +253,9 @@ export default {
     const checkTime = ref(false);
     const route = useRoute();
     const memberIdx = sessionStorage.getItem("memberIdx");
-    const restaurantIdx = 1;
+    const restaurantIdx = route.params.restaurantIdx;
     const Swal = require('sweetalert2');
-    // const router = router();
+    console.log(restaurantIdx);
     const token = sessionStorage.getItem("token");
     console.log(token);
     const errorcheck = async () => {
@@ -534,6 +528,18 @@ export default {
 </script>
 
 <style>
+/* .btn {
+  background:#3CB371 !important; 
+  color: white;
+  border: #3CB371;
+} */
+
+/* .btn-check{
+  width: 100px; 
+  height: 40px;
+ 
+
+} */
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
@@ -613,7 +619,48 @@ export default {
   border: 1px;
   height: auto;
   background-color: rgb(240, 240, 240);
-  border: 2px solid black;
+  border: 1px solidrgb(240, 240, 240);
   padding: 12px;
 }
+.timebtn{
+  background-color: #77af9c;
+    color: #d7fff1;
+    border: 1px solid #77af9c;
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+.timebtn:hover{
+  background-color: #d7fff1 !important;
+  color: #77af9c !important;
+  border: 1px solid #d7fff1 !important;
+}
+
+.timebtn:selected{
+  background-color: #d7fff1 !important;
+  color: #77af9c !important;
+  border: 1px solid #d7fff1 !important;
+}
+
+/* .w-btn, .btn, .btn-hover, btn-check {
+    position: relative;
+    border: none;
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+    
+}
+.w-btn-green, .btn, .btn:hover{
+    background-color: #77af9c;
+    color: #d7fff1;
+   
+} */
 </style>
