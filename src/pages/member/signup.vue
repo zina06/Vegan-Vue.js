@@ -233,7 +233,8 @@ export default {
         signup();
     }
 
-    const sendSMS = () =>{
+    const sendSMS = async () =>{
+      const response = await axios.get('/Catchvegan/authPhone/'+`${phone.value}`);
       if(validatePhone(phone.value) == false){
         Swal.fire({
           title: '번호 유효성 검사',

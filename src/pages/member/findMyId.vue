@@ -17,6 +17,7 @@
 import axios from 'axios';
 import {ref} from 'vue'
 import { useRoute, useRouter } from 'vue-router';
+import reserveVue from '../reservation/reserve.vue';
 
 export default {
   setup(){
@@ -25,11 +26,12 @@ export default {
     const id = ref('');
     const phone = ref('');
     const authNo = ref('');
-
+    const confirmId = ref('');
     const validatePhone = (phone) => {
       const phoneRegex = /^\d{9,12}$/;
       return phoneRegex.test(phone);
     };
+    const realPhoneNum = ref('');
 
     const sendAuth = async () => {
       try {
@@ -42,9 +44,10 @@ export default {
           })
           return;
         }
-        const response = await axios.get('/Catchvegan/authPhone/'+`${phone.value}`);
-        console.log(phone.value);
-       if(`${phone.value}` == phone.value){
+       const response = await axios.get('/Catchvegan/authPhone/findMyId/'+`${phone.value}`);      
+       if(`${phone.value}` == phone.value){          
+          confirmId.value=response.data;
+          realPhoneNum.value=phone.value;
           Swal.fire({
           icon: 'success',
           title: '인증번호가 전송되었습니다'   
@@ -59,23 +62,36 @@ export default {
       }
     }
 
-    const idFind = async () =>{
-      try {
-        const response = await axios.get('/Catchvegan/member/findMyId'); 
-        console.log(authNo.value);
-        if(authNo.value == `${authNo.value}`) {
-          Swal.fire({
-            icon: 'success',
-            title: '아이디는'+id.value+'입니다'    
-          });
-        } else {
-          Swal.fire({
+    const idFind = async () => {
+      if(confirmId.value==''){
+        Swal.fire({
             icon: 'error',
-            title: '아이디를 찾을 수 없습니다'   
+            title: '인증번호를 먼저 전송해주세요'   
           })
-        }
+        return;
+      }
+      if(confirmId.value != authNo.value){
+        Swal.fire({
+            icon: 'error',
+            title: '인증번호가 다릅니다.'   
+          })
+          return;
+      }
+      
+      else{
+        try {
+          const findId = async () =>{
+            const resposne = await axios.get("/Catchvegan/authPhone/idget/" + `${realPhoneNum.value}`);
+            id.value = resposne.data;
+            Swal.fire({
+            icon: 'success',
+            title: '아이디는 ' + id.value + " 입니다."
+          })
+          }
+          findId();
       } catch (error) {
         console.error('Failed to fetch ID:', error);
+      }
       }
     }
     return{
