@@ -126,8 +126,8 @@ export default {
     const reviewCount=ref(0);
     const averageRating=ref(0);
     const restaurantIdx=route.params.restaurantIdx;
-
-
+    console.log(restaurantIdx);
+    
 
     const getRestaurant = async() =>{
 			
@@ -180,7 +180,7 @@ export default {
       router.push({
           name : "Reserve",
           params : {
-            idx : restaurantIdx,
+            restaurantIdx : restaurantIdx,
           }
       });
     }
@@ -204,7 +204,6 @@ export default {
   },
  
   mounted() {
-      
     if(!window.kakao || !window.kakao.maps){
       const script = document.createElement("script");
       script.type='text/javascript'

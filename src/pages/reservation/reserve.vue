@@ -253,9 +253,9 @@ export default {
     const checkTime = ref(false);
     const route = useRoute();
     const memberIdx = sessionStorage.getItem("memberIdx");
-    const restaurantIdx = 1;
+    const restaurantIdx = route.params.restaurantIdx;
     const Swal = require('sweetalert2');
-    // const router = router();
+    console.log(restaurantIdx);
     const token = sessionStorage.getItem("token");
     console.log(token);
     const errorcheck = async () => {

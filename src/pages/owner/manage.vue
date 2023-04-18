@@ -126,7 +126,7 @@
       <label style="text-align: left;"><b>식당 이름</b> </label><br> <input name="name" type="text" class="form-control restaurantname" v-model="restaurantName" required="required"/><br>
       <label style="float: left;"><b>메인 사진</b> </label><input class="form-control" type="file"  multiple accept="image/*" ref="fileRef" name="file" @change="onChangeFile($event)"><br>
     
-      <div class="images" v-if="files.length > 0">
+      <div class="images" v-if="images.length > 0">
        
         <!-- <div v-for="fileName in files" :key="fileName" class="image">
           <img :src="`@/assets/uploadimages/${fileName}`" alt="이미지" class="uploadimg">
@@ -204,6 +204,15 @@ setup(){
   const files = ref(null);
   const images=ref('');
   let file2 = null;
+  const token = sessionStorage.getItem("token");
+  const errorcheck = async () => {
+      if(token == null){
+        router.push({
+          name:"Main"
+        });
+      }
+    };
+    errorcheck();
   // const backendUrl = process.env.VUE_APP_BACKEND_URL;
 
 
@@ -215,15 +224,15 @@ setup(){
  }
   
   const fetchFiles = async () => {
-      try {
-        const response = await axios.get(`/files`);
+      // try {
+      //   const response = await axios.get(`/files`);
         
-        files.value =  response.data;
-        console.log("파일이름:"+files.value);
-        // @/assets/uploadimages/${filename}
-      } catch (error) {
-        alert(error.message)
-      }
+      //   files.value =  response.data;
+      //   console.log("파일이름:"+files.value);
+      //   // @/assets/uploadimages/${filename}
+      // } catch (error) {
+      //   alert(error.message)
+      // }
     }
 
 
@@ -298,12 +307,19 @@ setup(){
 
        console.log("formData : " + formData.toString());
        console.log(formData.entries);
-        const { data } = await axios.post('/file/update',formData);
+        const { data } = await axios.post('/file/update',formData,{
+          headers : {
+            'AUTHORIZATION': 'Bearer ' + token
+          }
+        });
         
      
-        return data?.restaurantIdx;
+        // return data?.restaurantIdx;
       } catch (err) {
         console.log(err);
+        router.push({
+            name:"Error"
+          })
         // console.log( "dto"+formData);
       }
       // location.reload();
@@ -352,7 +368,11 @@ setup(){
 
     const getMemberlist = async() =>{
   
-     const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`).then((inform)=>{
+     const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`,{
+      headers : {
+        'AUTHORIZATION': 'Bearer ' + token
+      }
+     }).then((inform)=>{
         console.log(inform);
         //  restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
         //  restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
@@ -361,6 +381,10 @@ setup(){
          memberListLength.value=inform.data.reservelist.length;
          console.log("길이:"+memberListLength.value);
           
+      }).catch(()=>{
+        router.push({
+            name:"Error"
+          })
       })
    };
    getMemberlist();
@@ -373,7 +397,11 @@ setup(){
 
   const getRestaurant = async() =>{
     
-    const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`).then((inform)=>{
+    const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`,{
+      headers : {
+        'AUTHORIZATION': 'Bearer ' + token
+      }
+    }).then((inform)=>{
        console.log(inform);
 
         restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
@@ -391,6 +419,10 @@ setup(){
         // memberDateList.value=inform.data.reservelist.map((member) => member.reserveDate.slice(0, 10));} 
         // console.log(memberDateList.value);
         
+    }).catch(()=>{
+      router.push({
+            name:"Error"
+          })
     })
   };
   getRestaurant();
@@ -398,7 +430,15 @@ setup(){
   //방문상태 변경
   const updateConfirm=async(reserveIdx, visitStatus)=>{
     console.log("방문확정");
-    await axios.put('/Catchvegan/manager/confirmstatus', {reserveIdx:reserveIdx, visitStatus:'o' })
+    await axios.put('/Catchvegan/manager/confirmstatus', {reserveIdx:reserveIdx, visitStatus:'o' },{
+      headers : {
+        'AUTHORIZATION': 'Bearer ' + token
+      }
+    }).catch(()=>{
+      router.push({
+            name:"Error"
+          })
+    })
     console.log(reserveIdx);
     Swal.fire({
           icon: 'success',
