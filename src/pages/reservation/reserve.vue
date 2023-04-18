@@ -258,10 +258,22 @@ export default {
     const eight = ref(0);
     const checkTime = ref(false);
     const route = useRoute();
-    const memberIdx = route.params.memberIdx;
-    const restaurantIdx = route.params.restaurantIdx;
+    const memberIdx = sessionStorage.getItem("memberIdx");
+    const restaurantIdx = 1;
     const Swal = require('sweetalert2');
     // const router = router();
+    const token = sessionStorage.getItem("token");
+    console.log(token);
+    const errorcheck = async () => {
+      if(token == null){
+        router.push({
+          name:"Main"
+        });
+      }
+    };
+    errorcheck();
+
+
 
     //달력선택 
     const alreadyReserve = ref(false);
@@ -296,10 +308,14 @@ export default {
       //해당 시간에 예약할 수 있는 인원과 시간 표시
       const canReserve = async () => {
         const data = {
-          restaurantIdx: 1,
+          restaurantIdx: restaurantIdx,
           reserveDate: reserveDate.value
         }
-        const res = await axios.post(`/Catchvegan/reserve/getTime`, data);
+        const res = await axios.post(`/Catchvegan/reserve/getTime`, data , {
+          headers : {
+            'AUTHORIZATION': 'Bearer ' + token
+          }
+        });
         console.log(res);
         if(res.data == 'alreadyReserve'){
           Swal.fire({
@@ -329,7 +345,11 @@ export default {
     const userName = ref('');
     const userPhone = ref('');
     const getResAndMember = async () => {
-      const res = await axios.get(`/Catchvegan/reserve/1/1`);
+      const res = await axios.get(`/Catchvegan/reserve/${restaurantIdx}/${memberIdx}`,{
+        headers : {
+          'AUTHORIZATION': 'Bearer ' + token
+        }
+      });
       console.log(res);
       resName.value = res.data.RestaurantDTO.name;
       resInfo.value = res.data.RestaurantDTO.restaurantInfo;
@@ -421,7 +441,11 @@ export default {
         reserveDate: reserveDate.value,
         resCount: parseInt(resCount.value)
       }
-      const res = await axios.post(`/Catchvegan/reserve/ready/1`, data);
+      const res = await axios.post(`/Catchvegan/reserve/ready/1`, data , {
+        headers : {
+          'AUTHORIZATION': 'Bearer ' + token
+        }
+      });
       console.log(res);
       const url = res.data.next_redirect_pc_url;
       const payUrl = window.open(url, 'newWindow', 'width=500,height=650');

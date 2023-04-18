@@ -86,11 +86,12 @@
   </div>
 </template>
 <script>
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import axios from 'axios';
 export default {
   setup() {
-    const memberIdx = 37;
+    const memberIdx = sessionStorage.getItem("memberIdx");
     const reviewListOpen = ref(false);
     const toggleReviewList = () => {
       reviewListOpen.value = !reviewListOpen.value;
@@ -98,10 +99,20 @@ export default {
     }
     const Swal = require('sweetalert2');
     const isModalOpen = ref(false);
-
+    const router = useRouter();
+    const token = sessionStorage.getItem("token");
+    const errorcheck = async () => {
+      if(token == null){
+        router.push({
+          name:"Main"
+        });
+      }
+    };
+    errorcheck(); 
     //회원정보 수정창
     const openModal = () => {
       isModalOpen.value = true;
+      let curretnId = user.value.id;
       let currentPassword = user.value.password; //기존 비밀번호
       let phone = user.value.phone; // 기존 전화번호
       let email = user.value.email;
@@ -115,7 +126,7 @@ export default {
         title: '회원 정보 수정',
         html:
           `
-          <input id="id" value ="test6" hidden>
+          <input id="id" value =${curretnId} hidden>
           <input id="password" class="swal2-input" type="password">
           <div>비밀번호</div>
           <input id="phone" class="swal2-input" type="tel" value=${phone}>
@@ -168,7 +179,11 @@ export default {
     const modifyUser = async (formData) => {
       try {
         formData.memberIdx = memberIdx; // memberIdx 추가
-        const response = await axios.put(`/Catchvegan/member/mypage`, formData);
+        const response = await axios.put(`/Catchvegan/member/mypage`, formData,{
+          headers : {
+            'AUTHORIZATION': 'Bearer ' + token
+          }
+        });
         if (response.status == 201) {
           alert("비밀번호똑같아서못바꿈")
         }
@@ -183,7 +198,11 @@ export default {
     const reviews = ref([]);
     const user = ref([]);
     const getReviews = async () => {
-      const res = await axios.get(`/Catchvegan/member/mypage/${memberIdx}`);
+      const res = await axios.get(`/Catchvegan/member/mypage/${memberIdx}`,{
+        headers : {
+          'AUTHORIZATION': 'Bearer ' + token
+        }
+      });
       reviews.value = res.data[0].reviewDTOList;
       user.value = res.data[0];
       console.log(res.data[0]);
@@ -200,7 +219,11 @@ export default {
       console.log(idx);
       const reviewIdx = idx;
       const remove = async () => {
-        const res = await axios.delete(`/Catchvegan/review/${reviewIdx}`);
+        const res = await axios.delete(`/Catchvegan/review/${reviewIdx}`,{
+          headers : {
+            'AUTHORIZATION': 'Bearer ' + token
+          }
+        });
         console.log(res);
         if (res.status === 200) { // 삭제에 성공한 경우
           Swal.fire('삭제 완료', '', 'success').then(() => {

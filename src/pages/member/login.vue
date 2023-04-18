@@ -54,8 +54,11 @@ export default {
             id : id.value,
             password : password.value
         }).then((result)=>{
+          console.log(result);
           sessionStorage.setItem("token",result.headers.token);
           sessionStorage.setItem("id",id.value);
+          sessionStorage.setItem("memberIdx",result.headers.memberidx);
+          console.log(sessionStorage);
           Swal.fire({
           icon: 'success',
           title: '로그인 성공'     
