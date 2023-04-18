@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Main from "@/pages/Main.vue";
+import Error from "@/pages/error/error.vue";
 import Signup from "@/pages/member/signup.vue";
 import Detail from "@/pages/restaurant/detail.vue";
 import Search from "@/pages/restaurant/search.vue";
@@ -10,19 +11,42 @@ import Reviewinsert from "@/pages/member/review-insert.vue";
 import Owner from "@/pages/owner/manage.vue";
 import Reserve from "@/pages/reservation/reserve.vue";
 import Confirm from "@/pages/reservation/confirm.vue";
+import FindMyId from "@/pages/member/findMyId.vue";
+import FindMyPassword from "@/pages/member/findMyPassword.vue";
+import Aftersignup from "@/pages/member/aftersignup.vue";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    {
+      path: "/Catchvegan/member/aftersignup",
+      name: "Aftersignup",
+      component: Aftersignup,
+    },
     {
       path: "/Catchvegan",
       name: "Main",
       component: Main,
     },
     {
+      path: "/Catchvegan/error",
+      name: "Error",
+      component: Error,
+    },
+    {
       path: "/Catchvegan/restaurant/detail/:restaurantIdx",
       name: "Detail",
       component: Detail,
+    },
+    {
+      path: "/Catchvegan/member/findMyId",
+      name: "FindMyId",
+      component: FindMyId,
+    },
+    {
+      path: "/Catchvegan/member/findMyPassword",
+      name: "FindMyPassword",
+      component: FindMyPassword,
     },
     {
       path: "/Catchvegan/member/signup",

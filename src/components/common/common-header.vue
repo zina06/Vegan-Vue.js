@@ -23,7 +23,9 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <button type="button" class="nav-item nav-link active custom-button" v-if="headerstate" @click.prevent="main()">HOME</button>
+              <button type="button" class="nav-item nav-link active custom-button" @click.prevent="tokentest()">토큰실험용</button>
+              <!-- <strong class="greeting" v-if="!headerstate">{{ sessionid }} 님 반갑습니다!</strong> -->
+              <button type="button" class="nav-item nav-link active custom-button" @click.prevent="main()">HOME</button>
               <button type="button" class="nav-item nav-link active custom-button" v-if="headerstate" @click.prevent="signup()">회원가입</button>
               <button type="button" class="nav-item nav-link active custom-button" v-if="headerstate" @click.prevent="login()">로그인</button>
               <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate" @click.prevent="logout()">로그아웃</button>
@@ -130,6 +132,14 @@ export default {
         });
       }
 
+      const tokentest = () => {
+        console.log(token);
+        router.push({
+          name:"Aftersignup",
+          params:{"token": token}
+        });
+      }
+
       const mydining = () => {
         router.push({
           name:"Mydining",
@@ -144,7 +154,9 @@ export default {
         mydining,
         login,
         signup,
-        main
+        main,
+        sessionid,
+        tokentest
       }
     }
 }
@@ -154,6 +166,12 @@ export default {
 #logoimg{
   width: 300px;
   height: 65px;
+}
+
+.greeting {
+  font-weight: bold;
+  margin-right: 10px; /* 오른쪽으로 10px의 간격 설정 */
+  padding: 30px 20px;
 }
 
 .custom-button {
