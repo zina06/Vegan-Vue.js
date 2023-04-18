@@ -47,8 +47,6 @@ export default {
     errorcheck();
 
     const login = () =>{
-      console.log(id.value);
-      console.log(password.value);
       const login2 = async () =>{
         const res = await axios.post('/Catchvegan/member/login',{
             id : id.value,
@@ -73,6 +71,10 @@ export default {
           token.value = result.headers.token;
         }).catch((result) => {
           console.log(result);
+          Swal.fire({
+            icon: 'error',
+            title: '로그인 실패'
+            })
         })
       }
       login2();

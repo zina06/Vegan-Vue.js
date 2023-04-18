@@ -47,7 +47,7 @@
                 <br>
                 <div class="textForm" style="position: relative;">
                   <input name="phone" type="text" class="form-control" placeholder="전화번호" v-model="phone">
-                  <button type="button" class="btn-sendauth" @click.prevent="sendSMS()">인증번호 요청</button>             
+                  <button type="button" class="btn-sendauth" @click="sendSMS()">인증번호 요청</button>             
                 </div>
                 <i>숫자만 적어주세요</i>
                 <br>
@@ -92,9 +92,8 @@ export default {
     const phone = ref('');
     const authNo = ref('');
     const veganType = ref('');
-    //const sid = process.env.TWILIO_ACCOUNT_SID;
-    //const token = process.env.TWILIO_AUTH_TOKEN;
-    //const client = require('twilio')(sid, token);
+    const confirmId = ref('');
+    const realPhoneNum = ref('');
     let passok = false;
     let idok = false;
     const Swal = require('sweetalert2');
@@ -159,7 +158,7 @@ export default {
 
     const signin = () => {
       if(id.value == '' || password.value == '' || password2.value == '' || name.value == ''
-      || email.value == '' || phone.value == '' || authNo.value =='' || veganType.value == ''){
+      || email.value == '' || phone.value == '' || authNo.value =='' || veganType.value == '' || confirmId.value==''){
         Swal.fire({
           icon: 'error',
           title: '모든 항목을 작성해주세요',
@@ -198,6 +197,13 @@ export default {
         })
         return;
       }
+      if(confirmId.value != authNo.value){
+        Swal.fire({
+            icon: 'error',
+            title: '인증번호가 다릅니다.'   
+          })
+          return;
+      }
       const signup = async () =>{
           const res = await axios
             .post('signup',{
@@ -234,7 +240,6 @@ export default {
     }
 
     const sendSMS = async () =>{
-      const response = await axios.get('/Catchvegan/authPhone/'+`${phone.value}`);
       if(validatePhone(phone.value) == false){
         Swal.fire({
           title: '번호 유효성 검사',
@@ -243,16 +248,21 @@ export default {
           confirmButtonText: '확인',
         })
         return;
-      }else{
+      }
+      const response = await axios.get('/Catchvegan/authPhone/signup/'+`${phone.value}`);
+      if(phone.value != ''){
+        confirmId.value=response.data;
+        realPhoneNum.value=phone.value;
         Swal.fire({
           title: '인증번호가 발송되었습니다',
           icon: 'success',
           confirmButtonText: '확인',
         })
-        sendSMS();
+        return;
       }
+        sendSMS();
     }
-    
+
     const checkId = () =>{
       if(validateID(id.value) == false){
          Swal.fire({
