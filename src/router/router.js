@@ -10,7 +10,6 @@ import Reviewinsert from "@/pages/member/review-insert.vue";
 import Owner from "@/pages/owner/manage.vue";
 import Reserve from "@/pages/reservation/reserve.vue";
 import Confirm from "@/pages/reservation/confirm.vue";
-import MypageEdit from "@/pages/member/mypage-edit.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -51,12 +50,7 @@ const router = createRouter({
       component: Mypage,
     },
     {
-      path: "/Catchvegan/member/mypage-edit",
-      name: "Edit",
-      component: MypageEdit,
-    },
-    {
-      path: "/Catchvegan/member/reviewinsert",
+      path: "/Catchvegan/review",
       name: "Reviewinsert",
       component: Reviewinsert,
     },

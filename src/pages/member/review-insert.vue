@@ -1,47 +1,182 @@
 <template>
-  <div class="mb-3">
-    <label for="exampleFormControlInput1" class="form-label">리뷰 제목</label>
-    <input type="email" class="form-control form-control-lg" id="exampleFormControlInput1" placeholder="name@example.com">
+  <div style="margin-top: 50px;"></div>
+  <div class="uform-container editform card">
+    <div class="inform card-body">
+      <label for="review-title" class="form-label">리뷰 제목</label>
+      <input type="text" class="form-control" id="title" v-model="title">
+      <br>
+      <div>
+        <label for="review-content" class="form-label">리뷰 내용</label>
+        <textarea class="form-control" id="content" rows="3" v-model="content"></textarea>
+        <br>
+        <br>
+        <h4 style="text-align: center;">당신의 점수는!</h4>
+        <div class="star-rating space-x-4 mx-auto">
+          <div style="margin-left: 10px;">{{ emoji }}</div>
+          <input type="radio" id="5-stars" name="rating" value="5" v-model="rating" />
+          <label for="5-stars" class="star pr-4">★</label>
+          <input type="radio" id="4-stars" name="rating" value="4" v-model="rating" />
+          <label for="4-stars" class="star">★</label>
+          <input type="radio" id="3-stars" name="rating" value="3" v-model="rating" />
+          <label for="3-stars" class="star">★</label>
+          <input type="radio" id="2-stars" name="rating" value="2" v-model="rating" />
+          <label for="2-stars" class="star">★</label>
+          <input type="radio" id="1-star" name="rating" value="1" v-model="rating" />
+          <label for="1-star" class="star">★</label>
+        </div>
+        <div>
+          <label for="review-image" class="form-label">사진 첨부</label>
+          <input type="text" class="form-control" id="img" v-model="images">
+        </div>
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btn-outline-success" type="button" @click="submitReview">리뷰 작성하기</button>
+      </div>
+    </div>
   </div>
-  <div class="mb-3">
-    <label for="exampleFormControlTextarea1" class="form-label">리뷰 내용</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-  </div>
-  <div class="mb-3">
-    <label for="formFileSm" class="form-label"></label>
-    <input class="form-control form-control-sm" id="formFileSm" type="file">
-  </div>
-
-  <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
-<label class="btn btn-secondary" for="option1">1</label>
-
-<input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-<label class="btn btn-secondary" for="option2">2</label>
-
-<input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-<label class="btn btn-secondary" for="option3">3</label>
-
-<input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
-<label class="btn btn-secondary" for="option4">4</label>
-<input type="radio" class="btn-check" name="options" id="option5" autocomplete="off">
-<label class="btn btn-secondary" for="option5">5</label>
-
-
-
-<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-  <button class="btn btn-outline-success" type="button">Button</button>
-  <button class="btn btn-outline-dark" type="button">Button</button>
-</div>
 </template>
-
 <script>
-export default {
+import axios from 'axios';
+import { ref } from 'vue';
+import Swal from 'sweetalert2';
+import { useRouter } from 'vue-router';
 
+export default {
+  setup() {
+    const router = useRouter();
+    const title = ref('');
+    const content = ref('');
+    const rating = ref('');
+    const images = ref('');
+    const visitIdx = 1;
+
+    const submitReview = async () => {
+      if (!title.value) {
+        Swal.fire({
+          icon: 'error',
+          title: '제목을 입력해주세요.',
+        });
+        return;
+      }
+      if (!content.value) {
+        Swal.fire({
+          icon: 'error',
+          title: '내용을 입력해주세요.',
+        });
+        return;
+      }
+      if (!rating.value) {
+        Swal.fire({
+          icon: 'error',
+          title: '별점을 작성해주세요.',
+        });
+        return;
+      }
+
+      const reviewData = {
+        title: title.value,
+        content: content.value,
+        rating: rating.value,
+        images: images.value,
+        visitIdx: visitIdx,
+      };
+
+
+      try {
+        const response = await axios.post('/Catchvegan/review', reviewData);
+        if (response.status === 201) {
+          Swal.fire({
+            icon: 'success',
+            title: '리뷰가 등록되었습니다.',
+          }).then(() => {
+            // Redirect to home page
+            router.push({
+              name: "Mydining"
+            });
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        Swal.fire({
+          icon: 'error',
+          title: '리뷰 등록에 실패하였습니다.',
+        });
+      }
+    };
+    return {
+      submitReview,
+      title,
+      content,
+      rating,
+      images,
+    }
+  },
+  computed: {
+    emoji() {
+      switch (this.rating) {
+        case '1':
+          return '😭';
+        case '2':
+          return '😢';
+        case '3':
+          return '🙂';
+        case '4':
+          return '😀';
+        case '5':
+          return '😁';
+        default:
+          return '🧐';
+      }
+    }
+  }
 }
 </script>
+<style scoped>
+.uform-container {
+  margin: auto;
+  width: 700px;
 
-<style>
-.option2{
-  color: aquamarine;
+}
+
+.restaurantname {
+  width: 300px;
+  /* margin: auto; */
+}
+
+input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  justify-content: space-around;
+  padding: 0 0.2em;
+  text-align: center;
+  width: 5em;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  -webkit-text-fill-color: transparent;
+  /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 2.3px;
+  -webkit-text-stroke-color: #2b2a29;
+  cursor: pointer;
+}
+
+.star-rating :checked~label {
+  -webkit-text-fill-color: gold;
+}
+
+.star-rating label:hover,
+.star-rating label:hover~label {
+  -webkit-text-fill-color: #fff58c;
 }
 </style>
