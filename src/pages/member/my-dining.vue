@@ -87,19 +87,52 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
 import axios from 'axios';
 export default {
   setup() {
-    const memberIdx = 37;
+    const route = useRoute();
     const router = useRouter();
+    const Swal = require('sweetalert2');
+    const memberIdx = sessionStorage.getItem("memberIdx");
+    const token = sessionStorage.getItem("token");
+    const errorcheck = async () => {
+      if(token == null){
+        router.push({
+          name:"Main"
+        });
+      }
+    };
+    errorcheck(); 
+
+    // const goToReviewPage = function () {
+    //             router.push({
+    //       name:"Login"
+    //     });
+    //     }
+    
+
+    // //예약정보 불러오기
+    // const upcomingReservations = ref([]);
+    // const getReservations = async () =>{
+    //   const res = await axios.get(`/Catchvegan/mydining/getReserves/${memberIdx}`,{
+    //     headers : {
+    //       'AUTHORIZATION': 'Bearer ' + token
+    //     }
+    //   });
+    
+   
 
     
     //다가올 예약정보 불러오기
     const upcomingReservations = ref([]);
     const getReservations = async () => {
-      const res = await axios.get(`/Catchvegan/mydining/getReserves/${memberIdx}`);
+      const res = await axios.get(`/Catchvegan/mydining/getReserves/${memberIdx}`,{
+        headers : {
+          'AUTHORIZATION': 'Bearer ' + token
+        }
+      });
       console.log(res);
       upcomingReservations.value = res.data;
       const array = [upcomingReservations.value.length];
@@ -110,19 +143,41 @@ export default {
       console.log(res);
     }
     getReservations();
-
+    
     //예약취소
-    // const cancelReserve = (idx) =>{
-    //   // console.log(idx);
-    //   const cancel = async () =>{
-    //     const res = async 
-    //   }
-    // }
+    const cancelReserve = (idx) =>{
+      // console.log(idx);
+      const cancel = async () =>{
+        const res = await axios.post(`/Catchvegan/reserve/refund`,{reserveIdx : idx},{
+          headers : {
+            'AUTHORIZATION': 'Bearer ' + token
+          }
+        });
+        console.log(res);
+        if(res.status==200){
+          Swal.fire({
+            icon : 'success',
+            title : '취소가 완료되었습니다.',
+            confirmButtonText: '확인'
+          }).then(res =>{
+            if(res.isConfirmed || !res.isConfirmed){
+              location.reload();
+            }
+          })
+        }
+      
+      }
+      cancel();
+    }
 
     //방문완료정보 불러오기
     const completedReservations = ref([]);
     const getVisitCompleted = async () => {
-      const res = await axios.get(`/Catchvegan/mydining/getVisitCompleted/${memberIdx}`);
+      const res = await axios.get(`/Catchvegan/mydining/getVisitCompleted/${memberIdx}`,{
+        headers : {
+          'AUTHORIZATION': 'Bearer ' + token
+        }
+      });
       console.log(res.data);
       completedReservations.value = res.data;
       const array = [completedReservations.value.length];
@@ -138,7 +193,11 @@ export default {
     //취소한 or 노쇼 예약정보
     const cancelledReservations = ref([]);
     const getReserveCancel = async () => {
-      const res = await axios.get(`/Catchvegan/mydining/getReserveCancel/${memberIdx}`);
+      const res = await axios.get(`/Catchvegan/mydining/getReserveCancel/${memberIdx}`,{
+        headers : {
+          'AUTHORIZATION': 'Bearer ' + token
+        }
+      });
       console.log(res.data);
       cancelledReservations.value = res.data;
       const array = [cancelledReservations.value.length];
@@ -176,11 +235,13 @@ export default {
       completedReservations,
       cancelledReservations,
       goToReviewPage,
+      cancelReserve,
       isReviewAvailable,
       // cancelReserve
     };
   }
-};
+}
+
 </script>
 
 <style scoped>
@@ -245,4 +306,5 @@ button[type="button"]:hover,
 button[type="submit"]:hover {
   background-color: #7fac7d;
   color: white;
-}</style>
+}
+</style>
