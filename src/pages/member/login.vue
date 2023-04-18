@@ -11,9 +11,9 @@
                 </div>
             <button class="loginBtn" type="submit" value="L O G I N" @click.prevent="login()">로그인</button>
             <div class="text-center mb-3">
-                <a href="#" class="text-secondary me-3">아이디 찾기</a>
+                <a href="findMyId" class="text-secondary me-3">아이디 찾기</a>
                 <span class="text-secondary">|</span>
-                <a href="#" class="text-secondary ms-3 me-3">비밀번호 찾기</a>
+                <a href="findMyPassword" class="text-secondary ms-3 me-3">비밀번호 찾기</a>
                 <span class="text-secondary">|</span>
                 <a href="signup" class="text-secondary ms-3">회원가입</a>
             </div>
@@ -33,9 +33,19 @@ export default {
   setup(){
     const router = useRouter();
     const Swal = require('sweetalert2');
-    const token = ref('');
+    const token = sessionStorage.getItem("token");
     const id = ref('');
     const password = ref('');
+
+    const errorcheck = async () => {
+      if(token != null){
+        router.push({
+          name:"Main"
+        });
+      }
+    };
+    errorcheck();
+
     const login = () =>{
       console.log(id.value);
       console.log(password.value);
