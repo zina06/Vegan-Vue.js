@@ -33,9 +33,19 @@ export default {
   setup(){
     const router = useRouter();
     const Swal = require('sweetalert2');
-    const token = ref('');
+    const token = sessionStorage.getItem("token");
     const id = ref('');
     const password = ref('');
+
+    const errorcheck = async () => {
+      if(token != null){
+        router.push({
+          name:"Main"
+        });
+      }
+    };
+    errorcheck();
+
     const login = () =>{
       console.log(id.value);
       console.log(password.value);
@@ -44,8 +54,11 @@ export default {
             id : id.value,
             password : password.value
         }).then((result)=>{
+          console.log(result);
           sessionStorage.setItem("token",result.headers.token);
           sessionStorage.setItem("id",id.value);
+          sessionStorage.setItem("memberIdx",result.headers.memberidx);
+          console.log(sessionStorage);
           Swal.fire({
           icon: 'success',
           title: '로그인 성공'     

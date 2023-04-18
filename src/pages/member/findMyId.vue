@@ -3,31 +3,105 @@
     <div class="id-page">
         <h2>아이디 찾기</h2>
         <br>
-        <form @submit.prevent="submitForm">
-            <input type="text" v-model="phoneNumber" placeholder="등록된 핸드폰 번호를 입력하세요" />
-            <button type="button" @click="sendVerificationCode">인증번호 전송</button>
-            <input type="text" v-model="verificationCode" placeholder="인증번호를 입력하세요" />
-            <button type="submit">ID 찾기</button>
+        <form action="/member/findMyId" method="GET" name="member">
+            <input type="text" v-model="phone" placeholder="등록된 핸드폰 번호를 숫자만 입력하세요" />
+            <button type="button" @click="sendAuth()">인증번호 전송</button>
+            <input type="text" v-model="authNo" placeholder="인증번호를 입력하세요" />
+            <button type="button" @click="idFind()">ID 찾기</button>
         </form>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import {ref} from 'vue'
+import { useRoute, useRouter } from 'vue-router';
+import reserveVue from '../reservation/reserve.vue';
+
 export default {
-  data() {
-    return {
-      phoneNumber: '',
-      verificationCode: '', 
+  setup(){
+    const router = useRouter();
+    const Swal = require('sweetalert2');
+    const id = ref('');
+    const phone = ref('');
+    const authNo = ref('');
+    const confirmId = ref('');
+    const validatePhone = (phone) => {
+      const phoneRegex = /^\d{9,12}$/;
+      return phoneRegex.test(phone);
     };
-  },
-  methods: {
-    sendVerificationCode() {
-    },
-    submitForm() {
-    },
-  },
-};
+    const realPhoneNum = ref('');
+
+    const sendAuth = async () => {
+      try {
+        if(validatePhone(phone.value) == false || validatePhone(phone.value) == ''){
+          Swal.fire({
+            title: '번호 유효성 검사',
+            text: '옳바른 번호 양식이 아닙니다',
+            icon: 'error',
+            confirmButtonText: '확인',
+          })
+          return;
+        }
+       const response = await axios.get('/Catchvegan/authPhone/findMyId/'+`${phone.value}`);      
+       if(`${phone.value}` == phone.value){          
+          confirmId.value=response.data;
+          realPhoneNum.value=phone.value;
+          Swal.fire({
+          icon: 'success',
+          title: '인증번호가 전송되었습니다'   
+          })
+        }
+      } catch (error) {
+        Swal.fire({
+              icon: 'error',
+              title: '가입되어있는 아이디가 없습니다'   
+           })
+        return;
+      }
+    }
+
+    const idFind = async () => {
+      if(confirmId.value==''){
+        Swal.fire({
+            icon: 'error',
+            title: '인증번호를 먼저 전송해주세요'   
+          })
+        return;
+      }
+      if(confirmId.value != authNo.value){
+        Swal.fire({
+            icon: 'error',
+            title: '인증번호가 다릅니다.'   
+          })
+          return;
+      }
+      
+      else{
+        try {
+          const findId = async () =>{
+            const resposne = await axios.get("/Catchvegan/authPhone/idget/" + `${realPhoneNum.value}`);
+            id.value = resposne.data;
+            Swal.fire({
+            icon: 'success',
+            title: '아이디는 ' + id.value + " 입니다."
+          })
+          }
+          findId();
+      } catch (error) {
+        console.error('Failed to fetch ID:', error);
+      }
+      }
+    }
+    return{
+       sendAuth,
+       idFind,
+       phone,
+       authNo
+    }
+  }
+}
 </script>
 
 <style scoped>

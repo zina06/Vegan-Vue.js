@@ -11,7 +11,6 @@ import Reviewinsert from "@/pages/member/review-insert.vue";
 import Owner from "@/pages/owner/manage.vue";
 import Reserve from "@/pages/reservation/reserve.vue";
 import Confirm from "@/pages/reservation/confirm.vue";
-import MypageEdit from "@/pages/member/mypage-edit.vue";
 import FindMyId from "@/pages/member/findMyId.vue";
 import FindMyPassword from "@/pages/member/findMyPassword.vue";
 import Aftersignup from "@/pages/member/aftersignup.vue";
@@ -75,12 +74,7 @@ const router = createRouter({
       component: Mypage,
     },
     {
-      path: "/Catchvegan/member/mypage-edit",
-      name: "Edit",
-      component: MypageEdit,
-    },
-    {
-      path: "/Catchvegan/member/reviewinsert",
+      path: "/Catchvegan/review",
       name: "Reviewinsert",
       component: Reviewinsert,
     },
