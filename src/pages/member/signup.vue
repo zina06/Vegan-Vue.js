@@ -118,7 +118,7 @@ export default {
     
     const checkPwd = () => {
       if(validatePassword(password.value) == false){
-         Swal.fire({
+        Swal.fire({
           title: '비밀번호 유효성 검사',
           text: '비밀번호는 특수문자, 문자, 숫자를 포함한 8~15자리여야 합니다.',
           icon: 'error',
