@@ -236,6 +236,7 @@ export default {
       reviewList,
       reviewCount,
       averageRating,
+      restaurantPhone
     };
   },
  

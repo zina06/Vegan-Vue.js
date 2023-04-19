@@ -39,16 +39,17 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import Swal from 'sweetalert2';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 export default {
   setup() {
+    const route = useRoute();
     const router = useRouter();
     const title = ref('');
     const content = ref('');
     const rating = ref('');
     const images = ref('');
-    const visitIdx = ref('');
+    const visitIdx = route.params.visitIdx;
     let file2 = null;
     const file = ref('');
     const files = ref(null);
