@@ -84,6 +84,9 @@
       </div>
     </div>
   </div>
+  <div class="summaryContainer de">
+        <button type="button" class="deletebutton" @click.prevent="RemoveMember()">회원 탈퇴하기</button>
+  </div>
 </template>
 <script>
 import { useRouter } from 'vue-router';
@@ -256,6 +259,19 @@ body {
   margin: 0;
 }
 
+.summaryContainer.de {
+  position: relative;
+  width: 200px;
+  height: 100px;
+}
+
+.deletebutton {
+  font-size: 12px;
+  padding: 3px 6px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
 div {
   box-sizing: border-box;
 }

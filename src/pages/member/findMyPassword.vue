@@ -1,13 +1,15 @@
 <template>
   <div>
     <div class="id-page">
-        <h2>아이디 찾기</h2>
+        <h2>비밀번호 찾기</h2>
         <br>
         <form action="/member/findMyId" method="GET" name="member">
-            <input type="text" v-model="phone" placeholder="등록된 핸드폰 번호를 입력하세요" />
+            <input type="text" v-model="id" placeholder="등록된 ID를 입력하세요" />
             <button type="button" @click="sendAuth()">인증번호 전송</button>
             <input type="text" v-model="authNo" placeholder="인증번호를 입력하세요" />
-            <button type="button" @click="idFind()">ID 찾기</button>
+            <input type="password" v-model="password" placeholder="새로운 비밀번호를 입력하세요" />
+            <i>특수문자 / 문자 / 숫자 포함 형태의 8~15자리</i>  
+            <button type="button" @click="pwFind()">패스워드 설정</button>        
         </form>
     </div>
   </div>
@@ -23,61 +25,111 @@ export default {
     const router = useRouter();
     const Swal = require('sweetalert2');
     const id = ref('');
-    const phone = ref('');
+    const password = ref('');
     const authNo = ref('');
+    const confirmId = ref('');
+    const realPhoneNum = ref('');
+    const realId = ref('');
+    const phone = ref('');
 
-    const validatePhone = (phone) => {
-      const phoneRegex = /^\d{9,12}$/;
-      return phoneRegex.test(phone);
+    const validatePassword = (password) => {
+      const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+      return passwordRegex.test(password);
+    };
+
+    const validateID = (id) => {
+      const idRegex = /^(?=.*[a-zA-Z])[A-Za-z\d]{5,15}$/;
+      return idRegex.test(id);
     };
 
     const sendAuth = async () => {
       try {
-        const response = await axios.get('findMyId'); 
-        if(validatePhone(phone.value) == false){
+        if(validateID(id.value) == false || validateID(id.value) == ''){
           Swal.fire({
-            title: '번호 유효성 검사',
-            text: '옳바른 번호 양식이 아닙니다',
+            title: '아이디 유효성 검사',
+            text: '옳바른 아이디 양식이 아닙니다',
             icon: 'error',
             confirmButtonText: '확인',
           })
-        }
-        if (id.value) {
+          return;
+       }
+       const response = await axios.get('/Catchvegan/authPhone/findMyPassword/'+`${id.value}`);  
+       realId.value= id.value; 
+       console.log(response);
+
+      //  if(`${id.value}` == id.value){      
+          confirmId.value=response.data;   
           Swal.fire({
-          icon: 'success',
-          title: `아이디는 ${id.value} 입니다`    
-          });
-        } else {
-          Swal.fire({
-          icon: 'error',
-          title: '아이디를 찾을 수 없습니다'   
-          })
-        }
+            icon: 'success',
+            title: id.value + ' 로 인증번호가 전송되었습니다'   
+            })
+          return;
+        // }
       } catch (error) {
-        console.error('Failed to fetch ID:', error);
+        Swal.fire({
+              icon: 'error',
+              title: '가입되어있는 아이디가 없습니다'   
+           })
+        return;
       }
     }
-    sendAuth();
-    
-    const idFind = async () =>{
-      try {
-        const response = await axios.get('/member/findMyId'); 
-        if (id.value) {
-          Swal.fire({
-          icon: 'success',
-          title: `아이디는 ${id.value} 입니다`    
-          });
-        } else {
-          Swal.fire({
+
+    const pwFind = async () => {
+      if(confirmId.value == '' || id.value == ''){
+        Swal.fire({
+            icon: 'error',
+            title: '인증번호를 먼저 전송해주세요'   
+          })
+        return;
+      }
+      if(confirmId.value != authNo.value){
+        Swal.fire({
+            icon: 'error',
+            title: '인증번호가 다릅니다.'   
+          })
+        return;
+      }
+      if(validatePassword(password.value) == false){
+        Swal.fire({
+          title: '비밀번호 유효성 검사',
+          text: '비밀번호는 특수문자, 문자, 숫자를 포함한 8~15자리여야 합니다.',
           icon: 'error',
-          title: '아이디를 찾을 수 없습니다'   
+          confirmButtonText: '확인',
+        });
+        return;
+      }
+      else if(confirmId.value == authNo.value){
+        try {
+          const findPw = async () =>{
+            const response = await axios.put(`/Catchvegan/authPhone/pwGet/${realId.value}`,{
+              id : realId.value,
+              password : password.value
+            });
+            confirmId.value = response.data;
+            id.value=realId.value;
+            Swal.fire({
+              icon: 'success',
+              title: '비밀번호가 새롭게 설정되었습니다'
+          }).then((res)=>{
+          router.push({
+              name: "Main"
+             });
           })
         }
+        findPw();
       } catch (error) {
         console.error('Failed to fetch ID:', error);
+        }
       }
     }
-    idFind();
+    return{
+       sendAuth,
+       pwFind,
+       phone,
+       authNo,
+       id,
+       password
+    }
   }
 }
 </script>
