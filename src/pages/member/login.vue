@@ -55,13 +55,20 @@ export default {
           console.log(result);
           sessionStorage.setItem("token",result.headers.token);
           sessionStorage.setItem("id",id.value);
-          sessionStorage.setItem("memberIdx",result.headers.memberidx);
+          if(result.headers.memberidx != null){
+            sessionStorage.setItem("memberIdx",result.headers.memberidx);
+          }
+          else if(result.headers.manageridx != null){
+            sessionStorage.setItem("managerIdx",result.headers.manageridx);
+          }
           console.log(sessionStorage);
           Swal.fire({
           icon: 'success',
           title: '로그인 성공'     
           }).then(() => {
-            router.push({ name: 'Main', params: { id: id.value } });
+            router.push({ name: 'Main', params: { 
+              id: id.value
+            }});
             location.reload();
             window.location.href = '/Catchvegan'
           });            
@@ -71,13 +78,10 @@ export default {
             title: '로그인 실패'
             })
           }
+          console.log(token);
           token.value = result.headers.token;
         }).catch((result) => {
           console.log(result);
-          Swal.fire({
-            icon: 'error',
-            title: '로그인 실패'
-            })
         })
       }
       login2();
@@ -130,7 +134,7 @@ export default {
 
 .text-center a:hover::before {
   transform: scaleX(1);
-  background-color: #007bff; /* 애니메이션 동작 시 변경될 배경색 */
+  background-color: #28a745; /* 애니메이션 동작 시 변경될 배경색 */
 }
 
 .text-center a:hover::before {
@@ -212,7 +216,7 @@ body {
   margin-bottom: 40px;
   width: 80%;
   height: 40px;
-  background: linear-gradient(125deg, #81ecec, #6c5ce7, #81ecec);
+  background: linear-gradient(125deg, #2ecc71, #27ae60, #2ecc71);
   background-position: left;
   background-size: 200%;
   color: white;

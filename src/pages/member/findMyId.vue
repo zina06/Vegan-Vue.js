@@ -85,10 +85,15 @@ export default {
             const resposne = await axios.get("/Catchvegan/authPhone/idGet/" + `${realPhoneNum.value}`);
             id.value = resposne.data;
             Swal.fire({
-            icon: 'success',
-            title: '아이디는 ' + id.value + " 입니다."
-          })
-        }
+              icon: 'success',
+              title: '아이디는 ' + id.value + " 입니다."
+            }).then(()=>{
+              router.push({
+                name : "Main"
+              })
+            })
+            return;
+          }
         findId();
       } catch (error) {
         console.error('Failed to fetch ID:', error);
