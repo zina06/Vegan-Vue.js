@@ -430,12 +430,12 @@ export default {
 
       // 결제 요청 전달
       const data = {
-        memberIdx: 1,
-        restaurantIdx: 1,
+        memberIdx: memberIdx,
+        restaurantIdx: restaurantIdx,
         reserveDate: reserveDate.value,
         resCount: parseInt(resCount.value)
       }
-      const res = await axios.post(`/Catchvegan/reserve/ready/1`, data , {
+      const res = await axios.post(`/Catchvegan/reserve/ready/${restaurantIdx}`, data , {
         headers : {
           'AUTHORIZATION': 'Bearer ' + token
         }

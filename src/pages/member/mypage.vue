@@ -38,8 +38,10 @@
           <li v-for="review in reviews" :key="review.reviewIdx">
             <div class="review-item" v-if="review.reviewIdx">
               <div class="image-wrapper">
-                <img :src="review.images" alt="review-image" class="review-image">
+                <img :src="require(`../../assets/img/reviewimg/${review.images}`)" alt="review-image" class="review-image">
+                <div >{{ review.title }}</div>
               </div>
+              
               <div class="review-content">
                 <div>
                   <h4><b>제목 : {{ review.title }}</b></h4>
@@ -137,6 +139,7 @@ export default {
           <input id="email" class="swal2-input" type="email" value=${email}>
           <div>이메일</div>
           <select id="vegan-type" class="swal2-input" defaultValue=${veganType}>
+              <option value="lacto">비건 (Lacto Vegan)</option>
               <option value="lacto">락토 (Lacto Vegan)</option>
               <option value="ovo">오보 (Ovo-Vegetarian)</option>
               <option value="lacovo">락토 오보 (Lacto-ovo Vegetarian)</option>
