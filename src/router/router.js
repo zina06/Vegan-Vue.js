@@ -79,7 +79,7 @@ const router = createRouter({
       component: Mypage,
     },
     {
-      path: "/Catchvegan/review",
+      path: "/Catchvegan/review/:visitIdx",
       name: "Reviewinsert",
       component: Reviewinsert,
     },

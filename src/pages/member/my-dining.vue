@@ -56,7 +56,7 @@
               <div>{{ reservation.restaurantDTO.city }}</div>
               <div>{{ reservation.visitDTO.visitDate }}</div>
               <div style="margin-top: auto;">
-                <button v-if="reservation.visitDTO.reviewDTO==null && isReviewAvailable(reservation.visitDTO.visitDate)" type="button" @click="goToReviewPage()">리뷰 작성하기</button>
+                <button v-if="reservation.visitDTO.reviewDTO==null && isReviewAvailable(reservation.visitDTO.visitDate)" type="button" @click="goToReviewPage(reservation.visitDTO.visitIdx)">리뷰 작성하기</button>
                 <span v-else-if="reservation.visitDTO.reviewDTO==null && !isReviewAvailable(reservation.visitDTO.visitDate)">작성 기한이 지나 리뷰를 쓸 수 없어요.</span>
                 <span hidden v-else></span>
               </div>
@@ -211,9 +211,12 @@ export default {
     getReserveCancel();
     
     //리뷰작성 이동
-    const goToReviewPage = () => {
+    const goToReviewPage = (visitIdx) => {
         router.push({
-          name:"Reviewinsert"
+          name:"Reviewinsert",
+          params : {
+            visitIdx : visitIdx,
+          }
         });
       }
 
