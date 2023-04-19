@@ -6,7 +6,7 @@
           type="text"
           placeholder="search"
           list="addressShow"
-          v-model="address"
+          v-model="search.address"
           style="height: 8%; font-size: medium"
         />
 
@@ -16,9 +16,8 @@
           style="float: left; height: 4%; width: 4%"
           @click="submitForm"
         />
-        <!-- </button> -->
         <datalist id="addressShow">
-          <option v-for="(address, idx) in addressList" :key="idx">
+          <option v-for="(address, idx) in search.addressList" :key="idx">
             {{ address }}
           </option>
         </datalist>
@@ -220,7 +219,7 @@
         :mapOptions="mapOptions"
         @onLoad="onLoadMap($event)"
       >
-        <naver-marker :latitude="myLatitude" :longitude="myLongitude">
+        <naver-marker :latitude="search.latitude" :longitude="search.longitude">
         </naver-marker>
         <div v-for="(item, idx) in markers" :key="idx">
           <naver-marker
@@ -272,6 +271,9 @@
 import { ref, watch } from "vue";
 import { NaverMap, NaverMarker, NaverInfoWindow } from "vue3-naver-maps";
 import axios from "axios";
+import { useSearch } from "@/stores/search";
+
+const search = useSearch();
 
 //네이버 맵 객체
 const naver_map = ref();
@@ -281,12 +283,6 @@ const addressList = ref([]);
 
 // 지도에 표시될 마커들의 배열
 const markers = ref([]);
-
-//현재 내 위치 위도
-const myLatitude = ref();
-
-//현재 내 위치 경도
-const myLongitude = ref();
 
 const checkValue = ref(); //Checkbox 변화 감지 함수
 const submitForm = ref(); //Ajax 리스트 요청 함수
@@ -303,9 +299,6 @@ const flexCheckMilk = ref();
 const flexCheckEgg = ref();
 const flexCheckFish = ref();
 
-//검색하고 싶은 위치(ex 송파구, 종로구, 중구)
-const address = ref();
-
 //Get 요청을 보낼 URL
 const getUrl = ref();
 
@@ -320,6 +313,8 @@ const paging_list = ref([]);
 const onLoadMap = (mapObject) => {
   naver_map.value = mapObject;
 };
+
+if (search.latitude === 0 || search.longitude) search.setLocation();
 
 const onLoadMarker = (markerObject, idx) => {
   markers.value[idx] = Object.assign({}, markers.value[idx], {
@@ -359,26 +354,13 @@ var options = {
   maximumAge: 0,
 };
 
-function success(pos) {
-  var crd = pos.coords;
-  myLatitude.value = crd.latitude;
-  myLongitude.value = crd.longitude;
-}
-
-function error(err) {
-  console.warn("ERROR(" + err.code + "): " + err.message);
-}
-
-navigator.geolocation.getCurrentPosition(success, error, options);
-
 //네이버 맵 객체 로딩 완료후 데이터 Loading
 watch([naver_map], () => {
-  navigator.geolocation.getCurrentPosition(success, error, options);
   checkValue.value();
 
   const latLng = new window.naver.maps.LatLng(
-    myLatitude.value,
-    myLongitude.value
+    search.latitude,
+    search.longitude
   );
 
   naver_map.value.setCenter(latLng); // 현재 위치 중심으로 데이터 지도 중심 변경
@@ -466,39 +448,53 @@ checkValue.value = () => {
 
   let subStr = "";
 
-  if (addressList.value.indexOf(address.value) !== -1)
-    subStr += "address?keyword=" + address.value;
+  if (search.addressList.indexOf(search.address) !== -1)
+    subStr += "address?keyword=" + search.address;
   else {
+    if (search.address.length !== 0) {
+      alert(
+        "잘못된 입력 입니다. 현재 위도 경도 데이터를 기준으로 다시 검색합니다."
+      );
+      search.address = "";
+    }
     subStr +=
       "location?latitude=" +
-      myLatitude.value +
+      search.latitude +
       "&" +
       "longitude=" +
-      myLongitude.value;
+      search.longitude;
   }
 
   if (flexCheckVegetable.value === true) subStr += "&typeVege=vegetable";
   if (flexCheckMilk.value === true) subStr += "&typeMilk=milk";
   if (flexCheckEgg.value === true) subStr += "&typeEgg=egg";
   if (flexCheckFish.value === true) subStr += "&typeFish=fish";
-  // console.log(getUrl.value);
+
   getUrl.value += subStr;
   getCountUrl.value += subStr;
 };
 
-axios
-  .get("http://localhost:8082/Catchvegan/search/addressList")
-  .then((res) => {
-    addressList.value = res.data;
-  })
-  .catch((err) => {
-    console.log("Catchvegun address List Get Fail");
+if (search.addressList.length === 0) {
+  axios
+    .get("http://localhost:8082/Catchvegan/search/addressList")
+    .then((res) => {
+      addressList.value = res.data;
+    })
+    .then(() => {
+      search.setAddressListClear();
+      for (let i = 0; i < addressList.value.length; i++) {
+        search.setAddressListPush(addressList.value[i]);
+      }
+    })
+    .catch((err) => {
+      console.log("Catchvegun address List Get Fail");
 
-    if (!error.response) console.log("Please check your internet connection.");
-    else console.log("Error Status Code : " + err.response.status);
+      if (!err.response) console.log("Please check your internet connection.");
+      else console.log("Error Status Code : " + err.response.status);
 
-    return Promise.reject(err);
-  });
+      return Promise.reject(err);
+    });
+}
 
 const mapOptions = {
   latitude: 37.51347, // 지도 중앙 위도
