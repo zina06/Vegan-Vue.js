@@ -215,7 +215,6 @@ setup(){
     errorcheck();
   // const backendUrl = process.env.VUE_APP_BACKEND_URL;
 
-
  const file = ref('')
  const onChangeFile=(e)=>{
   file.value = console.log(e.target.files[0])

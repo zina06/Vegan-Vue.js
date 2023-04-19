@@ -23,17 +23,17 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <button type="button" class="nav-item nav-link active custom-button" @click.prevent="tokentest()">토큰실험용</button>
-              <strong class="greeting" v-if="!headerstate">{{ sessionid }} 님 반갑습니다!</strong>
-              <button type="button" class="nav-item nav-link active custom-button" @click.prevent="main()">HOME</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="headerstate" @click.prevent="signup()">회원가입</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="headerstate" @click.prevent="login()">로그인</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="logout()">로그아웃</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="mypage()">내정보</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="mydining()">마이다이닝</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasManagerIdx" @click.prevent="logout()">로그아웃</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasManagerIdx">나는어드민</button>
-            <!-- <div class="d-none d-lg-flex ms-2">
+              <!--<button type="button" class="nav-item nav-link active custom-button" @click.prevent="tokentest()">토큰실험용</button>-->
+              <strong class="greeting" v-if="!headerstate">{{ sessionid }} 님 반갑습니다</strong>
+              <button type="button" class="custom-button" @click.prevent="main()">HOME</button>
+              <button type="button" class="custom-button" v-if="headerstate" @click.prevent="signup()">회원가입</button>
+              <button type="button" class="custom-button" v-if="headerstate" @click.prevent="login()">로그인</button>
+              <button type="button" class="custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="logout()">로그아웃</button>
+              <button type="button" class="custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="mypage()">내정보</button>
+              <button type="button" class="custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="mydining()">마이다이닝</button>
+              <button type="button" class="custom-button" v-if="!headerstate && hasManagerIdx" @click.prevent="logout()">로그아웃</button>
+              <button type="button" class="custom-button" v-if="!headerstate && hasManagerIdx">나는어드민</button>
+              <!-- <div class="d-none d-lg-flex ms-2">
               <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
                 <small class="fa fa-search text-body"></small>
               </a>
@@ -171,26 +171,34 @@ export default {
 }
 
 .greeting {
+  font-size: 20px;
   font-weight: bold;
-  margin-right: 10px; /* 오른쪽으로 10px의 간격 설정 */
-  padding: 20px 10px;
+  color: #1ebb4d;
+  margin-right: 10px;
+  padding: 13px 40px 0px 40px;
 }
 
 .custom-button {
-  display: inline-block; /* inline-block 속성으로 링크처럼 보이게 설정 */
-  background-color: #fff; /* 버튼 배경색을 초록색으로 설정 */
-  color: #fff; /* 버튼 텍스트 색상을 흰색으로 설정 */
-  padding: 5px 5px; /* 버튼의 내부 여백 설정 */
-  font-size: 18px; /* 버튼 텍스트 크기 설정 */
-  border: none; /* 버튼 테두리 제거 */
-  border-radius: 4px; /* 버튼 테두리 둥글게 설정 */
-  cursor: pointer; /* 커서를 손가락 모양으로 설정 */
-  transition: transform 0.2s ease-in-out; /* 애니메이션 효과 설정 */
-  text-decoration: none; /* 링크 효과 제거 */
+  background-color: transparent;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  font-size: 22px;
+  padding: 0px 40px 0px 40px;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 10px;
+}
+
+.custom-button:last-of-type {
+  margin-right: 0;
 }
 
 .custom-button:hover {
-  transform: scale(1.1); /* 마우스 호버 시 버튼 크기를 1.1배로 확대하는 애니메이션 설정 */
+  color: #1ebb4d;
 }
-
 </style>

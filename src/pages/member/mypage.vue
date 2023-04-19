@@ -111,11 +111,13 @@ export default {
     const errorcheck = async () => {
       if(token == null){
         router.push({
-          name:"Error"
+          name:"Main"
         });
       }
     };
     errorcheck(); 
+    
+   
 
     /*
     //회원삭제
@@ -262,6 +264,10 @@ export default {
         headers : {
           'AUTHORIZATION': 'Bearer ' + token
         }
+      }).catch(()=>{
+        router.push({
+            name:"Error"
+          })
       });
       reviews.value = res.data[0].reviewDTOList;
       user.value = res.data[0];
