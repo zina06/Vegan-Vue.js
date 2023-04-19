@@ -7,6 +7,7 @@
       <div class="detail">
       
         <img src="@/assets/img/2.jpg" class="detailimg"><br><br>
+        <!-- <img :src="require(`../../assets/uploadimages/${images}`)" alt="이미지" class="uploadimg"> -->
         <h3 class="restaurantName"><b>{{restaurantName}}</b>
         </h3> &nbsp;&nbsp;&nbsp;&nbsp;
         <button class="btn btn-info gotoreserve" @click="moveReservePage(idx)">예약하기</button>
@@ -21,12 +22,24 @@
             </svg>&nbsp;&nbsp;{{ address }}</p>
             <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
               <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
-            </svg></p>
+            </svg>&nbsp;&nbsp;{{ restaurantPhone }}</p>
+           
             <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
               <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
             </svg> &nbsp;&nbsp;{{ restauranVeganType }}</p><hr>
-            <p><b>메뉴</b> <br> {{ restauranMenu }}</p>
+            <!-- <p style="width: 100%;"><b>메뉴</b> <br>
+              <ul>
+                <li v-for="(item, index) in restauranMenu" :key="index">{{ item }}</li>
+              </ul>
+            </p> -->
+           <b>메뉴</b> <br><br>
+              <!-- <ul style="padding-right: 20px;">
+                <li v-for="(item, index) in restauranMenu" :key="index">{{ item }}<br></li>
+              </ul> -->
+            <span v-for="(item, index) in restauranMenu" :key="index">
+              {{ item }}<br>
+            </span>
         <hr><br>
 
         <div>
@@ -37,8 +50,8 @@
           </svg><br>길찾기
         </div>
         </div>
-        <hr style="width:100%" class="gubun">
-        
+        <hr style="width:100%; margin-top: 200px;" class="gubun">
+      
                 
          <div>
             <div class="rereview" v-if="reviewCount!=0">
@@ -126,7 +139,11 @@ export default {
     const reviewCount=ref(0);
     const averageRating=ref(0);
     const restaurantIdx=route.params.restaurantIdx;
+    let savedLongitude=ref(0);
+    let savedLatitude=ref(0);
+    const restaurantPhone=ref('');
     console.log(restaurantIdx);
+    console.log("메뉴 : "+restauranMenu.value);
     
 
     const getRestaurant = async() =>{
@@ -135,7 +152,7 @@ export default {
 		
 			
 				console.log(Restaurant.data);
-        
+        console.log(restauranInfo);
 
         restaurantName.value=Restaurant.data.detail.name;
         restauranInfo.value=Restaurant.data.detail.restaurantInfo;
@@ -145,15 +162,17 @@ export default {
         address.value=Restaurant.data.detail.address;
 				longitude.value=Restaurant.data.detail.longitude;
         latitude.value=Restaurant.data.detail.latitude;
+        restaurantPhone.value=Restaurant.data.detail.restaurantPhone;
+        
         console.log(longitude);
         console.log(latitude);
-        console.log(Restaurant.data.detail.name);
+        console.log(restauranVeganType.value);
         reviewList.value=Restaurant.data.review;
         console.log(reviewList.value);
         // localStorage.setItem('longitude', Restaurant.data.longitude);
         // localStorage.setItem('latitude', Restaurant.data.latitude);
         reviewCount.value=Restaurant.data.review.length;
-
+       
         let totalRating = 0;
 
         // 리뷰 평점 총합 계산
@@ -165,18 +184,35 @@ export default {
         averageRating.value = totalRating / reviewCount.value;
 
         console.log(averageRating);
+
+        const menuArray = Restaurant.data.detail.menu;
+      
+        console.log(menuArray);
+        restauranMenu.value = menuArray.split('원,');
+        console.log(restauranMenu.value);
+        
+        for (let i=0; i< restauranMenu.value.length; i++)
+        {
+          if (i !== restauranMenu.value.length - 1)
+            restauranMenu.value[i] += '원';
+        }
+        
+        // const menuPrices = menuArray.map(menu => parseInt(menu.split(' ')[1].replace(',', '')));
+        // console.log(menuPrices);
+        // console.log(restauranMenu.value);
+
+
        })
 		};
 		getRestaurant();
     // const img_icon = ref(require(""))
     
-    // 페이지가 로드될 때, 이전에 저장해 둔 위치 정보를 불러옴
-      // window.onload = () => {
-      //   const savedLongitude = localStorage.getItem('longitude');
-      //   const savedLatitude = localStorage.getItem('latitude');
-      // };
+    //페이지가 로드될 때, 이전에 저장해 둔 위치 정보를 불러옴
+      window.onload = () => {
+        getRestaurant();
+      };
 
-    const moveReservePage = (restaurantIdx) => {
+    const moveReservePage = () => {
       router.push({
           name : "Reserve",
           params : {
@@ -199,7 +235,7 @@ export default {
       address,
       reviewList,
       reviewCount,
-      averageRating
+      averageRating,
     };
   },
  
@@ -234,10 +270,10 @@ export default {
 
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng( this.longitude,this.latitude ),
+        center: new kakao.maps.LatLng( this.latitude,this.longitude ),
         level: 3,
       };
-      console.log("받아온 값: "+this.longitude, this.latitude);
+      console.log("받아온 값: "+ this.latitude,this.longitude);
       //지도 객체를 등록합니다.
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
@@ -248,7 +284,7 @@ export default {
      
 
       const markerPosition=new window.kakao.maps.LatLng(
-        this.longitude, this.latitude 
+        this.latitude ,this.longitude
       );
 
       const marker=new window.kakao.maps.Marker({
@@ -261,7 +297,7 @@ export default {
     },
     goToKakaoMap() {
      
-      const url = `https://map.kakao.com/link/to/${this.restaurantName},${this.longitude},${this.latitude}`;
+      const url = `https://map.kakao.com/link/to/${this.restaurantName},${this.latitude},${this.longitude}`;
       window.open(url);
     }
   },
@@ -278,7 +314,8 @@ export default {
   display: flex; /* Flexbox를 사용 */
   justify-content: left; /* 가로 중앙 정렬 */
   align-items: left; /* 세로 중앙 정렬 */
-
+  width: 700px;
+  margin: auto;
 
 }
 .detailimg{
@@ -347,7 +384,7 @@ export default {
  height: auto;
 }
 
-.gubun{
- 
+li {
+  list-style-type: none;
 }
 </style>
