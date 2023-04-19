@@ -53,18 +53,15 @@ export default {
           })
           return;
        }
-       const response = await axios.get('/Catchvegan/authPhone/findMyPassword/'+`${id.value}`);  
-       realId.value= id.value; 
-       console.log(response);
-
-      //  if(`${id.value}` == id.value){      
-          confirmId.value=response.data;   
+        const response = await axios.get('/Catchvegan/authPhone/findMyPassword/'+`${id.value}`);  
+        realId.value= id.value; 
+        console.log(response);   
+        confirmId.value=response.data;   
           Swal.fire({
             icon: 'success',
             title: id.value + ' 로 인증번호가 전송되었습니다'   
-            })
-          return;
-        // }
+          })
+        return;
       } catch (error) {
         Swal.fire({
               icon: 'error',
@@ -73,7 +70,6 @@ export default {
         return;
       }
     }
-
     const pwFind = async () => {
       if(confirmId.value == '' || id.value == ''){
         Swal.fire({

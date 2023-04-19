@@ -55,13 +55,20 @@ export default {
           console.log(result);
           sessionStorage.setItem("token",result.headers.token);
           sessionStorage.setItem("id",id.value);
-          sessionStorage.setItem("memberIdx",result.headers.memberidx);
+          if(result.headers.memberidx != null){
+            sessionStorage.setItem("memberIdx",result.headers.memberidx);
+          }
+          else if(result.headers.manageridx != null){
+            sessionStorage.setItem("managerIdx",result.headers.manageridx);
+          }
           console.log(sessionStorage);
           Swal.fire({
           icon: 'success',
           title: '로그인 성공'     
           }).then(() => {
-            router.push({ name: 'Main', params: { id: id.value } });
+            router.push({ name: 'Main', params: { 
+              id: id.value
+            }});
             location.reload();
             window.location.href = '/Catchvegan'
           });            
@@ -71,13 +78,10 @@ export default {
             title: '로그인 실패'
             })
           }
+          console.log(token);
           token.value = result.headers.token;
         }).catch((result) => {
           console.log(result);
-          Swal.fire({
-            icon: 'error',
-            title: '로그인 실패'
-            })
         })
       }
       login2();

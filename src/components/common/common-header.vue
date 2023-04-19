@@ -24,13 +24,15 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
               <button type="button" class="nav-item nav-link active custom-button" @click.prevent="tokentest()">토큰실험용</button>
-              <!-- <strong class="greeting" v-if="!headerstate">{{ sessionid }} 님 반갑습니다!</strong> -->
+              <strong class="greeting" v-if="!headerstate">{{ sessionid }} 님 반갑습니다!</strong>
               <button type="button" class="nav-item nav-link active custom-button" @click.prevent="main()">HOME</button>
               <button type="button" class="nav-item nav-link active custom-button" v-if="headerstate" @click.prevent="signup()">회원가입</button>
               <button type="button" class="nav-item nav-link active custom-button" v-if="headerstate" @click.prevent="login()">로그인</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate" @click.prevent="logout()">로그아웃</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate" @click.prevent="mypage()">내정보</button>
-              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate" @click.prevent="mydining()">마이다이닝</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="logout()">로그아웃</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="mypage()">내정보</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="mydining()">마이다이닝</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasManagerIdx" @click.prevent="logout()">로그아웃</button>
+              <button type="button" class="nav-item nav-link active custom-button" v-if="!headerstate && hasManagerIdx">나는어드민</button>
             <!-- <div class="d-none d-lg-flex ms-2">
               <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
                 <small class="fa fa-search text-body"></small>
@@ -56,13 +58,15 @@
 <script>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 export default {
     name: "common-header",
-
     setup() {
       const Swal = require('sweetalert2');
       const headerstate = ref(false);
       const token = sessionStorage.getItem("token");
+      const hasMemberIdx = sessionStorage.getItem('memberIdx');
+      const hasManagerIdx = sessionStorage.getItem('managerIdx');
       const check = () => {
         if(token == null){
           headerstate.value = true;
@@ -152,7 +156,9 @@ export default {
         signup,
         main,
         sessionid,
-        tokentest
+        tokentest,
+        hasManagerIdx,
+        hasMemberIdx
       }
     }
 }
@@ -167,14 +173,14 @@ export default {
 .greeting {
   font-weight: bold;
   margin-right: 10px; /* 오른쪽으로 10px의 간격 설정 */
-  padding: 30px 20px;
+  padding: 20px 10px;
 }
 
 .custom-button {
   display: inline-block; /* inline-block 속성으로 링크처럼 보이게 설정 */
   background-color: #fff; /* 버튼 배경색을 초록색으로 설정 */
   color: #fff; /* 버튼 텍스트 색상을 흰색으로 설정 */
-  padding: 10px 10px; /* 버튼의 내부 여백 설정 */
+  padding: 5px 5px; /* 버튼의 내부 여백 설정 */
   font-size: 18px; /* 버튼 텍스트 크기 설정 */
   border: none; /* 버튼 테두리 제거 */
   border-radius: 4px; /* 버튼 테두리 둥글게 설정 */
