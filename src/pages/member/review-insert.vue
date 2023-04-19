@@ -48,7 +48,7 @@ export default {
     const content = ref('');
     const rating = ref('');
     const images = ref('');
-    const visitIdx = 1;
+    const visitIdx = ref('');
     let file2 = null;
     const file = ref('');
     const files = ref(null);

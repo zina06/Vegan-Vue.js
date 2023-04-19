@@ -275,7 +275,7 @@ setup(){
     }
     const checkidid = async () =>{
         const res = await axios
-          .post('checkid',{
+          .post('/Catchvegan/member/checkid',{
                             id : id.value
                           })
           .then((result)=>{

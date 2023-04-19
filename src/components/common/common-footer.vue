@@ -17,7 +17,6 @@
               <p><i class="fa fa-envelope me-3"></i>kosa@metanet.com</p>
             </div>
             <div class="col-lg-3 col-md-6">
-              <h4 class="text-light mb-4">GitHub</h4>
               <a class="btn btn-link" href="">이상훈</a>
               <a class="btn btn-link" href="">임진아</a>
               <a class="btn btn-link" href="">전인성</a>

@@ -3,7 +3,7 @@
 <nav class="justify-content-center manage">
   <div class="nav nav-tabs nav-tabs-custom justify-content-center" id="nav-tab" role="tablist" style="width: 1000px; margin: 0 auto;">
     <button class="nav-link active with-nav-tabs panel-success" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">예약자 관리</button>
-    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">식당 관리</button>
+    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" style="color: black;">식당 관리</button>
     <!-- <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">방문 상태 </button> -->
    
   </div>
@@ -25,20 +25,22 @@
                   <th width="80px">예약인원</th>
                   <th>예약시간</th>
                   <th width="80px">방문상태</th>
-                  <th width="120px">방문확정</th>
+                  <th width="120px"></th>
                 </tr>
                 </thead>
                <tbody v-for="member in memberList" :key="member.memberidx" >
                 <tr>
-                 
+                    
                   <td>{{ member.memberDTO.name }}</td>
                   <td>{{ member.memberDTO.phone }}</td>
                   <td>{{ member.resCount }}</td>
-                  <td>{{ member.reserveDate.slice(14,19) }}</td>
+                  <td>{{ member.reserveDate.getHours() }}시 {{ member.reserveDate.getMinutes() }}분</td>
                   <td>{{ member.visitStatus }}</td>
                   <td>
-                    <button class="btn btn-info" @click="updateConfirm(member.reserveIdx,member.visitStatus)" v-if="member.visitStatus==='x'">방문확정</button>
+                    <button class="btn btn-info" @click="updateConfirm(member.reserveIdx,member.visitStatus)" v-if="member.cancelStatus==='x' && member.visitStatus==='x'">방문확정</button>
                     <button class="btn btn-info disabled" v-if="member.visitStatus==='o'">방문확정</button>
+                    <button class="btn btn-danger disabled" v-if="member.cancelStatus==='o'">예약취소</button>
+                   
                   </td>
                 </tr>
               </tbody>
@@ -131,9 +133,10 @@
         <!-- <div v-for="fileName in files" :key="fileName" class="image">
           <img :src="`@/assets/uploadimages/${fileName}`" alt="이미지" class="uploadimg">
         </div> -->
+       
         <img :src="require(`../../assets/uploadimages/${images}`)" alt="이미지" class="uploadimg">
       </div>
-      <label style="float: left;"><b>메뉴</b> </label><br> <input name="menu" type="text" class="form-control menu" v-model="menu" required="required"/><br>
+      <label style="float: left;"><b>메뉴</b> </label><br> <input name="menu" type="text" class="form-control menu" v-model="menu" required="required" style="width: 100%; height: 100px;"/><br>
       <label style="float: left;"><b>매장소개</b> </label><br>
       <textarea class="form-control" id="exampleFormControlTextarea1" name="restaurantinfo" style="width: 100%; height: 200px;"  v-model="restauranInfo" required="required"></textarea><br>
       <div style="margin: auto; width: 200px;">
@@ -149,7 +152,7 @@
     <div class="inform card-body">
       <p style="text-align: left;"><b>식당 이름</b> <br> {{ restaurantName }}</p>
     <b>메인 사진</b><br>
- 
+      
     <img :src="require(`../../assets/uploadimages/${images}`)" alt="이미지" class="uploadimg">
     <div>
    
@@ -204,6 +207,7 @@ setup(){
   const files = ref(null);
   const images=ref('');
   let file2 = null;
+  const reserveDateDate = ref([]);
   const token = sessionStorage.getItem("token");
   const errorcheck = async () => {
       if(token == null){
@@ -221,6 +225,13 @@ setup(){
   files.value = e.target.files[0];
   file2=e.target.files[0];
  }
+//  const insertVisit = ref({
+//       visitIdx: null,
+//       reserveIdx:0 ,
+//       price: 0,
+//       design: 0,
+//       delivery: 0,
+//     });
   
   const fetchFiles = async () => {
       // try {
@@ -372,19 +383,27 @@ setup(){
         'AUTHORIZATION': 'Bearer ' + token
       }
      }).then((inform)=>{
-        console.log(inform);
+        
         //  restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
         //  restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
         //  menu.value=inform.data.restaurantDTO.menu;  //메뉴
          memberList.value=inform.data.reservelist;
          memberListLength.value=inform.data.reservelist.length;
+         const array = [memberList.value.length];
+         for(let i =0; i<memberListLength.value; i++){
+            array[i] = new Date(memberList.value[i].reserveDate);
+            memberList.value[i].reserveDate = array[i];
+         } 
+         console.log(memberList.value);
+         console.log("reserveIdx:"+inform.data.reservelist[0].reserveIdx);
          console.log("길이:"+memberListLength.value);
           
-      }).catch(()=>{
-        router.push({
-            name:"Error"
-          })
       })
+      // .catch(()=>{
+      //   router.push({
+      //       name:"Error"
+      //     })
+      // })
    };
    getMemberlist();
 
@@ -401,7 +420,7 @@ setup(){
         'AUTHORIZATION': 'Bearer ' + token
       }
     }).then((inform)=>{
-       console.log(inform);
+       console.log(inform.data);
 
         restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
         restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
@@ -418,26 +437,41 @@ setup(){
         // memberDateList.value=inform.data.reservelist.map((member) => member.reserveDate.slice(0, 10));} 
         // console.log(memberDateList.value);
         
-    }).catch(()=>{
-      router.push({
-            name:"Error"
-          })
     })
+    // .catch(()=>{
+    //   router.push({
+    //         name:"Error"
+    //       })
+    // })
   };
   getRestaurant();
   
   //방문상태 변경
   const updateConfirm=async(reserveIdx, visitStatus)=>{
     console.log("방문확정");
-    await axios.put('/Catchvegan/manager/confirmstatus', {reserveIdx:reserveIdx, visitStatus:'o' },{
+    await axios.put('/Catchvegan/manager/confirmStatus', {reserveIdx:reserveIdx, visitStatus:'o' },{
       headers : {
         'AUTHORIZATION': 'Bearer ' + token
       }
-    }).catch(()=>{
-      router.push({
-            name:"Error"
-          })
+    }).then(()=>{
+        const creatVisit=async()=>{
+        await axios.post('/Catchvegan/manager/createVisit', {reserveIdx:reserveIdx},{
+          headers : {
+            'AUTHORIZATION': 'Bearer ' + token
+          }
+        
+        })
+        console.log("확인");
+      }
+      creatVisit();
     })
+      // this.creatVisit();
+    
+    // .catch(()=>{
+    //   router.push({
+    //         name:"Error"
+    //       })
+    // })
     console.log(reserveIdx);
     Swal.fire({
           icon: 'success',
@@ -450,6 +484,16 @@ setup(){
   }
 
 
+  // const creatVisit=async()=>{
+  //   await axios.post('/Catchvegan/manager/createVisit', {reserveIdx:reserveIdx},{
+  //     headers : {
+  //       'AUTHORIZATION': 'Bearer ' + token
+  //     }
+     
+  //   })
+  //   console.log("확인");
+  // }
+  
 
 
   
@@ -510,7 +554,8 @@ setup(){
     // selectFile,
     images,
     uploadAPI,
-    file
+    file,
+   
   }
 },
 
@@ -555,4 +600,5 @@ button.nav-link{
  max-width: 100%;
  max-height: 100%;
 }
+
 </style>

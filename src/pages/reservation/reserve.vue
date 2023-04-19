@@ -9,13 +9,13 @@
 
 
 
-        <img src="@/assets/img/reserve.png" style="width:100%">
+        <img src="@/assets/img/reserve.png" style="width:100%; height: 100%;">
         <br><br><br>
         <div class="row g-5 " style="background: white;">
           
           <div class="col-md-5 col-lg-4 order-md-last">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-success" style="text-shadow: 1px 1px #ccc; font-weight: bold;" >식당정보</span>
+              <span class="text" style="font-weight: bold;" >식당정보</span>
              
             </h4>
             <ul class="list-group mb-3">
@@ -55,60 +55,63 @@
 
            
           </div>
-          <div class="col-md-7 col-lg-8">
-            <h4 class="mb-3 ">예약자 정보</h4>
-            <form class="needs-validation" novalidate>
-              <div class="row g-3">
-                <div class="col-12" style="padding-left: 80px;">
-                  <label for="firstName" class="form-label">이름</label>
-                  <input type="text" class="form-control" id="firstName" placeholder="" v-model="userName" readonly>
-                  <div class="invalid-feedback">
-                    Valid first name is required.
-                  </div>
-                </div>
 
+
+            <div class="col-md-7 col-lg-8" >
+             
+              <h4 class="mb-3 " style="padding-left: 70px;"><b>* 예약자 정보</b></h4>
+                <form class="needs-validation" novalidate>
+                <div class="row g-3">
+                  <div class="col-12" style="padding-left: 80px;">
+                    <label for="firstName" class="form-label"><b>이름</b></label>
+                    <input type="text" class="form-control" id="firstName" placeholder="" v-model="userName" readonly  style="width: 200px;">
+                    <div class="invalid-feedback">
+                      Valid first name is required.
+                    </div>
+                  </div>
+   
 
 
                
 
-                <div class="col-12">
-                  <label for="email" class="form-label">전화번호</label>
-                  <input type="email" class="form-control" id="email" placeholder="" v-model="userPhone" readonly>
+                <div class="col-12" style="padding-left: 80px;">
+                  <label for="email" class="form-label"><b>전화번호</b></label>
+                  <input type="email" class="form-control" id="email" placeholder="" v-model="userPhone" readonly  style="width: 300px;">
                   <div class="invalid-feedback">
                     Please enter a valid email address for shipping updates.
                   </div>
                 </div>
-
+             
                 
 
                  <br><br>
-                <div class="col-md-12">
+                <div class="col-md-12" style="padding-top: 50px; width: 1200px;">
                   <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-secondary" style="margin:auto; text-shadow: 1px 1px #ccc; font-weight: bold;">예약시간</span>
+                    <span style="font-weight: bold; padding-left: 70px;">* 예약시간</span>
 
                   </h4>
 
 
                   <div style="display:flex; justify-content:center;">
-                    <VDatePicker v-model="date" :min-date="new Date(Date.now() + 24 * 60 * 60 * 1000)" :max-date="maxDate" style="margin:auto"
+                    <VDatePicker v-model="date" :min-date="new Date(Date.now() + 24 * 60 * 60 * 1000)" :max-date="maxDate" style="width: 800px; margin-left: 75px;"
                       :clickable="true" @click="onSelectDate" />
                   </div>
 
                   <br>
                   <br>
                   
-                  <div class="d-flex justify-content-center" style="margin:auto;">
-                    <table class="table table-responsive table-bordered table-striped"
+                  <div class="d-flex justify-content-center" style="margin:auto; padding-left: 50px;">
+                    <table class="table table-responsive"
                       style="width: 500px; text-align: center;">
                       <tr>
-                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ six }}명</td>
-                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sixHalf }}명</td>
-                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ seven }}명</td>
-                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sevenHalf }}명</td>
-                      <td v-if="alreadyReserve" class="col-2 text-success" style="width: 100px; text-shadow: 1px 1px #ccc; font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ eight }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text" style="width: 100px;  font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ six }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text" style="width: 100px;  font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sixHalf }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text" style="width: 100px;  font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ seven }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text" style="width: 100px;  font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ sevenHalf }}명</td>
+                      <td v-if="alreadyReserve" class="col-2 text" style="width: 100px;  font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ eight }}명</td>
                       </tr>
                       <tr>
-                        <td class="col-2" style="width: 100px;">
+                        <td class="col-2" >
                           
 
                             <input type="radio" class="btn-check" value="18:00" name="vbtn-radio" id="vbtn-radio1"
@@ -180,17 +183,17 @@
 
               <hr class="my-4">
 
-              <div class="form-check">
+              <div class="form-check" style="padding-left: 80px;">
                 <input type="checkbox" class="form-check-input" id="same-address" v-model="refundOk">
                 <label class="form-check-label" for="same-address">
                   &nbsp;&nbsp;[필수] 취소 및 환불 규정에 동의합니다.</label>
               </div>
               <br>
-              <div class="col-6 refund">
-                <div>2일전 취소: 100%환불</div>
-                <div>1일전 취소: 50% 환불</div>
-                <div>당일 취소: 환불 불가</div>
-                <div>노쇼 시: 환불 불가</div>
+              <div class="col-6 refund"  style="padding-left: 20px; width: 70%;">
+                <div>2일전 취소 : 100%환불</div>
+                <div>1일전 취소 : 50% 환불</div>
+                <div>당일 취소 : 환불 불가</div>
+                <div>노쇼 시 : 환불 불가</div>
               </div>
 
               <!-- <div class="form-check">
@@ -200,12 +203,12 @@
 
               <hr class="my-4">
 
-              <h4 class="mb-3"><b>결제</b></h4>
+              <h4 class="mb-3" style="padding-left: 80px;"><b>결제</b></h4>
 
-              <div class="my-3">
+              <div class="my-3" style="padding-left: 80px;">
                 <div class="form-check">
                   <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                  <label class="form-check-label" for="credit">&nbsp;카카오 페이</label>
+                  <label class="form-check-label" for="credit">&nbsp;카카오페이</label>
                 </div>
                 <!-- <div class="form-check">
                   <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
@@ -221,7 +224,7 @@
 
               <hr class="my-4">
 
-              <button class="w-100 btn btn-success btn-lg" @click="reserve">예약 및 결제</button>
+              <button class="w-100 btn btn-success btn-lg" @click="reserve" style="background: #4AB34A; border-color: #4AB34A;">예약 및 결제</button>
             </form>
           </div>
         </div>
@@ -528,6 +531,7 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 /* .btn {
   background:#3CB371 !important; 
   color: white;
@@ -540,6 +544,9 @@ export default {
  
 
 } */
+*{
+  font-family: Noto Sans KR;
+}
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
@@ -663,4 +670,25 @@ export default {
     color: #d7fff1;
    
 } */
+.btn-outline-success{
+  background-color: #4AB34A !important;
+    color:white !important;
+    width: 100px;
+    border: #4AB34A !important;
+    margin-right: 10px;
+}
+
+.btn-outline-success:hover,
+.btn-outline-success:visited,
+.btn-outline-success:focus,
+.btn-outline-success:active,
+.btn:active
+{
+    background-color:#90ee90 !important;
+    color:white !important;
+    width: 100px;
+    border: #90ee90 !important;
+    margin-right: 10px;
+}
+
 </style>
