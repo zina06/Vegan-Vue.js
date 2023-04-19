@@ -27,12 +27,13 @@ export default {
     const phone = ref('');
     const authNo = ref('');
     const confirmId = ref('');
+    const realPhoneNum = ref('');
+
     const validatePhone = (phone) => {
       const phoneRegex = /^\d{9,12}$/;
       return phoneRegex.test(phone);
     };
-    const realPhoneNum = ref('');
-
+ 
     const sendAuth = async () => {
       try {
         if(validatePhone(phone.value) == false || validatePhone(phone.value) == ''){
@@ -44,26 +45,27 @@ export default {
           })
           return;
         }
-       const response = await axios.get('/Catchvegan/authPhone/findMyId/'+`${phone.value}`);      
+       const response = await axios.get('/Catchvegan/authPhone/findMyId/'+`${phone.value}`);
        if(`${phone.value}` == phone.value){          
           confirmId.value=response.data;
           realPhoneNum.value=phone.value;
           Swal.fire({
-          icon: 'success',
-          title: '인증번호가 전송되었습니다'   
-          })
+            icon: 'success',
+            title: '인증번호가 전송되었습니다'   
+            })
+          return;
         }
       } catch (error) {
         Swal.fire({
-              icon: 'error',
-              title: '가입되어있는 아이디가 없습니다'   
-           })
+            icon: 'error',
+            title: '가입되어있는 아이디가 없습니다'   
+          })
         return;
       }
     }
 
     const idFind = async () => {
-      if(confirmId.value==''){
+      if(confirmId.value == ''){
         Swal.fire({
             icon: 'error',
             title: '인증번호를 먼저 전송해주세요'   
@@ -75,23 +77,27 @@ export default {
             icon: 'error',
             title: '인증번호가 다릅니다.'   
           })
-          return;
+        return;
       }
-      
       else{
         try {
           const findId = async () =>{
-            const resposne = await axios.get("/Catchvegan/authPhone/idget/" + `${realPhoneNum.value}`);
+            const resposne = await axios.get("/Catchvegan/authPhone/idGet/" + `${realPhoneNum.value}`);
             id.value = resposne.data;
             Swal.fire({
-            icon: 'success',
-            title: '아이디는 ' + id.value + " 입니다."
-          })
+              icon: 'success',
+              title: '아이디는 ' + id.value + " 입니다."
+            }).then(()=>{
+              router.push({
+                name : "Main"
+              })
+            })
+            return;
           }
-          findId();
+        findId();
       } catch (error) {
         console.error('Failed to fetch ID:', error);
-      }
+        }
       }
     }
     return{

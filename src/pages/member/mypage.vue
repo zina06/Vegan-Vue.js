@@ -38,8 +38,10 @@
           <li v-for="review in reviews" :key="review.reviewIdx">
             <div class="review-item" v-if="review.reviewIdx">
               <div class="image-wrapper">
-                <img :src="review.images" alt="review-image" class="review-image">
+                <img :src="require(`../../assets/img/reviewimg/${review.images}`)" alt="review-image" class="review-image">
+                <div >{{ review.title }}</div>
               </div>
+              
               <div class="review-content">
                 <div>
                   <h4><b>제목 : {{ review.title }}</b></h4>
@@ -84,6 +86,11 @@
       </div>
     </div>
   </div>
+  <!--
+  <div class="summaryContainer de">
+        <button type="button" class="deletebutton" @click="RemoveMember">회원 탈퇴하기</button>
+  </div>
+  -->
 </template>
 <script>
 import { useRouter } from 'vue-router';
@@ -101,6 +108,8 @@ export default {
     const isModalOpen = ref(false);
     const router = useRouter();
     const token = sessionStorage.getItem("token");
+    const realId = ref('');
+    const password = ref('');
     const errorcheck = async () => {
       if(token == null){
         router.push({
@@ -109,6 +118,62 @@ export default {
       }
     };
     errorcheck(); 
+    
+   
+
+    /*
+    //회원삭제
+    const RemoveMember = () => {
+      isModalOpen.value = true;
+      Swal.fire({
+        title: '회원 정보 수정',
+        html:
+          `
+          <input id="inputpassword" class="swal2-input" type="password" placeholder="비밀번호를 입력해주세요">
+          `,
+        focusConfirm: false,
+        showCancelButton: true,
+        preConfirm: () => {
+          const inputpassword = document.getElementById('inputpassword').value;
+          if (!inputpassword) {
+            Swal.showValidationMessage('비밀번호를 입력해주세요');
+            return false;
+          }
+          return {
+            inputpassword,
+          }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // 수정사항 저장
+          removeUser(result.value);
+          Swal.fire({
+            icon: 'success',
+            title: '회원탈퇴가 완료되었습니다'    
+          })
+        }
+        isModalOpen.value = false;
+      });
+    };
+
+    //회원탈퇴 post
+    const removeUser = async (formData) => {
+      try {
+        formData.memberIdx = memberIdx; // memberIdx 추가
+        const response = await axios.put(`/Catchvegan/member/mypage/remove`, formData,{
+          headers : {
+            'AUTHORIZATION': 'Bearer ' + token
+          }
+        });
+        console.log('수정된 데이터:', formData);
+        console.log('서버의 응답:', response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    */
+
+
     //회원정보 수정창
     const openModal = () => {
       isModalOpen.value = true;
@@ -134,6 +199,7 @@ export default {
           <input id="email" class="swal2-input" type="email" value=${email}>
           <div>이메일</div>
           <select id="vegan-type" class="swal2-input" defaultValue=${veganType}>
+              <option value="lacto">비건 (Lacto Vegan)</option>
               <option value="lacto">락토 (Lacto Vegan)</option>
               <option value="ovo">오보 (Ovo-Vegetarian)</option>
               <option value="lacovo">락토 오보 (Lacto-ovo Vegetarian)</option>
@@ -156,7 +222,6 @@ export default {
             Swal.showValidationMessage('수정된 비밀번호를 입력해주세요');
             return false;
           }
-
 
           return {
             id,
@@ -202,6 +267,10 @@ export default {
         headers : {
           'AUTHORIZATION': 'Bearer ' + token
         }
+      }).catch(()=>{
+        router.push({
+            name:"Error"
+          })
       });
       reviews.value = res.data[0].reviewDTOList;
       user.value = res.data[0];
@@ -243,6 +312,7 @@ export default {
       user,
       reviews,
       deleteReview,
+      //RemoveMember
     }
   }
 
@@ -256,6 +326,19 @@ body {
   margin: 0;
 }
 
+.summaryContainer.de {
+  position: relative;
+  width: 200px;
+  height: 100px;
+}
+
+.deletebutton {
+  font-size: 12px;
+  padding: 3px 6px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
 div {
   box-sizing: border-box;
 }

@@ -1,79 +1,79 @@
 <template>
-  <div>
-      <form action="/member/signup" method="POST" name="member">
-          <div style="text-align: center;">            
-            <h2>회원 가입</h2>
-          </div>
-          <br>
-              <div class="textForm" style="position: relative;">
-              <input name="id" type="text" class="form-control" placeholder="아이디" v-model="id" />
-                <button class="btn-idcheck" type="button" id="checkbutton" @click="checkId()">아이디 중복 확인</button>
-              </div>
-              <i>특수문자를 제외한 5~15자리</i>
-              <br>
-              <br>
-              <div>
-                <div id="canpost" hidden="hidden" data-validation='false'></div>
-                <span id="valid" hidden="hidden" style="color : red">이미 존재하는 아이디입니다.</span>
-                <span id="valid2" hidden="hidden" style="color : red">아이디를 입력해주세요</span>
-                <span id="valid3" hidden="hidden" style="color : green">가입 가능한 아이디입니다</span>
-              </div>
-              <div class="textForm">
-                <input type="password" name="password"  class="form-control" placeholder="비밀번호" data-pw="cant" v-model="password"/>
-              </div>
-                <i>특수문자 / 문자 / 숫자 포함 형태의 8~15자리</i>
-              <div>
-                <div id="canpassword" v-if="passwordNull" style="color : green">비밀번호를 입력해주세요.</div>
-                <div id="cantpassword" hidden="hidden" style="color : red">비밀번호 형식이다릅니다.</div>
-              </div>
-              <br>
-              <div class="textForm" style="position: relative;">
-                  <input type="password" name="confirm_password" class="form-control" placeholder="비밀번호 확인" v-model="password2" />
-                  <button class="btn-pwcheck" type="button" id="pwcheckbutton" @click="checkPwd()">비밀번호 확인</button>
-                  <div id="passok" hidden="hidden" style="color : red">비밀번호가 다릅니다.</div>
-              </div>
-              <span id="confirmMsg"></span>
-              <br>
-              <div class="textForm">
-              <input type="text" name="name"  class="form-control" placeholder="이름" v-model="name"/>
-                <div id="namenull" style="color : red" v-if="nameNull">이름을 입력해주세요.</div>
-              </div>
-              <br>
-              <div class="textForm">
-                <input name="email" type="text" class="form-control" placeholder="이메일" v-model="email">
-              </div>
-              <i>naver.com , gmail.com , daum.net 만 가능합니다</i>
-              <br>
-              <br>
-              <div class="textForm" style="position: relative;">
-                <input name="phone" type="text" class="form-control" placeholder="전화번호" v-model="phone">
-                <button type="button" class="btn-sendauth" @click="sendSMS()">인증번호 요청</button>             
-              </div>
-              <i>숫자만 적어주세요</i>
-              <br>
-              <br>
-              <div class="textForm">
-                <input name="authNo" type="text" class="form-control" placeholder="인증번호 입력" v-model="authNo">
-              </div>
-              <div>
-                <label for="veganType">비건 타입 선택: </label>
-                <select id="veganType" v-model="veganType">
-                  <option value="strict">비건 (Vegan)</option>
-                  <option value="lacto">락토 (Lacto Vegan)</option>
-                  <option value="ovo">오보 (Ovo-Vegetarian)</option>
-                  <option value="lacovo">락토 오보 (Lacto-ovo Vegetarian)</option>
-                  <option value="pesco">페스코 (Pesco-Vegetarian)</option>
-                  <option value="pollo">폴로 (Pollo-Vegetarian)</option>
-                  <option value="flexi">플렉시테리언 (Flexitarian)</option>
-                  <option value="other">기타</option>
-                </select><font-awesome-icon icon="question-circle" @click="showtype"/> 비건 타입이 궁금하다면 클릭
-                <input class="form-control" type="hidden" name="{{veganType}}" value="{{veganType}}" />
-              </div>
-              <br>
-          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-          <button id="add" class="joinbtn" @click.prevent="signin()">계정 생성</button>
-      </form>
-  </div>
+    <div>
+        <form action="/member/signup" method="POST" name="member">
+            <div style="text-align: center;">            
+              <h2>회원 가입</h2>
+            </div>
+            <br>
+                <div class="textForm" style="position: relative;">
+                <input name="id" type="text" class="form-control" placeholder="아이디" v-model="id" />
+                  <button class="btn-idcheck" type="button" id="checkbutton" @click="checkId()">아이디 중복 확인</button>
+                </div>
+                <i>특수문자를 제외한 5~15자리</i>
+                <br>
+                <br>
+                <div>
+                  <div id="canpost" hidden="hidden" data-validation='false'></div>
+                  <span id="valid" hidden="hidden" style="color : red">이미 존재하는 아이디입니다.</span>
+                  <span id="valid2" hidden="hidden" style="color : red">아이디를 입력해주세요</span>
+                  <span id="valid3" hidden="hidden" style="color : green">가입 가능한 아이디입니다</span>
+                </div>
+                <div class="textForm">
+                  <input type="password" name="password"  class="form-control" placeholder="비밀번호" data-pw="cant" v-model="password"/>
+                </div>
+                  <i>특수문자 / 문자 / 숫자 포함 형태의 8~15자리</i>
+                <div>
+                  <div id="canpassword" v-if="passwordNull" style="color : green">비밀번호를 입력해주세요.</div>
+                  <div id="cantpassword" hidden="hidden" style="color : red">비밀번호 형식이다릅니다.</div>
+                </div>
+                <br>
+                <div class="textForm" style="position: relative;">
+                    <input type="password" name="confirm_password" class="form-control" placeholder="비밀번호 확인" v-model="password2" />
+                    <button class="btn-pwcheck" type="button" id="pwcheckbutton" @click="checkPwd()">비밀번호 확인</button>
+                    <div id="passok" hidden="hidden" style="color : red">비밀번호가 다릅니다.</div>
+                </div>
+                <span id="confirmMsg"></span>
+                <br>
+                <div class="textForm">
+                <input type="text" name="name"  class="form-control" placeholder="이름" v-model="name"/>
+                  <div id="namenull" style="color : red" v-if="nameNull">이름을 입력해주세요.</div>
+                </div>
+                <br>
+                <div class="textForm">
+                  <input name="email" type="text" class="form-control" placeholder="이메일" v-model="email">
+                </div>
+                <i>naver.com , gmail.com , daum.net 만 가능합니다</i>
+                <br>
+                <br>
+                <div class="textForm" style="position: relative;">
+                  <input name="phone" type="text" class="form-control" placeholder="전화번호" v-model="phone">
+                  <button type="button" class="btn-sendauth" @click="sendSMS()">인증번호 요청</button>             
+                </div>
+                <i>숫자만 적어주세요</i>
+                <br>
+                <br>
+                <div class="textForm">
+                  <input name="authNo" type="text" class="form-control" placeholder="인증번호 입력" v-model="authNo">
+                </div>
+                <div>
+                  <label for="veganType">비건 타입 선택: </label>
+                  <select id="veganType" v-model="veganType">
+                    <option value="strict">비건 (Vegan)</option>
+                    <option value="lacto">락토 (Lacto Vegan)</option>
+                    <option value="ovo">오보 (Ovo-Vegetarian)</option>
+                    <option value="lacovo">락토 오보 (Lacto-ovo Vegetarian)</option>
+                    <option value="pesco">페스코 (Pesco-Vegetarian)</option>
+                    <option value="pollo">폴로 (Pollo-Vegetarian)</option>
+                    <option value="flexi">플렉시테리언 (Flexitarian)</option>
+                    <option value="other">기타</option>
+                  </select><font-awesome-icon icon="question-circle" @click="showtype"/> 비건 타입이 궁금하다면 클릭
+                  <input class="form-control" type="hidden" name="{{veganType}}" value="{{veganType}}" />
+                </div>
+                <br>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <button id="add" class="joinbtn" @click.prevent="signin()">계정 생성</button>
+        </form>
+    </div>
 </template>
 
 <script>

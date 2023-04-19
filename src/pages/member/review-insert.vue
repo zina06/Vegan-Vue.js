@@ -26,7 +26,7 @@
         </div>
         <div>
           <label for="review-image" class="form-label">사진 첨부</label>
-          <input type="text" class="form-control" id="img" v-model="images">
+          <input type="file" class="form-control" id="img" @change="onChangeFile">
         </div>
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -49,6 +49,33 @@ export default {
     const rating = ref('');
     const images = ref('');
     const visitIdx = 1;
+    let file2 = null;
+    const file = ref('');
+    const files = ref(null);
+    const reviewDTO = ref({
+      title: "",
+      content: "",
+      rating: "",
+      images: "",
+      visit: ""
+  })
+
+    const token = sessionStorage.getItem("token");
+    const errorcheck = async () => {
+        if(token == null){
+          router.push({
+            name:"Main"
+          });
+        }
+      };
+      errorcheck();
+
+
+      const onChangeFile = (e) => {
+      file.value = console.log(e.target.files[0])
+      files.value = e.target.files[0];
+      file2 = e.target.files[0];
+    }
 
     const submitReview = async () => {
       if (!title.value) {
@@ -73,17 +100,40 @@ export default {
         return;
       }
 
-      const reviewData = {
-        title: title.value,
-        content: content.value,
-        rating: rating.value,
-        images: images.value,
-        visitIdx: visitIdx,
-      };
-
-
       try {
-        const response = await axios.post('/Catchvegan/review', reviewData);
+
+        reviewDTO.value = {
+          title: title.value,
+          content: content.value,
+          rating: rating.value,
+          images: file.value,
+          visitIdx: visitIdx,
+        };
+        
+
+        const formData = new FormData();
+        
+
+        formData.append('file', file2);
+
+        console.log(files.value);
+        console.log(formData.get('reviewDTO'));
+
+        const blob = new Blob([JSON.stringify(reviewDTO.value)], { type: 'application/json' });
+        formData.append('reviewDTO', blob, 'reviewDTO.json');
+
+      console.log("formData : " + formData.toString());
+      console.log(formData.entries);
+
+      
+        const  response  = await axios.post('/reviewInsertFiles', formData,{
+          headers : {
+            'AUTHORIZATION': 'Bearer ' + token,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+        );
+        console.log(response);
         if (response.status === 201) {
           Swal.fire({
             icon: 'success',
@@ -108,7 +158,7 @@ export default {
       title,
       content,
       rating,
-      images,
+      onChangeFile
     }
   },
   computed: {
