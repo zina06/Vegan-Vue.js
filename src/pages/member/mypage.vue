@@ -109,18 +109,31 @@ export default {
     const router = useRouter();
     const token = sessionStorage.getItem("token");
     const realId = ref('');
-    const password = ref('');
-    const errorcheck = async () => {
-      if(token == null){
-        router.push({
-          name:"Main"
-        });
-      }
-    };
-    errorcheck(); 
-    
-   
+    const password = ref(''); 
 
+
+    const hasMemberIdx = sessionStorage.getItem('memberIdx');
+    const hasManagerIdx = sessionStorage.getItem('managerIdx');
+
+    // const errorcheck = async () => {
+    //   if(token == null){
+    //     router.push({
+    //       name:"Error"
+    //     });
+    //   }
+    // };
+    // errorcheck();
+    
+    // const membercheck = async () => {
+    //   if(hasMemberIdx == null){
+    //     router.push({
+    //       name:"Error"
+    //     });
+    //   }
+    // };
+    // membercheck();
+
+  
     /*
     //회원삭제
     const RemoveMember = () => {
@@ -263,14 +276,21 @@ export default {
     const reviews = ref([]);
     const user = ref([]);
     const getReviews = async () => {
-      const res = await axios.get(`/Catchvegan/member/mypage/${memberIdx}`,{
+    const res = await axios.get(`/Catchvegan/member/mypage/${memberIdx}`,{
         headers : {
           'AUTHORIZATION': 'Bearer ' + token
         }
       }).catch(()=>{
+        if(hasManagerIdx != null ||  memberIdx != hasMemberIdx){
         router.push({
             name:"Error"
           })
+        }
+        else{
+          router.push({
+            name:"Main"
+          })
+        }
       });
       reviews.value = res.data[0].reviewDTOList;
       user.value = res.data[0];
@@ -279,7 +299,6 @@ export default {
       console.log(user.value);
       console.log(reviews.value);
       console.log(reviews.value);
-
     }
     getReviews();
 

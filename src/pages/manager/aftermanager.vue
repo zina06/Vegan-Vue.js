@@ -1,5 +1,5 @@
 <template>
-  Member Token onload
+  Manager Token onload
 </template>
 
 <script>
@@ -11,8 +11,33 @@ export default{
   setup(){
     const router = useRouter();
     const token = sessionStorage.getItem("token");
+    const hasManagerIdx = sessionStorage.getItem('managerIdx');
+    const hasMemberIdx = sessionStorage.getItem('memberIdx');
+
+    const managercheck = async () => {
+      if(hasMemberIdx != null){
+        router.push({
+          name:"Error"
+        })}
+      else{
+        router.push({
+          name:"Main"
+        })
+      }    
+    };
+    managercheck();
+
+    const errorcheck = async () => {
+      if(token == null){
+        router.push({
+          name:"Error"
+        });
+      }
+    };
+    errorcheck();
+
     const checkin = async () => {
-      const res = await axios.post('/Catchvegan/member/aftersignup',null,{
+      const res = await axios.get('/Catchvegan/manager/aftermanager',null,{
          headers: {
         'AUTHORIZATION': `Bearer ${token}` // 헤더에 JWT 토큰 추가
       }
@@ -28,15 +53,6 @@ export default{
       })
     }
     checkin();
-
-    const errorcheck = async () => {
-      if(token == null){
-        router.push({
-          name:"Error"
-        });
-      }
-    };
-    errorcheck();
   } 
 }
 </script>

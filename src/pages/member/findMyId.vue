@@ -52,7 +52,7 @@ export default {
           Swal.fire({
             icon: 'success',
             title: '인증번호가 전송되었습니다'   
-            })
+          })
           return;
         }
       } catch (error) {

@@ -108,7 +108,7 @@ export default {
               title: '비밀번호가 새롭게 설정되었습니다'
           }).then((res)=>{
           router.push({
-              name: "Main"
+              name: "Login"
              });
           })
         }
