@@ -111,6 +111,7 @@
                       <td v-if="alreadyReserve" class="col-2 text" style="width: 100px;  font-weight: bold; font-family: 'Helvetica Neue', sans-serif; font-size: 16px;">{{ eight }}명</td>
                       </tr>
                       <tr>
+                        
                         <td class="col-2" >
                           
 
@@ -192,7 +193,7 @@
               <div class="col-6 refund"  style="padding-left: 20px; width: 70%;">
                 <div>2일전 취소 : 100%환불</div>
                 <div>1일전 취소 : 50% 환불</div>
-                <div>당일 취소 : 환불 불가</div>
+                <div>당일 취소 : 50% 환불</div>
                 <div>노쇼 시 : 환불 불가</div>
               </div>
 
@@ -205,11 +206,13 @@
 
               <h4 class="mb-3" style="padding-left: 80px;"><b>결제</b></h4>
 
-              <div class="my-3" style="padding-left: 80px;">
-                <div class="form-check">
-                  <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                  <label class="form-check-label" for="credit">&nbsp;카카오페이</label>
-                </div>
+              <div class="my-3 form-check" style="padding-left: 80px;">
+
+            
+                <input type="checkbox" class="form-check-input" v-model="kakaoOk" id="" checked >
+                <label class="form-check-label">
+                  &nbsp;카카오페이</label>
+             
                 <!-- <div class="form-check">
                   <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
                   <label class="form-check-label" for="debit">Debit card</label>
@@ -362,6 +365,7 @@ export default {
     const resCount = ref('');
     const reserveTime = ref('');
     const refundOk = ref(false);
+    const kakaoOk = ref(false);
     // let paymentResultEventSource = null;
 
     //선결제금액 보여주기
@@ -417,6 +421,13 @@ export default {
         Swal.fire({
           icon: 'error',
           title: '환불 규정에 동의해주세요'
+        })
+        return;
+      }
+      if (!kakaoOk.value) {
+        Swal.fire({
+          icon: 'error',
+          title: '결제방식을 선택해주세요'
         })
         return;
       }
@@ -522,7 +533,8 @@ export default {
       payFirst,
       userName,
       userPhone,
-      alreadyReserve
+      alreadyReserve,
+      kakaoOk
     }
   }
 
@@ -692,5 +704,9 @@ export default {
 }
 .vc-week{
   height: 70px;
+}
+
+input[type="radio"]:checked + label {
+  background-color: rgb(41, 116, 7) !important;
 }
 </style>
