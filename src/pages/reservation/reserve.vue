@@ -83,18 +83,18 @@
                 </div>
              
                 
-
-                 <br><br>
+              
+                 <br> <br> 
                 <div class="col-md-12" style="padding-top: 50px; width: 1200px;">
                   <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span style="font-weight: bold; padding-left: 70px;">* 예약시간</span>
 
                   </h4>
-
+                  
 
                   <div style="display:flex; justify-content:center;">
                     <VDatePicker v-model="date" :min-date="new Date(Date.now() + 24 * 60 * 60 * 1000)" :max-date="maxDate" style="width: 800px; margin-left: 75px;"
-                      :clickable="true" @click="onSelectDate" />
+                      :clickable="true" @click="onSelectDate"  />
                   </div>
 
                   <br>
@@ -702,7 +702,9 @@ export default {
     border: #90ee90 !important;
     margin-right: 10px;
 }
-
+.vc-week{
+  height: 70px;
+}
 
 input[type="radio"]:checked + label {
   background-color: rgb(41, 116, 7) !important;

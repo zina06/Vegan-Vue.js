@@ -1,6 +1,6 @@
 <template>
-  <div class="search-container" style="width: 2000px">
-    <div class="search" style="border: 4px solid #808080; border-radius: 1%">
+  <div class="search-container" style="width: 2000px;">
+    <div class="search" style="border: 2px solid  #7fac7d; border-radius: 1%;  margin-right: 20px;">
       <form v-on:submit.prevent="submitForm" @click="checkValue">
         <input
           type="text"
@@ -16,17 +16,17 @@
           style="float: left; height: 4%; width: 4%"
           @click="submitForm"
         />
-        <datalist id="addressShow">
+        <datalist id="addressShow" style="margin-bottom: 10px;">
           <option v-for="(address, idx) in search.addressList" :key="idx">
-            {{ address }}
+          <span style="font-size: 1.3em;"> {{ address }}</span> 
           </option>
         </datalist>
 
         <!-- 체크박스 창   -->
         <div
-          style="height: 65px; padding-bottom: 1%; background-color: #808080"
+          style="height: 60px; padding-bottom: 1%; background-color:  #7fac7d"
         >
-          <div class="icon-box" style="margin-bottom: 5px">
+          <div class="icon-box" style="margin-bottom: 5px;">
             <img
               src="@/assets/img/vegun-icon/vegetable.png"
               alt="Image"
@@ -34,11 +34,11 @@
                 float: left;
                 border-radius: 5%;
                 height: 40px;
-                margin-left: 2%;
+                margin-left: 7%;
                 margin-top: 3%;
               "
             />
-            <div class="form-check" style="margin-top: 6%; float: left">
+            <div class="form-check" style="margin-top: 6%; float: left; margin-left: 5px;">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <div class="icon-box" style="margin-bottom: 5px">
+          <div class="icon-box" style="margin-bottom: 5px; ">
             <img
               src="@/assets/img/vegun-icon/milk.png"
               alt="Image"
@@ -62,9 +62,10 @@
                 height: 40px;
                 margin-left: 2%;
                 margin-top: 3%;
+               
               "
             />
-            <div class="form-check" style="margin-top: 6%; float: left">
+            <div class="form-check" style="margin-top: 6%; float: left; margin-left: 5px;">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -88,7 +89,7 @@
                 margin-top: 3%;
               "
             />
-            <div class="form-check" style="margin-top: 6%; float: left">
+            <div class="form-check" style="margin-top: 6%; float: left; margin-left: 5px;">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -112,7 +113,7 @@
                 margin-top: 3%;
               "
             />
-            <div class="form-check" style="margin-top: 6%; float: left">
+            <div class="form-check" style="margin-top: 6%; float: left; margin-left: 5px;">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -138,7 +139,7 @@
                   width: 150px;
                   align-items: center;
                   justify-content: center;
-                  background-color: #808080;
+                  background-color:  white;
                 "
                 @click="onClickButton(idx)"
               >
@@ -146,7 +147,7 @@
                   style="
                     width: 130px;
                     height: 100px;
-                    border-radius: 10%;
+                   
                     margin: 8px;
                   "
                   :src="item.imageSrc"
@@ -166,9 +167,9 @@
                   "
                 >
                   <router-link
-                    :to="`/Catchvegan/restaurant/detail/${item.restaurantIdx}`"
+                    :to="`/Catchvegan/restaurant/detail/${item.restaurantIdx}`" style=" text-decoration: none;"
                   >
-                    {{ item.name }}
+                    <span style="font-size: 1.6em; color: black; margin: 5px;"><b>{{ item.name }}</b></span>
                   </router-link>
                 </div>
               </div>
@@ -178,7 +179,7 @@
       </div>
 
       <!-- Page Nation -->
-      <div class="justify-content-center align-items-center">
+      <div class="justify-content-center align-items-center" style="margin-top: 50px;">
         <nav aria-label="Page navigation example">
           <ul class="pagination" style="margin-left: 5%">
             <li class="page-item">
@@ -186,7 +187,7 @@
                 class="page-link"
                 v-if="cur_page != 1"
                 @click="onSetMapMarkers(cur_page - 1)"
-              >
+            >
                 Previous
               </button>
             </li>
@@ -221,7 +222,7 @@
       >
         <naver-marker :latitude="search.latitude" :longitude="search.longitude">
         </naver-marker>
-        <div v-for="(item, idx) in markers" :key="idx">
+        <div v-for="(item, idx) in markers" :key="idx" style="width: 200px;">
           <naver-marker
             @click="onClickButton(idx)"
             :latitude="item.latitude"
@@ -232,15 +233,15 @@
           <naver-info-window
             :marker="item.marker"
             :open="item.isOpen"
-            style="font-size: xx-small; background-color: burlywood"
+            style="font-size: 10px; background-color: white; width: 160px;"
             @onLoad="onLoadInfoWindow($event, idx)"
           >
             <img
               style="
                 width: 150px;
                 height: 150px;
-                margin: 10px;
-                border-radius: 10%;
+                margin: 5px;
+               
               "
               :src="item.imageSrc"
               :alt="item.name"
@@ -250,14 +251,17 @@
                 margin: 10px;
                 background-color: white;
                 border-radius: 10%;
-                height: 60px;
+                height: 30px;
+                margin-bottom: 30px;
               "
             >
               <router-link
                 :to="`/Catchvegan/restaurant/detail/${item.restaurantIdx}`"
-              >
-                {{ item.name }}
+               style="text-decoration: none; font-size: 1.5em; color: black;">
+               <b style="margin: auto;"> {{ item.name }}</b>
+              
               </router-link>
+              <p style="width: 100%;">{{ item.address }}</p>
             </div>
             <div class="infowindow-style"></div>
           </naver-info-window>
@@ -517,7 +521,7 @@ const mapOptions = {
 .icon-box {
   width: 25%;
   height: 100%;
-  background-color: #808080;
+  background-color:  #7fac7d;
   text-align: center;
   align-content: center;
   align-items: center;
@@ -529,10 +533,39 @@ const mapOptions = {
 
 .infowindow-style {
   color: black;
-  background-color: burlywood;
+  background-color: white;
   text-align: center;
   font-weight: 600;
   padding: 6px 8px;
   border-radius: 10%;
+}
+
+.page-link {
+  color: black;
+ 
+}
+.justify-content-center {
+  display: flex;
+  justify-content: center;
+}
+
+.align-items-center {
+  display: flex;
+  align-items: center;
+}
+
+/* 선택된 버튼에 대한 스타일 */
+.page-item button.active
+{
+  background-color: #7fac7d;
+  border:  #7fac7d;
+  color: white;
+}
+
+/* Hover 시 버튼에 대한 스타일 */
+.page-item button:hover {
+  background-color:  #7fac7d;
+  border:   #7fac7d;
+  color: white;
 }
 </style>
