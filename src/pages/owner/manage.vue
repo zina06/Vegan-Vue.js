@@ -2,7 +2,7 @@
   <br><br>
 <nav class="justify-content-center manage">
   <div class="nav nav-tabs nav-tabs-custom justify-content-center" id="nav-tab" role="tablist" style="width: 1000px; margin: 0 auto;">
-    <button class="nav-link active with-nav-tabs panel-success" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">예약자 관리</button>
+    <button class="nav-link active with-nav-tabs panel-success" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" style="color: black;">예약자 관리</button>
     <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" style="color: black;">식당 관리</button>
     <!-- <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">방문 상태 </button> -->
    
@@ -12,13 +12,13 @@
   <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0" style="text-align: center;" >
     <br><br><br>
   
-    <VDatePicker class="calendar" style="width: 800px;" @click="date" :attributes='attrs' v-model="minDate"/><br><br>
+    <VDatePicker class="calendar" style="width: 800px;" @click="date"  v-model="minDate" :height="600" :attributes="attributes"/><br><br>
       <h4>예약리스트</h4>
       <h4> {{ formatreserveDate }}</h4><br>
     <div v-if="memberList && memberList.length > 0">
               
                <table class="table table-bordered" style="width: 800px; margin: auto;" >
-                <thead style="background-color: #ccc;">
+                <thead style="background-color: #F3F3F3;">
                   <tr>
                   <th>예약자</th>
                   <th>전화번호</th>
@@ -38,7 +38,7 @@
                   <td>{{ member.visitStatus }}</td>
                   <td>
                     <button class="btn btn-info" @click="updateConfirm(member.reserveIdx,member.visitStatus)" v-if="member.cancelStatus==='x' && member.visitStatus==='x'">방문확정</button>
-                    <button class="btn btn-info disabled" v-if="member.visitStatus==='o'">방문확정</button>
+                    <button class="btn btn-info disabled" v-if="member.visitStatus==='o'" style="color: white;">방문확정</button>
                     <button class="btn btn-danger disabled" v-if="member.cancelStatus==='o'">예약취소</button>
                    
                   </td>
@@ -125,7 +125,7 @@
   <!--수정폼-->
   <div class="uform-container editform card" v-if="isEditing">
     <div class="inform card-body">
-      <label style="text-align: left;"><b>식당 이름</b> </label><br> <input name="name" type="text" class="form-control restaurantname" v-model="restaurantName" required="required"/><br>
+     <label style="text-align: left;"><b>식당 이름</b> </label><br> <input name="name" type="text" class="form-control restaurantname" v-model="restaurantName" required="required"/><br>
       <label style="float: left;"><b>메인 사진</b> </label><input class="form-control" type="file"  multiple accept="image/*" ref="fileRef" name="file" @change="onChangeFile($event)"><br>
     
       <div class="images" v-if="images.length > 0">
@@ -173,6 +173,7 @@
 </template>
 
 <script>
+
 import { onMounted, reactive } from 'vue'
 import { computed, ref, watch  } from 'vue';
 import axios from 'axios';
@@ -184,6 +185,7 @@ setup(){
   const minDate = ref(new Date());
   const reserveDate = ref(new Date());
   const formatreserveDate =ref('');
+  const showReserveDate=ref(new Date([]));
   const route = useRoute();
   const router=useRouter();
   const managerIdx=route.params.managerIdx;
@@ -200,7 +202,7 @@ setup(){
   const memberList=ref([]);
   const reservedDate=ref('');
   const memberListLength=ref('');
-  const attrs = ref([]);
+
   const memberDateList=ref([]);
   const Swal = require('sweetalert2');
   const isEditing=ref(false);
@@ -218,6 +220,15 @@ setup(){
     };
     errorcheck();
   // const backendUrl = process.env.VUE_APP_BACKEND_URL;
+  const attributes = ref([
+  {
+    // Boolean
+    dot: true,
+    dates: [
+      
+    ],
+}])
+
 
  const file = ref('')
  const onChangeFile=(e)=>{
@@ -225,60 +236,17 @@ setup(){
   files.value = e.target.files[0];
   file2=e.target.files[0];
  }
-//  const insertVisit = ref({
-//       visitIdx: null,
-//       reserveIdx:0 ,
-//       price: 0,
-//       design: 0,
-//       delivery: 0,
-//     });
+  // const attrs = ref([
+  //   {
+  //     key: 'today',
+  //     highlight: 'red',
+  //     dates:[showReserveDate] 
+  //   },
+  // ]);
   
-  const fetchFiles = async () => {
-      // try {
-      //   const response = await axios.get(`/files`);
-        
-      //   files.value =  response.data;
-      //   console.log("파일이름:"+files.value);
-      //   // @/assets/uploadimages/${filename}
-      // } catch (error) {
-      //   alert(error.message)
-      // }
-    }
 
 
-  // const selectFile = (event) => {
-  //   const formData = new FormData()
-  //   for (const file of event.target.files) {
-  //     formData.append('files', file)
-  //   }
 
-  //   axios.post(`/files`, formData, {
-  //     headers: {'Content-Type': 'multipart/form-data'}
-  //   }).then(() => {
-  //     fetchFiles();
-  //   }).catch(error => {
-  //     alert(error.message)
-  //   })
-  // }
-
-  // const selectFile = (event, dataObj) => {
-  //   const formData = new FormData()
-  //   for (const file of event.target.files) {
-  //     formData.append('files', file)
-  //   }
-
-  //   const blob=new Blob([JSON.stringify(dataObj)],{
-  //     type:'application/json',
-  //   })
-  //   formData.append('info'.blob);
-  //   axios.post(`/files`,'/journey', formData, {
-  //     headers: {'Content-Type': 'multipart/form-data'}
-  //   }).then(() => {
-  //     fetchFiles();
-  //   }).catch(error => {
-  //     alert(error.message)
-  //   })
-  // }
       const uploadAPI = async () => {
        
       try {
@@ -322,17 +290,15 @@ setup(){
             'AUTHORIZATION': 'Bearer ' + token
           }
         });
-        
      
-        // return data?.restaurantIdx;
       } catch (err) {
         console.log(err);
         router.push({
             name:"Error"
           })
-        // console.log( "dto"+formData);
+       
       }
-      // location.reload();
+    
         Swal.fire({
             icon: 'success',
             title: '수정이 완료되었습니다.'     
@@ -341,11 +307,6 @@ setup(){
           window.location.reload(true);
         })
     };
-// uploadAPI();
-  onMounted(() => {
-      fetchFiles();
-    
-    })
 
   
   const date = (context) => {
@@ -355,8 +316,7 @@ setup(){
       return;
     }
     const match = context.target.ariaLabel.match(/(\d+)년 (\d+)월 (\d+)일 (.+)/);
-    // text.value=context.target.ariaLabel;
-    
+   
     const year = parseInt(match[1]);
     const month = parseInt(match[2]) - 1; // JavaScript에서 월은 0부터 시작하므로 1을 뺍니다.
     const day = parseInt(match[3]);
@@ -384,19 +344,25 @@ setup(){
       }
      }).then((inform)=>{
         
-        //  restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
-        //  restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
-        //  menu.value=inform.data.restaurantDTO.menu;  //메뉴
+
          memberList.value=inform.data.reservelist;
          memberListLength.value=inform.data.reservelist.length;
          const array = [memberList.value.length];
+         const dateArray=[];
          for(let i =0; i<memberListLength.value; i++){
             array[i] = new Date(memberList.value[i].reserveDate);
+          //  attributes.value[0].dates.push(array[i]);
             memberList.value[i].reserveDate = array[i];
+            
+            
          } 
-         console.log(memberList.value);
-         console.log("reserveIdx:"+inform.data.reservelist[0].reserveIdx);
-         console.log("길이:"+memberListLength.value);
+         console.log("예약날짜dd : "+showReserveDate.value);
+         if (inform.data.reservelist) {
+        // memberDateList.value=inform.data.reservelist.map((member) =>  moment(member.reserveDate).format('YYYY-MM-DD'));
+          console.log(memberDateList.value);
+          // console.log(attributes.value[0].dates);
+      } 
+      
           
       })
       // .catch(()=>{
@@ -406,6 +372,7 @@ setup(){
       // })
    };
    getMemberlist();
+   console.log(attributes.value[0].dates);
 
 
   
@@ -432,9 +399,16 @@ setup(){
         console.log("이미지파일"+inform.data.restaurantDTO.images);
         images.value=inform.data.restaurantDTO.images;
         console.log("이미지:"+images.value);
-          // //멤버 리스트에서 날짜만 추출하여 배열에 담기
+        const array = [inform.data.all.length];
+        for(let i =0; i<inform.data.all.length; i++){
+          array[i] = new Date(inform.data.all[i].reserveDate);
+          inform.data.all[i].reserveDate = array[i];
+          attributes.value[0].dates.push(inform.data.all[i].reserveDate);
+        }
+        console.log(attributes.value[0].dates);
+          //멤버 리스트에서 날짜만 추출하여 배열에 담기
         //   if (inform.data.reservelist) {
-        // memberDateList.value=inform.data.reservelist.map((member) => member.reserveDate.slice(0, 10));} 
+        // memberDateList.value=inform.data.reservelist.map((member) => member.reserveDate);} 
         // console.log(memberDateList.value);
         
     })
@@ -484,52 +458,7 @@ setup(){
   }
 
 
-  // const creatVisit=async()=>{
-  //   await axios.post('/Catchvegan/manager/createVisit', {reserveIdx:reserveIdx},{
-  //     headers : {
-  //       'AUTHORIZATION': 'Bearer ' + token
-  //     }
-     
-  //   })
-  //   console.log("확인");
-  // }
-  
 
-
-  
-    // const getMemberlist = async() =>{
-     
-    //     const res = await axios.get(`/Catchvegan/manager/${managerIdx}`,{
-    //       reserveDate : reservedDate.value
-    //     }).then((inform)=>{
-
-    //         // console.log(inform.data);
-    //         // console.log(inform.data.reservelist[0].memberDTO.name);
-    //         // console.log(inform.data.restaurantDTO.name);
-    //         restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
-    //         restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
-    //         menu.value=inform.data.restaurantDTO.menu;  //메뉴
-    //         //memberList.value=inform.data.reservelist[0].memberDTO;  //예약한 사람 리스트
-    //         // console.log(inform.data.reservelist[0].memberDTO);
-    //         // console.log("=========");
-    //         // console.log(inform.data.reservelist);
-    //         memberList.value=inform.data.reservelist;
-    //         // console.log("reserveDate:"+inform.data.reservelist[0].reserveDate);
-           
-    //         for(let i=0;i<inform.data.reservelist.length;i++){
-    //           // console.log("배열의예약데이트"+inform.data.reservelist[i].reserveDate);
-    //           // console.log("오늘날짜:"+formatreserveDate.value);
-    //               console.log( "예약리스트:"+memberList[i].value);
-    //             if(inform.data.reservelist[i].reserveDate.slice(0, 10)==this.formatreserveDate){
-    //               memberList.value=inform.data.reservelist[i];
-    //             }
-    //         }
-    //         memberListLength.value=inform.data.reservelist.length;
-    //         console.log(memberList.value);
-    //         console.log("길이:"+memberListLength.value);
-    //     })
-    //   };
-    //   getMemberlist();
 
     
   
@@ -547,7 +476,7 @@ setup(){
     memberList,
     reservedDate,
     memberListLength,
-    attrs,
+    // attrs,
     updateConfirm,
     isEditing,
     files,
@@ -555,9 +484,11 @@ setup(){
     images,
     uploadAPI,
     file,
+    attributes
    
   }
 },
+
 
 }
 </script>
@@ -568,7 +499,8 @@ setup(){
   color: #fff;
 }
 button.nav-link{
-  width: 400px;
+  height: 55px;
+  width: 500px;
 }
 
 .restaurantname{
@@ -600,5 +532,11 @@ button.nav-link{
  max-width: 100%;
  max-height: 100%;
 }
+.vdp-datepicker {
+  height: 600px;
+}
 
+.vc-week{
+  height: 70px;
+}
 </style>
