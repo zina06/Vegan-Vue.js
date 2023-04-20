@@ -46,6 +46,21 @@ export default {
     };
     errorcheck();
 
+  axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 500) {
+       Swal.fire({
+          icon: 'error',
+          title: '로그인 실패'
+        });
+    }
+    return Promise.reject(error);
+  }
+);
+
     const login = () =>{
       const login2 = async () =>{
         const res = await axios.post('/Catchvegan/member/login',{

@@ -23,8 +23,8 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <!--<button type="button" class="nav-item nav-link active custom-button" @click.prevent="tokentest()">토큰실험용</button>-->
-              <strong class="greeting" v-if="!headerstate">{{ sessionid }} 님 반갑습니다</strong>
+              <strong class="greeting" v-if="!headerstate && hasMemberIdx">{{ loginid }} 님 반갑습니다</strong>
+              <strong class="greeting" v-if="!headerstate && hasManagerIdx">{{ loginid }} 님 반갑습니다</strong>
               <button type="button" class="custom-button" @click.prevent="main()">HOME</button>
               <button type="button" class="custom-button" v-if="headerstate" @click.prevent="signup()">회원가입</button>
               <button type="button" class="custom-button" v-if="headerstate" @click.prevent="login()">로그인</button>
@@ -32,7 +32,7 @@
               <button type="button" class="custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="mypage()">내정보</button>
               <button type="button" class="custom-button" v-if="!headerstate && hasMemberIdx" @click.prevent="mydining()">마이다이닝</button>
               <button type="button" class="custom-button" v-if="!headerstate && hasManagerIdx" @click.prevent="logout()">로그아웃</button>
-              <button type="button" class="custom-button" v-if="!headerstate && hasManagerIdx">나는어드민</button>
+              <button type="button" class="custom-button" v-if="!headerstate && hasManagerIdx" @click.prevent="manager()">식당관리</button>
               <!-- <div class="d-none d-lg-flex ms-2">
               <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
                 <small class="fa fa-search text-body"></small>
@@ -65,8 +65,10 @@ export default {
       const Swal = require('sweetalert2');
       const headerstate = ref(false);
       const token = sessionStorage.getItem("token");
+      const loginid = sessionStorage.getItem("id");
       const hasMemberIdx = sessionStorage.getItem('memberIdx');
       const hasManagerIdx = sessionStorage.getItem('managerIdx');
+      
       const check = () => {
         if(token == null){
           headerstate.value = true;
@@ -85,10 +87,10 @@ export default {
           timerProgressBar: true,
           didOpen: () => {
             Swal.showLoading()
-            const b = Swal.getHtmlContainer().querySelector('b')
-            timerInterval = setInterval(() => {
-              b.textContent = Swal.getTimerLeft()
-            }, 100)
+            // const b = Swal.getHtmlContainer().querySelector('b')
+            // timerInterval = setInterval(() => {
+            //   b.textContent = Swal.getTimerLeft()
+            // }, 100)
           },
           willClose: () => {
             clearInterval(timerInterval)
@@ -97,6 +99,10 @@ export default {
           if (result.dismiss === Swal.DismissReason.timer) {
             console.log('로그아웃하는중')
           }
+        }).then(() => {
+          router.push({
+            name:"Main"
+          });
         })
         headerstate.value = true;
         sessionStorage.clear();
@@ -105,12 +111,10 @@ export default {
 
       const router = useRouter();
 
-      const sessionid = sessionStorage.getItem("id");
-
       const mypage = () => {
         router.push({
           name:"Mypage",
-          params:{"id": sessionid}
+          params:{"id": hasMemberIdx}
         });
       }
 
@@ -132,18 +136,17 @@ export default {
         });
       }
 
-      const tokentest = () => {
-        console.log(token);
-        router.push({
-          name:"Aftersignup",
-          params:{"token": token}
-        });
-      }
-
       const mydining = () => {
         router.push({
           name:"Mydining",
-          params:{"id": sessionid}
+          params:{"id": hasMemberIdx}
+        });
+      }
+
+      const manager = () => {
+        router.push({
+          name:"Manager",
+          params:{"managerIdx": hasManagerIdx}
         });
       }
 
@@ -155,10 +158,10 @@ export default {
         login,
         signup,
         main,
-        sessionid,
-        tokentest,
+        manager,
         hasManagerIdx,
-        hasMemberIdx
+        hasMemberIdx,
+        loginid
       }
     }
 }

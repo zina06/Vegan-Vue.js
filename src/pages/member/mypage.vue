@@ -112,18 +112,31 @@ export default {
     const router = useRouter();
     const token = sessionStorage.getItem("token");
     const realId = ref('');
-    const password = ref('');
-    const errorcheck = async () => {
-      if(token == null){
-        router.push({
-          name:"Main"
-        });
-      }
-    };
-    errorcheck(); 
-    
-   
+    const password = ref(''); 
 
+
+    const hasMemberIdx = sessionStorage.getItem('memberIdx');
+    const hasManagerIdx = sessionStorage.getItem('managerIdx');
+
+    // const errorcheck = async () => {
+    //   if(token == null){
+    //     router.push({
+    //       name:"Error"
+    //     });
+    //   }
+    // };
+    // errorcheck();
+    
+    // const membercheck = async () => {
+    //   if(hasMemberIdx == null){
+    //     router.push({
+    //       name:"Error"
+    //     });
+    //   }
+    // };
+    // membercheck();
+
+  
     /*
     //회원삭제
     const RemoveMember = () => {
@@ -318,14 +331,21 @@ export default {
     
     
     const getReviews = async () => {
-      const res = await axios.get(`/Catchvegan/member/mypage/${memberIdx}`,{
+    const res = await axios.get(`/Catchvegan/member/mypage/${memberIdx}`,{
         headers : {
           'AUTHORIZATION': 'Bearer ' + token
         }
       }).catch(()=>{
+        if(hasManagerIdx != null ||  memberIdx != hasMemberIdx){
         router.push({
             name:"Error"
           })
+        }
+        else{
+          router.push({
+            name:"Main"
+          })
+        }
       });
       // 리뷰 데이터가 없는 경우에 대한 처리
       // if (res.data[0].reviewDTOList[0].reviewIdx !== null) {

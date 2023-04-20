@@ -8,20 +8,26 @@ import Login from "@/pages/member/login.vue";
 import Mydining from "@/pages/member/my-dining.vue";
 import Mypage from "@/pages/member/mypage.vue";
 import Reviewinsert from "@/pages/member/review-insert.vue";
-import Owner from "@/pages/owner/manage.vue";
+import Manager from "@/pages/manager/manager.vue";
 import Reserve from "@/pages/reservation/reserve.vue";
 import Confirm from "@/pages/reservation/confirm.vue";
 import FindMyId from "@/pages/member/findMyId.vue";
 import FindMyPassword from "@/pages/member/findMyPassword.vue";
-import Aftersignup from "@/pages/member/aftersignup.vue";
+import Aftermember from "@/pages/member/aftermember.vue";
+import Aftermanager from "@/pages/manager/aftermanager.vue";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: "/Catchvegan/member/aftersignup",
-      name: "Aftersignup",
-      component: Aftersignup,
+      path: "/Catchvegan/member/aftermember",
+      name: "Aftermember",
+      component: Aftermember,
+    },
+    {
+      path: "/Catchvegan/manager/aftermanager",
+      name: "Aftermanager",
+      component: Aftermanager,
     },
     {
       path: "/Catchvegan",
@@ -84,9 +90,9 @@ const router = createRouter({
       component: Reviewinsert,
     },
     {
-      path: "/Catchvegan/manage/:managerIdx",
-      name: "Owner",
-      component: Owner,
+      path: "/Catchvegan/manager/:managerIdx",
+      name: "Manager",
+      component: Manager,
     },
     {
       path: "/Catchvegan/reserve",

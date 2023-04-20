@@ -88,7 +88,7 @@
               <div>예약일시</div>
               <div>{{ reservation.reserveDate.getFullYear() }}년 {{ reservation.reserveDate.getMonth() + 1 }}월 {{
                 reservation.reserveDate.getDate() }}일 {{ reservation.reserveDate.getHours() }}시 {{
-    reservation.reserveDate.getMinutes() }}분</div>
+                reservation.reserveDate.getMinutes() }}분</div>
               <div>{{ reservation.resCount }}</div>
               <div>{{ reservation.restaurantDTO.name }}</div>
               <div>{{ reservation.restaurantDTO.city }}</div>
@@ -115,14 +115,8 @@ export default {
     const Swal = require('sweetalert2');
     const memberIdx = sessionStorage.getItem("memberIdx");
     const token = sessionStorage.getItem("token");
-    const errorcheck = async () => {
-      if(token == null){
-        router.push({
-          name:"Main"
-        });
-      }
-    };
-    errorcheck(); 
+    const hasMemberIdx = sessionStorage.getItem('memberIdx');
+    const hasManagerIdx = sessionStorage.getItem('managerIdx');
 
     // const goToReviewPage = function () {
     //             router.push({
@@ -149,6 +143,17 @@ export default {
       const res = await axios.get(`/Catchvegan/mydining/getReserves/${memberIdx}`,{
         headers : {
           'AUTHORIZATION': 'Bearer ' + token
+        }
+      }).catch(()=>{
+        if(hasManagerIdx != null ||  memberIdx != hasMemberIdx){
+        router.push({
+            name:"Error"
+          })
+        }
+        else{
+          router.push({
+            name:"Main"
+          })
         }
       });
       console.log(res);
@@ -247,6 +252,17 @@ export default {
         headers : {
           'AUTHORIZATION': 'Bearer ' + token
         }
+      }).catch(()=>{
+        if(hasManagerIdx != null ||  memberIdx != hasMemberIdx){
+        router.push({
+            name:"Error"
+          })
+        }
+        else{
+          router.push({
+            name:"Main"
+          })
+        }
       });
       console.log(res.data);
       completedReservations.value = res.data;
@@ -267,6 +283,17 @@ export default {
       const res = await axios.get(`/Catchvegan/mydining/getReserveCancel/${memberIdx}`,{
         headers : {
           'AUTHORIZATION': 'Bearer ' + token
+        }
+      }).catch(()=>{
+        if(hasManagerIdx != null ||  memberIdx != hasMemberIdx){
+        router.push({
+            name:"Error"
+          })
+        }
+        else{
+          router.push({
+            name:"Main"
+          })
         }
       });
       console.log(res.data);

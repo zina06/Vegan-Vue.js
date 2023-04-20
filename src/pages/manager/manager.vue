@@ -211,14 +211,41 @@ setup(){
   let file2 = null;
   const reserveDateDate = ref([]);
   const token = sessionStorage.getItem("token");
-  const errorcheck = async () => {
-      if(token == null){
+  const hasMemberIdx = sessionStorage.getItem('memberIdx');
+  const hasManagerIdx = sessionStorage.getItem('managerIdx');
+  const memberIdx = sessionStorage.getItem("memberIdx");
+
+    const managercheck = async () => {
+      if(hasMemberIdx != null){
+        router.push({
+          name:"Error"
+        })} 
+    };
+    managercheck();
+
+    const managercheck2 = async () => {
+      if(hasManagerIdx != null){
         router.push({
           name:"Main"
-        });
-      }
+        })} 
     };
-    errorcheck();
+    managercheck2();
+
+      axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 403) {
+        router.push({
+          name:"Error"
+        })
+    }
+    return Promise.reject(error);
+  }
+);
+
+
   // const backendUrl = process.env.VUE_APP_BACKEND_URL;
   const attributes = ref([
   {
@@ -230,19 +257,19 @@ setup(){
 }])
 
 
- const file = ref('')
- const onChangeFile=(e)=>{
-  file.value = console.log(e.target.files[0])
-  files.value = e.target.files[0];
-  file2=e.target.files[0];
- }
-  // const attrs = ref([
-  //   {
-  //     key: 'today',
-  //     highlight: 'red',
-  //     dates:[showReserveDate] 
-  //   },
-  // ]);
+  const file = ref('')
+  const onChangeFile=(e)=>{
+    file.value = console.log(e.target.files[0])
+    files.value = e.target.files[0];
+    file2=e.target.files[0];
+  }
+//  const insertVisit = ref({
+//       visitIdx: null,
+//       reserveIdx:0 ,
+//       price: 0,
+//       design: 0,
+//       delivery: 0,
+//     });
   
 
 
@@ -289,14 +316,14 @@ setup(){
           headers : {
             'AUTHORIZATION': 'Bearer ' + token
           }
-        });
-     
+        });    
+        // return data?.restaurantIdx;
       } catch (err) {
         console.log(err);
         router.push({
-            name:"Error"
-          })
-       
+            name:"Main"
+        })
+        // console.log( "dto"+formData);
       }
     
         Swal.fire({
@@ -308,7 +335,27 @@ setup(){
         })
     };
 
-  
+    // const managercheck = async () => {
+    //   const res = await axios.get(`/Catchvegan/manager/${managerIdx}`,{
+    //     headers : {
+    //       'AUTHORIZATION': 'Bearer ' + token
+    //     }
+    //   }).catch(()=>{
+    //     if(hasMemberIdx != null || managerIdx != hasManagerIdx){
+    //       router.push({
+    //         name:"Error"
+    //       })
+    //     }
+    //     else{
+    //       router.push({
+    //         name:"Main"
+    //       })
+    //     }
+    //   });
+    // }
+    // managercheck(); 
+    
+
   const date = (context) => {
     console.log("context:"+context);
     console.log("예약날짜 : "+context.target.ariaLabel);
@@ -335,16 +382,15 @@ setup(){
     formatreserveDate.value = formattedReserveDate;
     console.log("예약날짜 : "+formatreserveDate.value);
 
-
-    const getMemberlist = async() =>{
-  
+    const getMemberlist = async() => {
      const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`,{
       headers : {
         'AUTHORIZATION': 'Bearer ' + token
-      }
-     }).then((inform)=>{
-        
-
+        }
+      }).then((inform)=>{ 
+        //  restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
+        //  restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
+        //  menu.value=inform.data.restaurantDTO.menu;  //메뉴
          memberList.value=inform.data.reservelist;
          memberListLength.value=inform.data.reservelist.length;
          const array = [memberList.value.length];
@@ -356,6 +402,9 @@ setup(){
             
             
          } 
+         console.log(memberList.value);
+         console.log("reserveIdx:"+inform.data.reservelist[0].reserveIdx);
+         console.log("길이:"+memberListLength.value);
          console.log("예약날짜dd : "+showReserveDate.value);
          if (inform.data.reservelist) {
         // memberDateList.value=inform.data.reservelist.map((member) =>  moment(member.reserveDate).format('YYYY-MM-DD'));
@@ -381,14 +430,12 @@ setup(){
   
 
   const getRestaurant = async() =>{
-    
     const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`,{
       headers : {
         'AUTHORIZATION': 'Bearer ' + token
       }
     }).then((inform)=>{
        console.log(inform.data);
-
         restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
         restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
         menu.value=inform.data.restaurantDTO.menu;  //메뉴
