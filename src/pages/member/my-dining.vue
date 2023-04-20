@@ -27,7 +27,7 @@
           <li v-for="reservation in upcomingReservations" :key="reservation.reserveIdx"
             style="justify-content: flex-start;">
             <div class="reservation-item">
-              <button class="w-btn-outline w-btn-green-outline w-25" @click="cancelReserve(reservation.reserveIdx)">취소</button>
+              <button class="w-btn-outline w-btn-green-outline w-25" @click="cancelReserve(reservation)">취소</button>
               <div>예약일시</div>
               <div>{{ reservation.reserveDate.getFullYear() }}년 {{ reservation.reserveDate.getMonth() + 1 }}월 {{
                 reservation.reserveDate.getDate() }}일 {{ reservation.reserveDate.getHours() }}시 {{
@@ -107,6 +107,7 @@
 import { useRouter, useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
 import axios from 'axios';
+import { swal } from 'sweetalert2/dist/sweetalert2';
 export default {
   setup() {
     const route = useRoute();
@@ -162,10 +163,52 @@ export default {
     getReservations();
     
     //예약취소
-    const cancelReserve = (idx) =>{
-      // console.log(idx);
-      const cancel = async () =>{
-        const res = await axios.post(`/Catchvegan/reserve/refund`,{reserveIdx : idx},{
+    const cancelReserve = (reservation) =>{
+      const ONE_DAY = 24 * 60 * 60 * 1000;
+      console.log(reservation.reserveDate);
+
+      // 현재 일자 객체 생성
+      const currentDate = new Date();
+
+      // 두 일자 간 차이 일 수 계산
+      const diffInDays = Math.round((reservation.reserveDate.getTime() - currentDate.getTime()) / ONE_DAY);
+      console.log(diffInDays);
+      // 1일 이내 여부 판단
+      if (diffInDays <= 1) {
+        Swal.fire({
+            icon : 'info',
+            title : '예약일 하루전은 예약금의 50%만 환불됩니다.',
+            text : '그래도 환불하시겠습니까?',
+            showCancelButton: true, 
+            confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+            cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+          }).then(res =>{
+            if(res.isConfirmed){
+              reservation.restaurantIdx=1;
+              cancel(reservation);
+            }
+          })
+      } else {
+        console.log("예약일과 현재 일자의 차이가 1일 이상입니다.");
+        Swal.fire({
+            icon : 'info',
+            title : '정말 취소하시겠습니까?',
+            showCancelButton: true, 
+            confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+            cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+          }).then(res =>{
+            if(res.isConfirmed){
+              cancel(reservation);
+            }
+          })
+      }
+      
+      
+      const cancel = async (reservation) =>{
+        const res = await axios.post(`/Catchvegan/reserve/refund`,{
+          reserveIdx : reservation.reserveIdx,
+          payAmount : reservation.restaurantIdx
+        },{
           headers : {
             'AUTHORIZATION': 'Bearer ' + token
           }
@@ -182,9 +225,19 @@ export default {
             }
           })
         }
+        else{
+          Swal.fire({
+            icon : 'error',
+            title : '취소 실패 다시 시도해주세요',
+            confirmButtonText: '확인'
+          }).then(res =>{
+            if(res.isConfirmed || !res.isConfirmed){
+              location.reload();
+            }
+          })
+        }
       
       }
-      cancel();
     }
 
     //방문완료정보 불러오기
