@@ -134,7 +134,7 @@
           <img :src="`@/assets/uploadimages/${fileName}`" alt="이미지" class="uploadimg">
         </div> -->
        
-        <img :src="require(`../../assets/uploadimages/${images}`)" alt="이미지" class="uploadimg">
+        <img :src="require(`../../assets/img/restaurant/${images}`)" alt="이미지" class="uploadimg">
       </div>
       <label style="float: left;"><b>메뉴</b> </label><br> <input name="menu" type="text" class="form-control menu" v-model="menu" required="required" style="width: 100%; height: 100px;"/><br>
       <label style="float: left;"><b>매장소개</b> </label><br>
@@ -153,7 +153,7 @@
       <p style="text-align: left;"><b>식당 이름</b> <br> {{ restaurantName }}</p>
     <b>메인 사진</b><br>
       
-    <img :src="require(`../../assets/uploadimages/${images}`)" alt="이미지" class="uploadimg">
+    <img :src="require(`../../assets/img/restaurant/${images}`)" alt="이미지" class="uploadimg">
     <div>
    
    </div>
