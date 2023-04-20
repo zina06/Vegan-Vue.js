@@ -89,7 +89,7 @@ export default {
               title: '아이디는 ' + id.value + " 입니다."
             }).then(()=>{
               router.push({
-                name : "Main"
+                name : "Login"
               })
             })
             return;

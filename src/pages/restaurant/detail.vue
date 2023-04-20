@@ -1,13 +1,13 @@
 <template>
   
-  <br>
+  <br><br>
   
   <br>
     <div class="detail-container">
-      <div class="detail">
+      <div class="detail" style="width: 800px;">
       
-        <img src="@/assets/img/2.jpg" class="detailimg"><br><br>
-        <!-- <img :src="require(`../../assets/uploadimages/${images}`)" alt="이미지" class="uploadimg"> -->
+        <!-- <img src="@/assets/img/2.jpg" class="detailimg"><br><br> -->
+        <img :src="require(`@/assets/img/restaurant/${restauranImg}`)" alt="이미지" class="uploadimg" style="width: 100%; height: 450px; margin-bottom: 30px;"><br>
         <h3 class="restaurantName"><b>{{restaurantName}}</b>
         </h3> &nbsp;&nbsp;&nbsp;&nbsp;
         <button class="btn btn-info gotoreserve" @click="moveReservePage(idx)">예약하기</button>
@@ -27,7 +27,7 @@
             <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
               <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-            </svg> &nbsp;&nbsp;{{ restauranVeganType }}</p><hr>
+            </svg> &nbsp;&nbsp;{{ restauranVeganType }} 타입에게 추천!</p><hr>
             <!-- <p style="width: 100%;"><b>메뉴</b> <br>
               <ul>
                 <li v-for="(item, index) in restauranMenu" :key="index">{{ item }}</li>
@@ -90,41 +90,19 @@
         </div>
       </div>
   </div>
-<!--         
-        <div class="review">
-         
-           
-            <h4>n건의 리뷰</h4><br>
-            <p>총 별점 &nbsp;&nbsp;별</p>
-          
-        </div>
-      
 
-    
-    <div class="review-container">
-      <hr>
-      <img src="@/assets/img/userimg.png" id="memberimg">
-      
-        <div class="content">
-          회원이름 <br>
-          별점    날짜<br><br>
-          <p>내용</p>
-        </div>
-      
-    </div>
-
-   -->
   
 </template>
 
  <script>
 import axios from 'axios';
 import {useRoute, useRouter} from 'vue-router';
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
+import { useSearch } from "@/stores/search";
 
 export default {
   name: "KakaoMap",
-  data () {
+  setup () {
     const router=useRouter();
     const route = useRoute();
     const restaurantName=ref('');
@@ -139,20 +117,19 @@ export default {
     const reviewCount=ref(0);
     const averageRating=ref(0);
     const restaurantIdx=route.params.restaurantIdx;
-    let savedLongitude=ref(0);
-    let savedLatitude=ref(0);
     const restaurantPhone=ref('');
-    console.log(restaurantIdx);
-    console.log("메뉴 : "+restauranMenu.value);
+    const map=ref('');
+
+
     
 
     const getRestaurant = async() =>{
 			
 			const res = await axios.get(`/Catchvegan/restaurant/get/${restaurantIdx}`).then((Restaurant)=>{
 		
-			
+        console.log("정보 받아오기");
 				console.log(Restaurant.data);
-        console.log(restauranInfo);
+      
 
         restaurantName.value=Restaurant.data.detail.name;
         restauranInfo.value=Restaurant.data.detail.restaurantInfo;
@@ -169,8 +146,6 @@ export default {
         console.log(restauranVeganType.value);
         reviewList.value=Restaurant.data.review;
         console.log(reviewList.value);
-        // localStorage.setItem('longitude', Restaurant.data.longitude);
-        // localStorage.setItem('latitude', Restaurant.data.latitude);
         reviewCount.value=Restaurant.data.review.length;
        
         let totalRating = 0;
@@ -183,33 +158,59 @@ export default {
         // 평균 리뷰 평점 계산
         averageRating.value = totalRating / reviewCount.value;
 
-        console.log(averageRating);
+        
 
         const menuArray = Restaurant.data.detail.menu;
-      
-        console.log(menuArray);
         restauranMenu.value = menuArray.split('원,');
-        console.log(restauranMenu.value);
+        
         
         for (let i=0; i< restauranMenu.value.length; i++)
         {
           if (i !== restauranMenu.value.length - 1)
             restauranMenu.value[i] += '원';
         }
-        
-        // const menuPrices = menuArray.map(menu => parseInt(menu.split(' ')[1].replace(',', '')));
-        // console.log(menuPrices);
-        // console.log(restauranMenu.value);
-
 
        })
 		};
-		getRestaurant();
-    // const img_icon = ref(require(""))
+   
+    const initMap=()=> {
+    
+        
+
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(  latitude.value,longitude.value ),
+        level: 3,
+      };
+      console.log("받아온 값: "+  latitude.value,longitude.value);
+      //지도 객체를 등록합니다.
+      //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
+      map.value = new kakao.maps.Map(container, options);
+      console.log("지도뜨기");
+      loadMarker();
+      
+    }
+
+      const loadMarker=()=>{
+     
+
+      const markerPosition=new window.kakao.maps.LatLng(
+        latitude.value,longitude.value
+      );
+
+      const marker=new window.kakao.maps.Marker({
+        position:markerPosition,
+      });
+
+      marker.setMap( map.value);
+
+      console.log("마커뜨기");
+    }
     
     //페이지가 로드될 때, 이전에 저장해 둔 위치 정보를 불러옴
       window.onload = () => {
-        getRestaurant();
+        // setTimeout(window.location.reload(),1);
+      //  window.location.reload(true);
       };
 
     const moveReservePage = () => {
@@ -221,6 +222,52 @@ export default {
       });
     }
 
+       const goToKakaoMap=()=> {
+     
+      const url = `https://map.kakao.com/link/to/${restaurantName.value},${latitude.value},${longitude.value}`;
+      window.open(url);
+    }
+  
+    Promise.resolve(getRestaurant()).then(() =>{initMap()})
+   
+    
+    onMounted(() => {
+      
+      getRestaurant();
+
+      if(!window.kakao || !window.kakao.maps){
+
+      const script = document.createElement("script");
+      script.type='text/javascript'
+      script.src =
+      "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=ffdfa4b0a9f56ac90671c2cbb5d5fc4e";
+      /* global kakao */
+      script.addEventListener('load',()=>{
+        //getRestaurant();
+          kakao.maps.load(()=>{
+       
+          initMap();
+          
+            // this.loadMarker();
+           console.log("카카오맵확인1");
+         
+        });
+        
+      });
+      document.head.appendChild(script);
+     
+    }else{
+   
+      initMap();
+   
+      
+     // this.loadMarker();
+   //  console.log("카카오맵확인2");
+    
+   }
+   
+    });
+    
     return {
 
       getRestaurant,
@@ -236,72 +283,15 @@ export default {
       reviewList,
       reviewCount,
       averageRating,
-      restaurantPhone
+      restaurantPhone,
+      initMap,
+      loadMarker,
+      goToKakaoMap,
+      
     };
   },
  
-  mounted() {
-    if(!window.kakao || !window.kakao.maps){
-      const script = document.createElement("script");
-      script.type='text/javascript'
-      script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=ffdfa4b0a9f56ac90671c2cbb5d5fc4e";
-      /* global kakao */
-      script.addEventListener('load',()=>{
-          kakao.maps.load(()=>{
-            this.initMap();
-            // this.loadMarker();
-           console.log("카카오맵확인1");
-        });
-        
-      });
-      document.head.appendChild(script);
-     
-    }else{
-     
-      this.initMap();
-      // this.loadMarker();
-    //  console.log("카카오맵확인2");
-     
-    }
-  },
-  methods: {
-    initMap() {
-    
 
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng( this.latitude,this.longitude ),
-        level: 3,
-      };
-      console.log("받아온 값: "+ this.latitude,this.longitude);
-      //지도 객체를 등록합니다.
-      //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-      this.map = new kakao.maps.Map(container, options);
-      console.log("지도뜨기");
-      this.loadMarker();
-    },
-    loadMarker(){
-     
-
-      const markerPosition=new window.kakao.maps.LatLng(
-        this.latitude ,this.longitude
-      );
-
-      const marker=new window.kakao.maps.Marker({
-        position:markerPosition,
-      });
-
-      marker.setMap(this.map);
-
-      console.log("마커뜨기");
-    },
-    goToKakaoMap() {
-     
-      const url = `https://map.kakao.com/link/to/${this.restaurantName},${this.latitude},${this.longitude}`;
-      window.open(url);
-    }
-  },
   
 };
 
@@ -315,7 +305,7 @@ export default {
   display: flex; /* Flexbox를 사용 */
   justify-content: left; /* 가로 중앙 정렬 */
   align-items: left; /* 세로 중앙 정렬 */
-  width: 700px;
+  width: 900px;
   margin: auto;
 
 }
@@ -358,7 +348,7 @@ export default {
 }
 
 .goToKakaoMap{
- margin-left: 50px;
+ margin-left: 100px;
  margin-top: 100px;
  border: 1px solid #8c8c8c;
  border-radius: 100%;

@@ -46,7 +46,7 @@ export default {
     };
     errorcheck();
 
-    axios.interceptors.response.use(
+  axios.interceptors.response.use(
   (response) => {
     return response;
   },

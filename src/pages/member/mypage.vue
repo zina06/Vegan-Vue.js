@@ -15,7 +15,7 @@
         <div>이메일</div>
       </div>
       <div class="item">
-        <div class="number">{{ user.phone }}</div>
+        <div class="number">{{ setPhoneNum.value }}</div>
         <div>전화번호</div>
       </div>
       <div class="item">
@@ -33,7 +33,10 @@
     <div v-if="reviewListOpen" class="tab-pane fade show active" id="nav-home" role="tabpanel"
       aria-labelledby="nav-home-tab" tabindex="0" style="text-align: center;">
       <div class="review-list">
-        <h4 style="text-align: center;"><b>{{ reviews.length }}개의 리뷰</b></h4>
+        <h4 style="text-align: center; margin-top: 100px;">
+          <b v-if="reviews.length === 0">리뷰가 없습니다.</b>
+          <b v-else>{{ reviews.length }}개의 리뷰</b>
+        </h4>
         <ul class="ulrow">
           <li v-for="review in reviews" :key="review.reviewIdx">
             <div class="review-item" v-if="review.reviewIdx">
@@ -192,9 +195,12 @@ export default {
       isModalOpen.value = true;
       let curretnId = user.value.id;
       let currentPassword = user.value.password; //기존 비밀번호
-      let phone = user.value.phone; // 기존 전화번호
       let email = user.value.email;
       let veganType = user.value.veganType; // 기존 비건 유형
+      const cuPhonNum = user.value.phone.replace('+82','');
+      let phone = `${cuPhonNum.slice(0, 3)}${cuPhonNum.slice(3, 7)}${cuPhonNum.slice(7)}`
+
+      
 
       console.log(currentPassword);
       console.log(phone);
@@ -207,6 +213,7 @@ export default {
           <input id="id" value =${curretnId} hidden>
           <input id="password" class="swal2-input" type="password">
           <div>비밀번호</div>
+          <i>특수문자 / 문자 / 숫자 포함 형태의 8~15자리</i>
           <input id="phone" class="swal2-input" type="tel" value=${phone}>
           <div>전화번호</div>
           <input id="email" class="swal2-input" type="email" value=${email}>
@@ -227,12 +234,23 @@ export default {
         preConfirm: () => {
           const id = document.getElementById('id').value;
           const password = document.getElementById('password').value;
-          const phone = document.getElementById('phone').value;
+          const phone = '+82'+document.getElementById('phone').value;
           const email = document.getElementById('email').value;
           const veganType = document.getElementById('vegan-type').value;
 
-          if (!password || password === currentPassword) {
+          const validatePassword = (password) => {
+            const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+            return passwordRegex.test(password);
+          };
+          if (!validatePassword(password)) {
+            Swal.showValidationMessage('형식에 맞지 않는 비밀번호 입니다.');
+            return false; // 여기서 false를 반환하여 preConfirm 함수가 종료되도록 함
+          }
+          else if (!password) {
             Swal.showValidationMessage('수정된 비밀번호를 입력해주세요');
+            return false;
+          } else if (password === currentPassword) {
+            Swal.showValidationMessage('기존 비밀번호와 같은 비밀번호는 사용할 수 없습니다.');
             return false;
           }
 
@@ -262,19 +280,56 @@ export default {
             'AUTHORIZATION': 'Bearer ' + token
           }
         });
-        if (response.status == 201) {
-          alert("비밀번호똑같아서못바꿈")
+        if (response.status == 200) {
+          Swal.fire({
+            title: '수정완료!',
+            icon: 'success',
+            confirmButtonText: '확인',          
+          }).then((res)=>{
+            if(res.isConfirmed || !res.isConfirmed){
+              window.location.reload();
+            }
+          });
+          
+          return;
+          
         }
         console.log('수정된 데이터:', formData);
         console.log('서버의 응답:', response);
       } catch (error) {
         console.error(error);
+        Swal.fire({
+            title: '같은 비밀번호입니다. 다시 시도해주세요.',
+            icon: 'error',
+            confirmButtonText: '확인',
+          });
+          return;
       }
+      
     };
 
-    //리뷰,멤버정보 불러오기
+    //멤버 불러오기
+    const user = ref([]);    
+    const setPhoneNum = ([]);
+    const getUsers = async () => {
+      const res = await axios.get(`/Catchvegan/oneMember/${memberIdx}`,{
+        headers : {
+          'AUTHORIZATION': 'Bearer ' + token
+        }
+      })
+      user.value = res.data;
+      console.log(res.data);
+      console.log(res.data.phone);
+      const phonNum = res.data.phone.replace('+82','');
+      setPhoneNum.value = `${phonNum.slice(0, 3)}-${phonNum.slice(3, 7)}-${phonNum.slice(7)}`
+      console.log(setPhoneNum.value);
+    }
+    getUsers();
+
+    //리뷰 불러오기
     const reviews = ref([]);
-    const user = ref([]);
+    
+    
     const getReviews = async () => {
     const res = await axios.get(`/Catchvegan/member/mypage/${memberIdx}`,{
         headers : {
@@ -292,13 +347,19 @@ export default {
           })
         }
       });
-      reviews.value = res.data[0].reviewDTOList;
-      user.value = res.data[0];
-      console.log(res.data[0]);
-      console.log(res.data[0].reviewDTOList);
-      console.log(user.value);
-      console.log(reviews.value);
-      console.log(reviews.value);
+      // 리뷰 데이터가 없는 경우에 대한 처리
+      // if (res.data[0].reviewDTOList[0].reviewIdx !== null) {
+      //   reviews.value = res.data[0].reviewDTOList;
+      // } else {
+      //   console.log("11111");
+      //   reviews.value = new Array; // 빈 배열 대신 다른 값을 할당해도 됨
+      // }
+      console.log(res.data.length);
+      console.log(res.data);
+        for(let i=0; i<res.data.length; i++){
+          reviews.value[i] = res.data[i].reviewDTOList[0];
+        }
+        console.log(reviews.value);
     }
     getReviews();
 
@@ -331,6 +392,7 @@ export default {
       user,
       reviews,
       deleteReview,
+      setPhoneNum,
       //RemoveMember
     }
   }
