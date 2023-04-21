@@ -32,7 +32,7 @@
                 <tr>
                     
                   <td>{{ member.memberDTO.name }}</td>
-                  <td>{{ member.memberDTO.phone }}</td>
+                  <td>{{ member.memberDTO.phone.substr(3) }}</td>
                   <td>{{ member.resCount }}</td>
                   <td>{{ member.reserveDate.getHours() }}시 {{ member.reserveDate.getMinutes() }}분</td>
                   <td>{{ member.visitStatus }}</td>
@@ -51,75 +51,11 @@
             </div> 
 
 
-
-      <!-- <table class="table table" style="width: 800px;">
-        <tr>
-          <td>	
-        
-            <div class="mb-3" style="padding-top: 10px;">
-            <input class="form-control" id="exampleFormControlInput1" name="subject" placeholder="제목을 입력해주세요">
-              </div>
-              <div class="mb-3">
-            <input class="form-control" type="file" id="formFile" name="upload" multiple="multiple">
-              </div>
-            <div class="mb-3" style="padding-top: 10px;">
-            <textarea class="form-control" id="exampleFormControlTextarea1" name="content" style="width: 800px; height: 300px;" placeholder="내용을 입력하세요"></textarea>
-          </div>
-
-          </td>
-        </tr>
-        
-        <tr>
-          <td>
-            <button type="submit">등록</button>
-            <button type="button" onclick="location.href='list'">목록</button>
-          </td>
-        </tr>
-
-      </table> -->
-
   </div>
   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0" style="text-align: center;">
   
     
-      <!-- <div class="resmember">
-        <h4>예약자 정보 확인 &nbsp;&nbsp;{{ formatreserveDate }}</h4><br>
-        
-       
-               <div v-for="member in memberList" :key="member.memberDTO.memberidx" >
-                    <div v-if="member.reserveDate && member.reserveDate.slice(0, 10)==formatreserveDate" >
-              
-                  <div class="card" style="width: 700px; margin: auto; text-align: left;">
-                  
-                  <div class="card-body">
-                    <p class="card-text"><b>이름</b>&nbsp;&nbsp;&nbsp;{{ member.memberDTO.name }}</p>
-                    <p class="card-text">
-                      <b>전화번호</b>&nbsp;&nbsp;&nbsp;{{ member.memberDTO.phone }}
-                    </p>                  
-                    <p class="card-text">
-                      <b>예약인원</b>&nbsp;&nbsp;&nbsp; {{ member.resCount }}
-                    </p>
-                    <p class="card-text">
-                      <b>예약시간</b>&nbsp;&nbsp;&nbsp;{{ member.reserveDate.slice(14,19) }}
-                    </p>
-                    <p class="card-text">
-                      <b>방문상태</b>&nbsp;&nbsp;&nbsp;{{ member.visitStatus }}
-                      <button class="btn btn-info" style="float: right; color: white;">방문확정</button>
-                    </p>
-                    
-                  </div>
-                 
-                </div>
-                <br>
-
-                  </div>
-              </div> 
-              
-             
-      </div> -->
-       
-
-
+     
 
             <br><br><br>
   <!--수정폼-->
@@ -185,7 +121,6 @@ setup(){
   const minDate = ref(new Date());
   const reserveDate = ref(new Date());
   const formatreserveDate =ref('');
-  const showReserveDate=ref(new Date([]));
   const route = useRoute();
   const router=useRouter();
   const managerIdx=route.params.managerIdx;
@@ -231,13 +166,14 @@ setup(){
 
   // const backendUrl = process.env.VUE_APP_BACKEND_URL;
   const attributes = ref([
-  {
-    // Boolean
-    dot: true,
-    dates: [
-      
-    ],
-}])
+      {
+        // Boolean
+        bar: true,
+
+        dates: [
+          
+        ],
+    }])
 
 
   const file = ref('')
@@ -246,14 +182,8 @@ setup(){
     files.value = e.target.files[0];
     file2=e.target.files[0];
   }
-//  const insertVisit = ref({
-//       visitIdx: null,
-//       reserveIdx:0 ,
-//       price: 0,
-//       design: 0,
-//       delivery: 0,
-//     });
-  
+
+
       const uploadAPI = async () => {
       try {
         restaurantDTO.value = {
@@ -328,22 +258,22 @@ setup(){
     
 
   const date = (context) => {
-    console.log("context:"+context);
-    console.log("예약날짜 : "+context.target.ariaLabel);
-    if(context.target.ariaLabel==null){
-      return;
-    }
-    const match = context.target.ariaLabel.match(/(\d+)년 (\d+)월 (\d+)일 (.+)/);
-   
+    console.log("오늘날짜 클릭: "+context.target.ariaLabel);
+    // if(context.target.ariaLabel==null){
+    //   return;
+    // }
+    const match = context.target.ariaLabel.match(/(\d{4})년 (\d{1,2})월 (\d{1,2})일/);
+    console.log("매치:"+match);
+
+
     const year = parseInt(match[1]);
     const month = parseInt(match[2]) - 1; // JavaScript에서 월은 0부터 시작하므로 1을 뺍니다.
     const day = parseInt(match[3]);
-    // const dayOfWeek = match[4];
+    const dayOfWeek = match[4];
     const date = new Date(year, month, day);
     reserveDate.value=date;
-    console.log("현재날짜 : "+reserveDate.value);
-    // console.log(match.value);
-    console.log("오늘:"+minDate.value)
+    console.log("예약날짜 : "+reserveDate.value);
+
 
     const reserveDateObj = new Date(reserveDate.value);
     const reserveYear = reserveDateObj.getFullYear();
@@ -351,17 +281,15 @@ setup(){
     const reserveDay = String(reserveDateObj.getDate()).padStart(2, '0');
     const formattedReserveDate = `${reserveYear}-${reserveMonth}-${reserveDay}`;
     formatreserveDate.value = formattedReserveDate;
-    console.log("예약날짜 : "+formatreserveDate.value);
-
+    reserveDate.value=formattedReserveDate;
+    console.log("오늘날짜 format : "+formatreserveDate.value);
     const getMemberlist = async() => {
-     const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`,{
+     const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${reserveDate.value}`,{
       headers : {
         'AUTHORIZATION': 'Bearer ' + token
         }
       }).then((inform)=>{ 
-        //  restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
-        //  restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
-        //  menu.value=inform.data.restaurantDTO.menu;  //메뉴
+
          memberList.value=inform.data.reservelist;
          memberListLength.value=inform.data.reservelist.length;
          const array = [memberList.value.length];
@@ -374,14 +302,8 @@ setup(){
             
          } 
          console.log(memberList.value);
-         console.log("reserveIdx:"+inform.data.reservelist[0].reserveIdx);
+         console.log("reserveIdx:"+inform.data.reservelist[1].reserveIdx);
          console.log("길이:"+memberListLength.value);
-         console.log("예약날짜dd : "+showReserveDate.value);
-         if (inform.data.reservelist) {
-        // memberDateList.value=inform.data.reservelist.map((member) =>  moment(member.reserveDate).format('YYYY-MM-DD'));
-          console.log(memberDateList.value);
-          // console.log(attributes.value[0].dates);
-      } 
       
           
       })
@@ -406,11 +328,9 @@ setup(){
         restaurantName.value=inform.data.restaurantDTO.name;  //식당이름
         restauranInfo.value=inform.data.restaurantDTO.restaurantInfo; //식당정보
         menu.value=inform.data.restaurantDTO.menu;  //메뉴
-        // memberListLength.value=inform.data.reservelist.length;
         reservedDate.value=inform.data.reserveDate;
         console.log(memberList.value);
         console.log("길이:"+memberListLength.value);
-        console.log("이미지파일"+inform.data.restaurantDTO.images);
         images.value=inform.data.restaurantDTO.images;
         console.log("이미지:"+images.value);
         const array = [inform.data.all.length];
@@ -420,11 +340,7 @@ setup(){
           attributes.value[0].dates.push(inform.data.all[i].reserveDate);
         }
         console.log(attributes.value[0].dates);
-          //멤버 리스트에서 날짜만 추출하여 배열에 담기
-        //   if (inform.data.reservelist) {
-        // memberDateList.value=inform.data.reservelist.map((member) => member.reserveDate);} 
-        // console.log(memberDateList.value);
-        
+       
     })
     .catch((err)=>{
       //console.log(err);
@@ -439,8 +355,10 @@ setup(){
         }
     })
   };
-  getRestaurant();
-  
+  if (managerIdx !== null )
+  {
+    getRestaurant();
+  }
   //방문상태 변경
   const updateConfirm=async(reserveIdx, visitStatus)=>{
     console.log("방문확정");
@@ -467,7 +385,7 @@ setup(){
     //         name:"Error"
     //       })
     // })
-    console.log(reserveIdx);
+ 
     Swal.fire({
           icon: 'success',
           title: '방문이 확정되었습니다.'     
@@ -478,6 +396,32 @@ setup(){
     
   }
 
+
+  const getTodayReservations=()=> {
+
+
+    const date2 = new Date();
+    const year = date2.getFullYear();
+    const month = String(date2.getMonth() + 1).padStart(2, '0');
+    const day = String(date2.getDate()).padStart(2, '0');
+
+    const weekdays = ["일", "월", "화", "수", "목", "금", "토"]; // 요일 문자열 배열
+
+    const weekdayIndex = date2.getDay(); // 요일 인덱스
+    const weekday = weekdays[weekdayIndex]; // 요일 문자열
+
+    const dateString = `${year}년 ${month}월 ${day}일 ${weekday}요일`;
+    console.log(dateString);
+
+
+    date({ target: { ariaLabel:  dateString } });
+  
+    }
+ 
+  onMounted(()=>{
+    getTodayReservations();
+  })
+  
   return{
     onChangeFile,
     date,
@@ -485,28 +429,30 @@ setup(){
     formatreserveDate,
     minDate,
     isDisabled,
-    // getMemberlist,
     restaurantName,
     restauranInfo,
     menu,
     memberList,
     reservedDate,
     memberListLength,
-    // attrs,
     updateConfirm,
     isEditing,
     files,
-    // selectFile,
     images,
     uploadAPI,
     file,
-    attributes
+    attributes,
+
    
   }
+
+ 
 },
-
-
+  
 }
+
+
+
 </script>
 
 <style>

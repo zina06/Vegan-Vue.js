@@ -80,6 +80,7 @@ export default {
 
       const logout = () => {
         let timerInterval
+          
         Swal.fire({
           title: '로그아웃하는중',
           html: '로그아웃하는중',
@@ -91,6 +92,9 @@ export default {
             // timerInterval = setInterval(() => {
             //   b.textContent = Swal.getTimerLeft()
             // }, 100)
+            router.push({
+              name:"Main"
+            });
           },
           willClose: () => {
             clearInterval(timerInterval)
@@ -105,6 +109,7 @@ export default {
           });
         })
         headerstate.value = true;
+        alert(3);
         sessionStorage.clear();
         location.reload();
       }

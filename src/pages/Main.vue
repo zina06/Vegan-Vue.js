@@ -95,12 +95,12 @@
           <!-- <p>Tempor ut dolore lorem kasd vero ipsum sit eirmod sit. Ipsum diam justo sed rebum vero dolor duo.</p> -->
         </div>
     <Carousel :items-to-show="2.5" :wrap-around="true" style="width: 70%; margin: auto;">
-     
+      
       <Slide  v-for="review in reviewList" :key="review.reviewIdx">
        
         <div class="carousel__item" style="height: fit-content; width: fit-content;">
          
-          <img class="img-fluid" src="@/assets/img/blog-1.jpg" alt="" style="width:400px;">
+          <img class="img-fluid" :src="require(`@/assets/uploadimages/${review.images}`)" alt="" style="width:400px;">
               <div class="bg-light p-4"  style="width: auto; height: auto;">
                 <p class="d-block h5 lh-base mb-4"><b>{{ review.restaurantDTO.name }}</b></p>
                 <span>
@@ -206,8 +206,9 @@ export default defineComponent({
     const address = ref("");
     const addressList = ref([]);
     const onClickSearch = ref();
-
+    const reviewList = ref([]);
     search.setLocation();
+
     axios
       .get("http://localhost:8082/Catchvegan/search/addressList")
       .then((res) => {
@@ -232,20 +233,23 @@ export default defineComponent({
     onClickSearch.value = () => {
       search.setAddress(address.value);
     };
-
+    
     const getRecentReview = async () => {
       const res = await axios
         .get("/Catchvegan/review/recent")
-        .then((Review) => {
-          console.log(Review.data);
+        .then((result) => {
+          // console.log(result.data);
+          reviewList.value=result.data;
         });
     };
     getRecentReview();
+    
     return {
       address,
       addressList,
       search,
       onClickSearch,
+      reviewList
     };
   },
 });

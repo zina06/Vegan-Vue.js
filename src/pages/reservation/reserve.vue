@@ -307,7 +307,8 @@ export default {
       const canReserve = async () => {
         const data = {
           restaurantIdx: restaurantIdx,
-          reserveDate: reserveDate.value
+          reserveDate: reserveDate.value,
+          memberIdx : memberIdx
         }
         const res = await axios.post(`/Catchvegan/reserve/getTime`, data , {
           headers : {
@@ -540,7 +541,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 /* .btn {
   background:#3CB371 !important; 
