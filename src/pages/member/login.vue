@@ -9,7 +9,7 @@
                 <div class="textForm">
                     <input name="password" type="password" class="password" placeholder="비밀번호" v-model="password">
                 </div>
-            <button class="loginBtn" type="submit" value="L O G I N" @click.prevent="login()">로그인</button>
+            <button class="loginBtn" type="submit" value="L O G I N" @click.prevent="login">로그인</button>
             <div class="text-center mb-3">
                 <a href="findMyId" class="text-secondary me-3">아이디 찾기</a>
                 <span class="text-secondary">|</span>
@@ -33,12 +33,13 @@ export default {
   setup(){
     const router = useRouter();
     const Swal = require('sweetalert2');
-    const token = sessionStorage.getItem("token");
+    const token = ref(sessionStorage.getItem("token"));
+
     const id = ref('');
     const password = ref('');
 
     const errorcheck = async () => {
-      if(token != null){
+      if(token.value != null){
         router.push({
           name:"Main"
         });
@@ -46,66 +47,88 @@ export default {
     };
     errorcheck();
 
-  axios.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response.status === 500) {
-       Swal.fire({
+    // const login = () =>{
+    //   const login2 = async () =>{
+    //     const res = await axios.post('/Catchvegan/member/login',{
+    //         id : id.value,
+    //         password : password.value
+    //     }).then((result)=>{
+    //       console.log(result);
+    //       sessionStorage.setItem("token",result.headers.token);
+    //       sessionStorage.setItem("id",id.value);
+    //       if(result.headers.memberidx != null){
+    //         sessionStorage.setItem("memberIdx",result.headers.memberidx);
+    //       }
+    //       else if(result.headers.manageridx != null){
+    //         sessionStorage.setItem("managerIdx",result.headers.manageridx);
+    //       }
+    //       console.log(sessionStorage);
+    //       Swal.fire({
+    //       icon: 'success',
+    //       title: '로그인 성공'     
+    //       }).then(() => {
+    //         router.push({ name: 'Main', params: { 
+    //           id: id.value
+    //         }});
+    //         location.reload();
+    //         window.location.href = '/Catchvegan'
+    //       });    
+                  
+    //       console.log(token);
+    //       token.value = result.headers.token;
+    //     }).catch((result) => {
+    //       console.log(result);
+    //       Swal.fire({
+    //         icon: 'error',
+    //         title: '로그인 실패'
+    //       })
+    //     })
+    //   }
+    //   login2();
+    // }
+    
+    const login = ref();
+    login.value = async () =>{
+      const res = await axios.post('/Catchvegan/member/login',{
+          id : id.value,
+          password : password.value
+      }).then((result)=>{
+        console.log(result);
+        sessionStorage.setItem("token",result.headers.token);
+        sessionStorage.setItem("id",id.value);
+        if(result.headers.memberidx != null){
+          sessionStorage.setItem("memberIdx",result.headers.memberidx);
+        }
+        else if(result.headers.manageridx != null){
+          sessionStorage.setItem("managerIdx",result.headers.manageridx);
+        }
+        console.log(sessionStorage);
+        Swal.fire({
+        icon: 'success',
+        title: '로그인 성공'     
+        }).then(() => {
+          router.push({ name: 'Main', params: { 
+            id: id.value
+          }});
+          location.reload();
+          window.location.href = '/Catchvegan'
+        });    
+        token.value = result.headers.token;
+        console.log(token.value);
+      }).catch((result) => {
+        console.log(result);
+        Swal.fire({
           icon: 'error',
           title: '로그인 실패'
-        });
-    }
-    return Promise.reject(error);
-  }
-);
-
-    const login = () =>{
-      const login2 = async () =>{
-        const res = await axios.post('/Catchvegan/member/login',{
-            id : id.value,
-            password : password.value
-        }).then((result)=>{
-          console.log(result);
-          sessionStorage.setItem("token",result.headers.token);
-          sessionStorage.setItem("id",id.value);
-          if(result.headers.memberidx != null){
-            sessionStorage.setItem("memberIdx",result.headers.memberidx);
-          }
-          else if(result.headers.manageridx != null){
-            sessionStorage.setItem("managerIdx",result.headers.manageridx);
-          }
-          console.log(sessionStorage);
-          Swal.fire({
-          icon: 'success',
-          title: '로그인 성공'     
-          }).then(() => {
-            router.push({ name: 'Main', params: { 
-              id: id.value
-            }});
-            location.reload();
-            window.location.href = '/Catchvegan'
-          });            
-          if(result.headers.token == null){
-            Swal.fire({
-            icon: 'error',
-            title: '로그인 실패'
-            })
-          }
-          console.log(token);
-          token.value = result.headers.token;
-        }).catch((result) => {
-          console.log(result);
         })
-      }
-      login2();
+      })
     }
-
+  
     return{
       id,
       password,
-      login
+      login,
+      token
     }
   }
   
