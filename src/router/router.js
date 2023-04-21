@@ -16,9 +16,15 @@ import FindMyPassword from "@/pages/member/findMyPassword.vue";
 import Aftermember from "@/pages/member/aftermember.vue";
 import Aftermanager from "@/pages/manager/aftermanager.vue";
 
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    { 
+      path: "/",
+      name:"Main2",
+      component: Main
+    },
     {
       path: "/Catchvegan/member/aftermember",
       name: "Aftermember",
