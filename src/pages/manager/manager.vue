@@ -213,7 +213,6 @@ setup(){
   const token = sessionStorage.getItem("token");
   const hasMemberIdx = sessionStorage.getItem('memberIdx');
   const hasManagerIdx = sessionStorage.getItem('managerIdx');
-  const memberIdx = sessionStorage.getItem("memberIdx");
 
   // axios.interceptors.response.use(
   // (response) => {
@@ -255,9 +254,6 @@ setup(){
 //       delivery: 0,
 //     });
   
-
-
-
       const uploadAPI = async () => {
       try {
         restaurantDTO.value = {
@@ -431,10 +427,16 @@ setup(){
         
     })
     .catch((err)=>{
-      console.log(err);
-      router.push({
+      //console.log(err);
+      if(hasMemberIdx != null || managerIdx != hasManagerIdx){
+          router.push({
             name:"Error"
           })
+      }else{
+          router.push({
+            name:"Main"
+          })
+        }
     })
   };
   getRestaurant();
