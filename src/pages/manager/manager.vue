@@ -148,21 +148,6 @@ setup(){
   const token = sessionStorage.getItem("token");
   const hasMemberIdx = sessionStorage.getItem('memberIdx');
   const hasManagerIdx = sessionStorage.getItem('managerIdx');
-  const memberIdx = sessionStorage.getItem("memberIdx");
-    
-  const managercheck = async () => {
-    if(hasMemberIdx != null || hasManagerIdx == null){
-      if(hasManagerIdx == null){
-        router.push({
-        name:"Main"
-      })} 
-      else if(hasMemberIdx != null){
-        router.push({
-        name:"Error"
-      })} 
-    }
-  };
-  managercheck();
 
   // axios.interceptors.response.use(
   // (response) => {
@@ -170,13 +155,12 @@ setup(){
   // },
   // (error) => {
   //   if (error.response.status === 403) {
-  //      alert("1234!!");  
-  //     router.push({
+  //       router.push({
   //         name:"Error"
   //       })
   //   }
   //   return Promise.reject(error);
-  //   }
+  // }
   // );
 
 
@@ -201,25 +185,19 @@ setup(){
 
 
       const uploadAPI = async () => {
-       
       try {
-        restaurantDTO.value={
+        restaurantDTO.value = {
           name:restaurantName.value,
           menu:menu.value,
           restauranInfo:restauranInfo.value,
           images : file.value
         }
-
         // 폼데이터 객체 생성
-        const formData = new FormData();
+        const formData = new FormData();        
         
         // file 추가
-        
         formData.append('file', file2);
-       
         console.log(files.value);
-
-   
 
         // formData.append('restaurantDTO', blob);
         const blob = new Blob([JSON.stringify(restaurantDTO.value)], { type: 'application/json' });
@@ -246,9 +224,6 @@ setup(){
         // return data?.restaurantIdx;
       } catch (err) {
         console.log(err);
-        router.push({
-            name:"Main"
-        })
         // console.log( "dto"+formData);
       }
     
@@ -341,12 +316,8 @@ setup(){
    getMemberlist();
    console.log(attributes.value[0].dates);
 
-
+}
   
-  
-  }
-  
-
   const getRestaurant = async() =>{
     const res = await axios.get(`/Catchvegan/manager/${managerIdx}?reserveDate=${formatreserveDate.value}`,{
       headers : {
@@ -371,11 +342,18 @@ setup(){
         console.log(attributes.value[0].dates);
        
     })
-    // .catch(()=>{
-    //   router.push({
-    //         name:"Error"
-    //       })
-    // })
+    .catch((err)=>{
+      //console.log(err);
+      if(hasMemberIdx != null || managerIdx != hasManagerIdx){
+          router.push({
+            name:"Error"
+          })
+      }else{
+          router.push({
+            name:"Main"
+          })
+        }
+    })
   };
   if (managerIdx !== null )
   {
