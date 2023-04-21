@@ -3,23 +3,24 @@
   <!-- 구글 폰트 링크 추가 -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
 </head>
-  <ul class="nav nav-tabs justify-content-center nav-tabs-custom" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
+<br><br><br>
+<nav class="nav nav-tabs justify-content-center nav-tabs-custom" id="myTab" role="tablist">
+  
       <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
-        role="tab" aria-controls="home-tab-pane" aria-selected="true" style="margin-left: 10px; width: 200px;">나의
+        role="tab" aria-controls="home-tab-pane" aria-selected="true" style="margin-left: 10px; width: 350px;">나의
         예약</button>
-    </li>
-    <li class="nav-item" role="presentation">
+   
+ 
       <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
-        role="tab" aria-controls="profile-tab-pane" aria-selected="false" style="margin-left: 10px; width: 200px;">방문
+        role="tab" aria-controls="profile-tab-pane" aria-selected="false" style="margin-left: 10px; width: 350px;">방문
         완료</button>
-    </li>
-    <li class="nav-item" role="presentation">
+    
       <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button"
-        role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="margin-left: 10px; width: 200px;">취소
+        role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="margin-left: 10px; width: 350px;">취소
         노쇼</button>
-    </li>
-  </ul>
+  
+ 
+</nav>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
       <div v-if="upcomingReservations.length !=0" class="reservation-list">
@@ -27,21 +28,20 @@
           <li v-for="reservation in upcomingReservations" :key="reservation.reserveIdx"
             style="justify-content: flex-start;">
             <div class="reservation-item">
-              <button class="w-btn-outline w-btn-green-outline w-25" @click="cancelReserve(reservation)">취소</button>
-              <div>예약일시</div>
-              <div>{{ reservation.reserveDate.getFullYear() }}년 {{ reservation.reserveDate.getMonth() + 1 }}월 {{
-                reservation.reserveDate.getDate() }}일 {{ reservation.reserveDate.getHours() }}시 {{
-    reservation.reserveDate.getMinutes() }}분</div>
-              <div>{{ reservation.resCount }}</div>
-              <div>{{ reservation.restaurantDTO.name }}</div>
-              <div>{{ reservation.restaurantDTO.city }}</div>
+            
+              <h4><b>{{ reservation.restaurantDTO.name }}</b></h4>
+            
+            <p>{{ reservation.restaurantDTO.city }}</p>
+              <h4><b>{{dataFormat(reservation.reserveDate, "YYYY-MM-DD HH:mm")}} {{ reservation.resCount }}명</b></h4><br>
+             
+              <button class="btn btn-danger cancelbtn" @click="cancelReserve(reservation)">취소</button>
             </div>
           </li>
         </ul>
       </div>
       <div v-else style="text-align: center; margin-top: 50px;">
-        <p @click="goToReservationPage" class="blue-text" style="font-size: 30px;">👉 다가올 방문 예정이 없습니다. 지금 바로 예약하세요!</p>
-        <a style="font-size: 70px;">🙏</a>
+        <p @click="goToReservationPage" class="blue-text" style="font-size: 30px; height: 300px; margin-top: 100px;"> 다가올 방문 예정이 없습니다. 지금 바로 예약하세요!</p>
+      
       </div>
 
 
@@ -52,22 +52,17 @@
           <li v-for="reservation in completedReservations" :key="reservation.reserveIdx"
             style="justify-content: flex-start;">
             <div class="reservation-item">
-              <h5 style="font-weight: bold;">예약 번호  <span style="font-size: 20px;">{{ reservation.reserveIdx }}</span></h5>
-              <h5 style="font-weight: bold;">예약 일시</h5>
-              <div>{{ reservation.reserveDate.getFullYear() }}년 {{ reservation.reserveDate.getMonth() + 1 }}월 {{
-                reservation.reserveDate.getDate() }}일 {{ reservation.reserveDate.getHours() }}시 {{
-    reservation.reserveDate.getMinutes() }}분</div>
-              <h4>예약 인원</h4>
-              {{ reservation.reviewIdx }}
-              <div>{{ reservation.resCount }}</div>
-              <h4>식당 이름</h4>
-              <div>{{ reservation.restaurantDTO.name }}</div>
-              <h4>도시</h4>
-              <div>{{ reservation.restaurantDTO.city }}</div>
-              <h4>방문시각</h4>
-              <div>{{ reservation.visitDTO.visitDate }}</div>
-              <div style="margin-top: auto;">
-                <button v-if="reservation.visitDTO.reviewDTO==null && isReviewAvailable(reservation.visitDTO.visitDate)" type="button" @click="goToReviewPage(reservation.visitDTO.visitIdx)">리뷰 작성하기</button>
+              <span class="badge text-bg-secondary" style="width: 50px; height: 30px;">Secondary</span><br>
+            
+              <h4><b>{{ reservation.restaurantDTO.name }}</b></h4>
+            
+              <p>{{ reservation.restaurantDTO.city }}</p>
+          
+              <h4><b>{{dataFormat(reservation.reserveDate, "YYYY-MM-DD HH:mm")}} {{ reservation.resCount }}명</b></h4><br>
+              <div style="margin: auto;">
+                <button v-if="reservation.visitDTO.reviewDTO==null && isReviewAvailable(reservation.visitDTO.visitDate)" 
+                class="btn btn-default reviewbtn" type="button" 
+                @click="goToReviewPage(reservation.visitDTO.visitIdx)">리뷰 작성하기</button>
                 <span v-else-if="reservation.visitDTO.reviewDTO==null && !isReviewAvailable(reservation.visitDTO.visitDate)">작성 기한이 지나 리뷰를 쓸 수 없어요.</span>
                 <span hidden v-else></span>
               </div>
@@ -85,13 +80,13 @@
           <li v-for="reservation in cancelledReservations" :key="reservation.reserveIdx"
             style="justify-content: flex-start;">
             <div class="reservation-item">
-              <div>예약일시</div>
-              <div>{{ reservation.reserveDate.getFullYear() }}년 {{ reservation.reserveDate.getMonth() + 1 }}월 {{
-                reservation.reserveDate.getDate() }}일 {{ reservation.reserveDate.getHours() }}시 {{
-                reservation.reserveDate.getMinutes() }}분</div>
-              <div>{{ reservation.resCount }}</div>
-              <div>{{ reservation.restaurantDTO.name }}</div>
-              <div>{{ reservation.restaurantDTO.city }}</div>
+             
+          
+              <div></div>
+              <h4><b>{{ reservation.restaurantDTO.name }}</b></h4>
+              <p>{{ reservation.restaurantDTO.city }}</p>
+              <h4><b>{{dataFormat(reservation.reserveDate, "YYYY-MM-DD HH:mm")}} {{ reservation.resCount }}명 </b></h4>
+             
             </div>
           </li>
         </ul>
@@ -108,6 +103,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
 import axios from 'axios';
 import { swal } from 'sweetalert2/dist/sweetalert2';
+import moment from 'moment';
 export default {
   setup() {
     const route = useRoute();
@@ -117,6 +113,10 @@ export default {
     const token = sessionStorage.getItem("token");
     const hasMemberIdx = sessionStorage.getItem('memberIdx');
     const hasManagerIdx = sessionStorage.getItem('managerIdx');
+
+    const dataFormat = (value, format) =>{
+      return moment(value).format(format);
+    }
 
     // const goToReviewPage = function () {
     //             router.push({
@@ -345,6 +345,7 @@ export default {
       cancelReserve,
       isReviewAvailable,
       goToReservationPage,
+      dataFormat
       // cancelReserve
     };
   },
@@ -369,78 +370,6 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
-
-* {
-    margin: 0;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-body {
-    text-align: center;
-    padding: 100px;
-    background: whitesmoke;
-    display: table-cell;
-}
-.w-btn {
-    position: relative;
-    border: none;
-    display: inline-block;
-    padding: 15px 30px;
-    border-radius: 15px;
-    font-family: "paybooc-Light", sans-serif;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.25s;
-    
-}
-
-.w-btn-outline {
-    position: relative;
-    border-radius: 15px;
-    font-family: "paybooc-Light", sans-serif;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.25s;
-    
-}
-
-.w-btn-green {
-    background-color: #77af9c;
-    color: #d7fff1;
-}
-
-.w-btn-green-outline {
-    border: 3px solid #77af9c;
-    color: darkgray;
-}
-
-.w-btn-green-outline:hover {
-    background-color: #77af9c;
-    color: #d7fff1;
-}
-
-.w-btn:hover {
-    letter-spacing: 2px;
-    transform: scale(1.2);
-    cursor: pointer;
-}
-
-.w-btn-outline:hover {
-    letter-spacing: 2px;
-    transform: scale(1.2);
-    cursor: pointer;
-}
-
-.w-btn:active {
-    transform: scale(1.5);
-}
-
-.w-btn-outline:active {
-    transform: scale(1.5);
-}
 
 
 
@@ -467,11 +396,11 @@ p {
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  height: 400px;
+  height: auto;
   margin: 50px;
   overflow: hidden;
   padding: 20px;
-  width: 500px;
+  width: 700px;
 
 }
 
@@ -483,7 +412,7 @@ p {
 }
 
 .nav-tabs-custom .nav-link.active {
-  background-color: #7fac7d;
+  background-color: #8a7dac;
   color: #fff;
 }
 
@@ -494,6 +423,16 @@ p {
   justify-content: center;
 
 }
+.reviewbtn{
+background: lightgray;
+width: 200px;
+margin: auto;
+}
 
-
+.cancelbtn{
+  background: rgb(243, 100, 100);
+  border: rgb(243, 100, 100);
+  width: 200px;
+  margin: auto;
+}
 </style>

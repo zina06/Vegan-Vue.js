@@ -41,7 +41,7 @@
           <li v-for="review in reviews" :key="review.reviewIdx">
             <div class="review-item" v-if="review.reviewIdx">
               <div class="image-wrapper">
-                <img :src="require(`@/assets/img/reviewimg/${review.images}`)" alt="review-image" class="review-image">
+                <img :src="require(`@/assets/uploadimages/${review.images}`)" alt="review-image" class="review-image">
                 <div >{{ review.title }}</div>
               </div>
               
