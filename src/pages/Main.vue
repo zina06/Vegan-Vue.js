@@ -91,18 +91,18 @@
 
     <!--review start-->
     <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px; margin-top: 100px;">
-          <h2><b>최근 리뷰</b></h2>
+          <h3><b>최신 리뷰</b></h3>
           <!-- <p>Tempor ut dolore lorem kasd vero ipsum sit eirmod sit. Ipsum diam justo sed rebum vero dolor duo.</p> -->
         </div>
-    <Carousel :items-to-show="2.5" :wrap-around="true" style="width: 70%; margin: auto;">
+    <Carousel :items-to-show="2.5" :wrap-around="true" style="width: 75%; margin: auto;">
       
       <Slide  v-for="review in reviewList" :key="review.reviewIdx">
        
         <div class="carousel__item" style="height: fit-content; width: fit-content;">
          
-          <img class="img-fluid" :src="require(`@/assets/uploadimages/${review.images}`)" alt="" style="width:400px;">
+          <img class="img-fluid" :src="require(`@/assets/uploadimages/${review.images}`)" alt="" style="width:300px; height: 300px;">
               <div class="bg-light p-4"  style="width: auto; height: auto;">
-                <p class="d-block h5 lh-base mb-4"><b>{{ review.restaurantDTO.name }}</b></p>
+                <p><b>{{ review.restaurantDTO.name }}</b></p>
                 <span>
                   <svg v-for="i in review.rating" :key="i" fill="#FFDC3C" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><defs><path id="star-path-10" d="M11.9996 19.7201L6.32294 22.1251C5.5626 22.4472 5.005 22.0311 5.0755 21.2188L5.60855 15.0767L1.5671 10.421C1.02579 9.79745 1.24924 9.13855 2.04358 8.95458L8.04973 7.56354L11.2287 2.28121C11.6545 1.57369 12.3502 1.5826 12.7706 2.28121L15.9496 7.56354L21.9557 8.95458C22.7602 9.1409 22.9667 9.8053 22.4322 10.421L18.3907 15.0767L18.9238 21.2188C18.9952 22.0414 18.4271 22.4432 17.6764 22.1251L11.9996 19.7201Z"></path><clipPath id="star-clip-10"><rect x="0" y="0" width="24" height="24"></rect></clipPath></defs><use xlink:href="#star-path-10" fill="#DBDBDB"></use><use clip-path="url(#star-clip-10)" xlink:href="#star-path-10"></use></svg>
 
@@ -111,7 +111,7 @@
                 <p class="d-block h5 lh-base mb-4" style="font-size: 15px;">{{ review.content }}</p>
                 <div class="text-muted border-top pt-4">
                   <small class="me-3"><i class="fa fa-user text-primary me-2"></i>{{ review.memberDTO.name }}</small>
-                  <small class="me-3"><i class="fa fa-calendar text-primary me-2"></i>01 Jan, 2045</small>
+               
                 </div>
               </div>
         </div>
@@ -287,6 +287,7 @@ input {
   border-radius: 100%;
   background: green;
   border: green;
+
 }
 
 

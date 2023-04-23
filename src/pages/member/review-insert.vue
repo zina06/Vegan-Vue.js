@@ -1,16 +1,16 @@
 <template>
-  <div style="margin-top: 50px;"></div>
-  <div class="uform-container editform card">
-    <div class="inform card-body">
-      <label for="review-title" class="form-label">리뷰 제목</label>
+ 
+  <div class="uform-container editform card" style="margin-top: 100px;">
+    <div class="inform card-body" style="height: 500px;">
+      <label for="review-title" class="form-label"><b>리뷰 제목</b></label>
       <input type="text" class="form-control" id="title" v-model="title">
       <br>
       <div>
-        <label for="review-content" class="form-label">리뷰 내용</label>
+        <label for="review-content" class="form-label"><b>리뷰 내용</b></label>
         <textarea class="form-control" id="content" rows="3" v-model="content"></textarea>
         <br>
         <br>
-        <h4 style="text-align: center;">당신의 점수는!</h4>
+        <h4 style="text-align: center; font-size: 1.1em;" ><b>당신의 점수는!</b></h4>
         <div class="star-rating space-x-4 mx-auto">
           <div style="margin-left: 10px;">{{ emoji }}</div>
           <input type="radio" id="5-stars" name="rating" value="5" v-model="rating" />
@@ -23,14 +23,14 @@
           <label for="2-stars" class="star">★</label>
           <input type="radio" id="1-star" name="rating" value="1" v-model="rating" />
           <label for="1-star" class="star">★</label>
-        </div>
+        </div><br>
         <div>
-          <label for="review-image" class="form-label">사진 첨부</label>
+          <label for="review-image" class="form-label"><b>사진 첨부</b></label>
           <input type="file" class="form-control" id="img" @change="onChangeFile">
         </div>
-      </div>
+      </div><br><br>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-outline-success" type="button" @click="submitReview">리뷰 작성하기</button>
+        <button class="btn btn" type="button" @click="submitReview" style="margin: auto; background: #54a450; color: white;">작성하기</button>
       </div>
     </div>
   </div>
@@ -100,7 +100,13 @@ export default {
         });
         return;
       }
-
+      if (file2 == null){
+        Swal.fire({
+          icon: 'error',
+          title: '사진을 등록해주세요.',
+        });
+        return;
+      }
       try {
 
         reviewDTO.value = {
@@ -186,7 +192,8 @@ export default {
 .uform-container {
   margin: auto;
   width: 700px;
-
+  margin-bottom: 100px;
+  height: 550px;
 }
 
 .restaurantname {

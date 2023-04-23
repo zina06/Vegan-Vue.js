@@ -348,8 +348,13 @@ export default {
         headers : {
           'AUTHORIZATION': 'Bearer ' + token
         }
+      }).catch(()=>{
+        router.push({
+          name : "Error"
+        })
       });
       console.log(res);
+      
       resName.value = res.data.RestaurantDTO.name;
       resInfo.value = res.data.RestaurantDTO.restaurantInfo;
       veganType.value = res.data.RestaurantDTO.veganType;

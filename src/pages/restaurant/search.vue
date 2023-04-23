@@ -24,7 +24,7 @@
 
         <!-- 체크박스 창   -->
         <div
-          style="height: 60px; padding-bottom: 1%; background-color:  #7fac7d"
+          style="height: 60px; padding-bottom: 1%; background-color:   #7fac7d;"
         >
           <div class="icon-box" style="margin-bottom: 5px;">
             <img
@@ -46,7 +46,7 @@
                 v-model="flexCheckVegetable"
                 id="flexCheckVegetable"
               />
-              <label class="form-check-label" for="flexCheckVegetable">
+              <label class="form-check-label" for="flexCheckVegetable"  style="padding-top: 3px;">
                 채소
               </label>
             </div>
@@ -73,7 +73,7 @@
                 v-model="flexCheckMilk"
                 id="flexCheckMilk"
               />
-              <label class="form-check-label" for="flexCheckMilk"> 우유 </label>
+              <label class="form-check-label" for="flexCheckMilk" style="padding-top: 3px;"> 우유 </label>
             </div>
           </div>
 
@@ -97,7 +97,7 @@
                 v-model="flexCheckEgg"
                 id="flexCheckEgg"
               />
-              <label class="form-check-label" for="flexCheckEgg"> 계란 </label>
+              <label class="form-check-label" for="flexCheckEgg" style="padding-top: 3px;"> 계란 </label>
             </div>
           </div>
 
@@ -117,11 +117,11 @@
               <input
                 class="form-check-input"
                 type="checkbox"
-                style="margin-top: 7px; margin-right: 3px"
+                style="margin-top: 7px; margin-right: 3px;"
                 v-model="flexCheckFish"
                 id="flexCheckFish"
               />
-              <label class="form-check-label" for="flexCheckFish"> 생선 </label>
+              <label class="form-check-label" for="flexCheckFish" style="padding-top: 3px;"> 생선 </label>
             </div>
           </div>
         </div>
@@ -521,7 +521,7 @@ const mapOptions = {
 .icon-box {
   width: 25%;
   height: 100%;
-  background-color:  #7fac7d;
+  background-color: #7fac7d;
   text-align: center;
   align-content: center;
   align-items: center;

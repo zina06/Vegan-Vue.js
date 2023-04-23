@@ -73,7 +73,7 @@ export default {
         if(token == null){
           headerstate.value = true;
         }else{
-          console.log(headerstate.value);
+          // console.log(headerstate.value);
         }
       }
       check();
@@ -109,7 +109,7 @@ export default {
           });
         })
         headerstate.value = true;
-        alert(3);
+        
         sessionStorage.clear();
         location.reload();
       }
@@ -181,7 +181,7 @@ export default {
 .greeting {
   font-size: 20px;
   font-weight: bold;
-  color: #1ebb4d;
+  color: #3CB815;
   margin-right: 10px;
   padding: 13px 40px 0px 40px;
 }
@@ -191,8 +191,7 @@ export default {
   border: none;
   color: #333;
   cursor: pointer;
-  font-size: 22px;
-  padding: 0px 40px 0px 40px;
+  font-size: 20px;
   margin: 10px;
   text-align: center;
   text-decoration: none;
@@ -200,6 +199,7 @@ export default {
   border-radius: 4px;
   transition: background-color 0.3s ease, color 0.3s ease;
   margin-right: 10px;
+
 }
 
 .custom-button:last-of-type {
@@ -207,6 +207,6 @@ export default {
 }
 
 .custom-button:hover {
-  color: #1ebb4d;
+  color:#3CB815;
 }
 </style>
