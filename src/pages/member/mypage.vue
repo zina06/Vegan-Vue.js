@@ -1,32 +1,33 @@
 <template>
-  <div class="wrap">
-    <div class="summaryContainer">
-      <img src="@/assets/img/userimg.png" style="justify-content: center; width: 70px; height: 70px; margin-right: 20px;">
+
+  <div class="wrap" style="padding-top: 100px;">
+    <div class="summaryContainer" style="height: 100px;">
+      <img src="@/assets/img/userimg.png" style="justify-content: center; width: 60px; height: 60px; margin-right: 50px;">
       <div class="item">
         <div class="number">{{ user.name }}</div>
-        <div>이름</div>
+        <div style="font-size: 1.05em;"><b>이름</b></div>
       </div>
       <div class="item">
         <div class="number">{{ user.veganType }}</div>
-        <div>유형</div>
+        <div style="font-size: 1.05em;"><b>유형</b></div>
       </div>
       <div class="item">
         <div class="number">{{ user.email }}</div>
-        <div>이메일</div>
+        <div style="font-size: 1.05em;"><b>이메일</b></div>
       </div>
       <div class="item">
         <div class="number">{{ setPhoneNum.value }}</div>
-        <div>전화번호</div>
+        <div style="font-size: 1.05em;"><b>전화번호</b></div>
       </div>
       <div class="item">
         <button type="button" @click="openModal">수정하기</button>
       </div>
     </div>
-    <ul class="nav nav-tabs justify-content-center nav-tabs-custom" id="myTab" role="tablist">
+    <ul class="nav nav-tabs justify-content-center nav-tabs-custom" id="myTab" role="tablist" style="width: 500px; margin: auto; margin-top: 100px;">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
           role="tab" aria-controls="home-tab-pane" aria-selected="true"
-          style="color:black; margin-left: 10px; width: 200px;" @click="toggleReviewList">리뷰 목록</button>
+          style="color:white; margin-left: 10px; width: 200px; border:1px solid white; border-radius: 0%;" @click="toggleReviewList">리뷰 목록</button>
       </li>
     </ul>
     <br>
@@ -42,7 +43,7 @@
             <div class="review-item" v-if="review.reviewIdx">
               <div class="image-wrapper">
                 <img :src="require(`@/assets/uploadimages/${review.images}`)" alt="review-image" class="review-image">
-                <div >{{ review.title }}</div>
+                
               </div>
               
               <div class="review-content">
@@ -411,6 +412,7 @@ body {
   position: relative;
   width: 200px;
   height: 100px;
+  border: 1px solid gray;
 }
 
 .deletebutton {
@@ -699,6 +701,7 @@ button[type="submit"] {
   color: black;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  border:2px solid #7fac7d;
 }
 
 button[type="submit"] {

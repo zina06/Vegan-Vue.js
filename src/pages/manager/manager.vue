@@ -1,13 +1,14 @@
 <template>
   <br><br>
+  <div class="wrap">
   <nav class="justify-content-center manage">
     <div class="nav nav-tabs nav-tabs-custom justify-content-center" id="nav-tab" role="tablist"
       style="width: 1000px; margin: 0 auto;">
       <button class="nav-link active with-nav-tabs panel-success" id="nav-home-tab" data-bs-toggle="tab"
         data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true"
-        style="color: black;">예약자 관리</button>
+        style="color: black; border: 1px solid white; border-radius: 0%; font-size: 1.1em;">예약자 관리</button>
       <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button"
-        role="tab" aria-controls="nav-profile" aria-selected="false" style="color: black;">식당 관리</button>
+        role="tab" aria-controls="nav-profile" aria-selected="false" style="color: black; border: 1px solid white; border-radius: 0%; font-size: 1.1em;">식당 관리</button>
       <!-- <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">방문 상태 </button> -->
 
     </div>
@@ -19,7 +20,7 @@
 
       <VDatePicker class="calendar" style="width: 800px;" @click="date" v-model="minDate" :height="600"
         :attributes="attributes" /><br><br>
-      <h4>예약리스트</h4>
+     
       <h4> {{ formatreserveDate }}</h4><br>
       <div v-if="memberList && memberList.length > 0">
 
@@ -30,8 +31,8 @@
               <th>전화번호</th>
               <th width="80px">예약인원</th>
               <th>예약시간</th>
-              <th width="80px">방문상태</th>
-              <th width="120px"></th>
+              <!-- <th width="80px">방문상태</th> -->
+              <th width="120px">상태</th>
             </tr>
           </thead>
           <tbody v-for="member in memberList" :key="member.memberidx">
@@ -41,12 +42,13 @@
               <td>{{ member.memberDTO.phone.substr(3) }}</td>
               <td>{{ member.resCount }}</td>
               <td>{{ member.reserveDate.getHours() }}시 {{ member.reserveDate.getMinutes() }}분</td>
-              <td>{{ member.visitStatus }}</td>
+              <!-- <td>{{ member.visitStatus }}</td> -->
               <td>
                 <button class="btn btn-info" @click="updateConfirm(member.reserveIdx, member.visitStatus)"
-                  v-if="member.cancelStatus === 'x' && member.visitStatus === 'x'">방문확정</button>
-                <button class="btn btn-info disabled" v-if="member.visitStatus === 'o'" style="color: white;">방문확정</button>
-                <button class="btn btn-danger disabled" v-if="member.cancelStatus === 'o'">예약취소</button>
+                  v-if="member.cancelStatus === 'x' && member.visitStatus === 'x' && member.reserveDate > Date.now()" style="color: white; border: 1px solid white; border-radius: 0%; ">방문확정</button>
+                <button class="btn btn-primary disabled" v-if="member.visitStatus === 'o'" style="color: white; border: 1px solid white; border-radius: 0%;">방문완료</button>
+                <button class="btn btn-danger disabled" v-if="member.cancelStatus === 'o' && member.reserveDate > Date.now()" style="border: 1px solid white; border-radius: 0%;">예약취소</button>
+                <button class="btn btn-warning disabled" v-if="member.cancelStatus === 'x' && member.visitStatus==='x' && member.reserveDate < Date.now()" style="border: 1px solid white; border-radius: 0%;">노쇼</button>
 
               </td>
             </tr>
@@ -82,8 +84,12 @@
 
             <img :src="require(`../../assets/img/restaurant/${images}`)" alt="이미지" class="uploadimg" v-on:error="onImageLoad">
           </div>
-          <label style="float: left;"><b>메뉴</b> </label><br> <input name="menu" type="text" class="form-control menu"
-            v-model="menu" required="required" style="width: 100%; height: 100px;" /><br>
+          <!-- <label style="float: left;"><b>메뉴</b> </label><br> <input name="menu" type="text" class="form-control menu"
+            v-model="menu" required="required" style="width: 100%; " /> -->
+            <br><label style="float: left;"><b>메뉴</b> </label><br>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="menu"
+            style="width: 100%; height: 200px;" v-model="menu" required="required"></textarea>
+            <br>
           <label style="float: left;"><b>매장소개</b> </label><br>
           <textarea class="form-control" id="exampleFormControlTextarea1" name="restaurantinfo"
             style="width: 100%; height: 200px;" v-model="restauranInfo" required="required"></textarea><br>
@@ -120,6 +126,7 @@
 
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -273,9 +280,9 @@ export default {
 
     const date = (context) => {
       console.log("오늘날짜 클릭: " + context.target.ariaLabel);
-      // if(context.target.ariaLabel==null){
-      //   return;
-      // }
+      if(context.target.ariaLabel==null){
+        return;
+      }
       const match = context.target.ariaLabel.match(/(\d{4})년 (\d{1,2})월 (\d{1,2})일/);
       console.log("매치:" + match);
 
@@ -316,7 +323,7 @@ export default {
 
           }
           console.log(memberList.value);
-          console.log("reserveIdx:" + inform.data.reservelist[1].reserveIdx);
+          // console.log("reserveIdx:" + inform.data.reservelist[1].reserveIdx);
           console.log("길이:" + memberListLength.value);
 
 
@@ -462,7 +469,7 @@ export default {
     //     console.log(e);
     //   }
     // })
-
+     
     return {
       onChangeFile,
       date,
@@ -501,7 +508,7 @@ export default {
 <style>
 .nav-tabs-custom .nav-link.active {
   background-color: #7fac7d;
-  color: #fff;
+  color: #7fac7d;
 }
 
 button.nav-link {
@@ -546,4 +553,16 @@ button.nav-link {
 
 .vc-week {
   height: 70px;
-}</style>
+}
+
+.nav-link {
+  color: black; /* 비활성화 상태일 때 폰트 색깔 */
+
+}
+
+.nav-link.active:active {
+  color: white; /* 활성화 상태일 때 폰트 색깔 */
+
+}
+
+</style>

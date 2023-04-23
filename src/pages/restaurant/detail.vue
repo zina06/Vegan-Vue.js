@@ -5,26 +5,27 @@
   <br>
     <div class="detail-container">
       <div class="detail" style="width: 800px;">
-        <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-          <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
-          </svg> 
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
-          </svg>
-          서울시 
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
-          </svg>
-          {{ city }}</p><hr>
-        <!-- <img src="@/assets/img/2.jpg" class="detailimg"><br><br> -->
+     
+      
        
-        <img :src="require(`@/assets/img/restaurant/${restauranImg}`)" alt="이미지" class="uploadimg" style="width: 100%; height: 500px; margin-bottom: 30px;"><br>
-        <h3 class="restaurantName"><b>{{restaurantName}}</b>
-        </h3> &nbsp;&nbsp;&nbsp;&nbsp;
-        <span>
-        <button class="btn btn-info gotoreserve" @click="moveReservePage(idx)" style="background: #00994c; border: #00994c;">예약하기</button></span>
-        <br>
-        <h5> <p class="badge" style="margin-right: 500px; margin-top: 10px;">{{ restauranVeganType }} </p></h5>
+          <img :src="require(`@/assets/img/restaurant/${restauranImg}`)" alt="이미지" class="uploadimg" style="width: 100%; height: 500px; margin-bottom: 30px;"><br>
+          <h3 class="restaurantName"><b>{{restaurantName}}</b>
+          </h3> &nbsp;&nbsp;&nbsp;&nbsp;
+     
+        <button class="btn btn-info gotoreserve" @click="moveReservePage(idx)" style="margin-bottom: 10px;">예약하기</button>
+       
+        <h5> <p class="badge">{{ restauranVeganType }} </p></h5>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+              <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+              </svg> 
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
+              </svg>
+              서울시 
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
+              </svg>
+              {{ city }}</p>
             <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
               <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
               <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
@@ -55,15 +56,16 @@
         </div>
         </div>
         <hr style="width:100%; margin-top: 200px;" class="gubun">
-      
-                
-         <div>
-            <div class="rereview" v-if="reviewCount!=0">
-              <h4><b>{{reviewCount}}건의 리뷰</b></h4>
-              <div style="margin-bottom:30px;">{{ averageRating }} &nbsp;&nbsp;
+        <h4><b>리뷰 {{reviewCount}}</b></h4>
+        <div style="background: #F3F3F3; border: 1px solid #F3F3F3; width:100%;height: 100px; border-radius: 0.5rem;">
+         <p style="font-size: 1.8em; padding-top: 25px; padding-left: 30px; text-align: center;"  v-if="reviewCount!=0"><b>{{ averageRating.toFixed(1) }} </b></p> 
+         <p style="font-size: 1.5em; padding-top: 25px; padding-left: 30px; text-align: center;"  v-else><b>등록된 리뷰가 없습니다.</b></p>
+        </div> 
+       
         
-              </div>
-             
+            <div class="rereview" v-if="reviewCount!=0">
+           
+             <br>
               <div  v-for="review in reviewList" :key="review.reviewidx" style="height: auto;">
                 
                 <img src="@/assets/img/userimg.png" id="memberimg" style="float:left;">
@@ -76,15 +78,15 @@
                 </span>
 
               
-                날짜</span><br><br>
+                </span><br><br>
+              <img :src="require(`@/assets/uploadimages/${review.images}`)" style="max-width: 600px; max-height: 200px;">
+              <p><b>{{ review.title }}</b></p>
               <p>{{ review.content }}</p>
               <hr>
             </div>
             </div>
-            <div v-else>
-                <h4 style="text-align: center;">등록된 리뷰가 없습니다.</h4>
-            </div>
-        </div>
+          
+       
        
         <div>
            
@@ -124,7 +126,7 @@ export default {
     const restaurantPhone=ref('');
     const map=ref('');
     const city=ref('');
-
+    
 
     
 
@@ -175,9 +177,14 @@ export default {
           if (i !== restauranMenu.value.length - 1)
             restauranMenu.value[i] += '원';
         }
-
+        console.log(restauranMenu.value);
        })
-		};
+
+      //  const ratingFrequency = [0, 0, 0, 0, 0];
+     
+
+          
+    };
    
     const initMap=()=> {
     
@@ -213,11 +220,7 @@ export default {
       console.log("마커뜨기");
     }
     
-    //페이지가 로드될 때, 이전에 저장해 둔 위치 정보를 불러옴
-      window.onload = () => {
-        // setTimeout(window.location.reload(),1);
-      //  window.location.reload(true);
-      };
+  
 
     const moveReservePage = () => {
       router.push({

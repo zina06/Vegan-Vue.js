@@ -4,26 +4,26 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
 </head>
 <br><br><br>
-<nav class="nav nav-tabs justify-content-center nav-tabs-custom" id="myTab" role="tablist">
+<nav class="nav nav-tabs justify-content-center nav-tabs-custom wrap" id="myTab" role="tablist">
   
       <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
-        role="tab" aria-controls="home-tab-pane" aria-selected="true" style="margin-left: 10px; width: 350px;">나의
+        role="tab" aria-controls="home-tab-pane" aria-selected="true" style="margin-left: 10px; width: 350px; border: 1px solid white; border-radius: 0%;">나의
         예약</button>
    
  
       <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
-        role="tab" aria-controls="profile-tab-pane" aria-selected="false" style="margin-left: 10px; width: 350px;">방문
+        role="tab" aria-controls="profile-tab-pane" aria-selected="false" style="margin-left: 10px; width: 350px;  border: 1px solid white; border-radius: 0%;">방문
         완료</button>
     
       <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button"
-        role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="margin-left: 10px; width: 350px;">취소
+        role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="margin-left: 10px; width: 350px;  border: 1px solid white; border-radius: 0%;">취소
         노쇼</button>
   
  
 </nav>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-      <div v-if="upcomingReservations.length !=0" class="reservation-list">
+      <div v-if="upcomingReservations.length !=0" class="reservation-list" style="margin-top: 50px;">
         <ul class="ulrow">
           <li v-for="reservation in upcomingReservations" :key="reservation.reserveIdx"
             style="justify-content: flex-start;">
@@ -47,12 +47,12 @@
 
     </div>
     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-      <div v-if="completedReservations.length !=0" class="reservation-list" style="display: flex; flex-direction: column;">
+      <div v-if="completedReservations.length !=0" class="reservation-list" style="display: flex; flex-direction: column; margin-top: 50px;">
         <ul class="ulrow">
           <li v-for="reservation in completedReservations" :key="reservation.reserveIdx"
             style="justify-content: flex-start;">
             <div class="reservation-item">
-              <span class="badge text-bg-secondary" style="width: 50px; height: 30px;">Secondary</span><br>
+              <span class="badge text-bg-info" style="width: 70px; margin-bottom: 10px; color: white;">방문완료</span>
             
               <h4><b>{{ reservation.restaurantDTO.name }}</b></h4>
             
@@ -75,17 +75,18 @@
       </div>
     </div>
     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-      <div v-if="cancelledReservations.length !=0 " class="reservation-list">
+      <div v-if="cancelledReservations.length !=0 " class="reservation-list" style="margin-top: 50px;">
         <ul class="ulrow">
           <li v-for="reservation in cancelledReservations" :key="reservation.reserveIdx"
             style="justify-content: flex-start;">
-            <div class="reservation-item">
+            <div class="reservation-item" style=" width: 500px;">
              
           
-              <div></div>
+          <span v-if="reservation.cancelStatus=='o'" class="badge text-bg-danger" style="width: 50px; margin-bottom: 10px;">취소</span>
+          <span v-else class="badge text-bg-danger" style="width: 50px; margin-bottom: 10px;">노쇼</span>
               <h4><b>{{ reservation.restaurantDTO.name }}</b></h4>
-              <p>{{ reservation.restaurantDTO.city }}</p>
-              <h4><b>{{dataFormat(reservation.reserveDate, "YYYY-MM-DD HH:mm")}} {{ reservation.resCount }}명 </b></h4>
+              <p style="color:grey"><b>{{ reservation.restaurantDTO.city }}</b></p>
+              <h4 style="text-decoration: line-through; " ><b>{{dataFormat(reservation.reserveDate, "YYYY-MM-DD HH:mm")}} {{ reservation.resCount }}명 </b></h4>
              
             </div>
           </li>
@@ -401,7 +402,7 @@ p {
   overflow: hidden;
   padding: 20px;
   width: 700px;
-
+  
 }
 
 .nav-tabs-custom {
@@ -435,4 +436,5 @@ margin: auto;
   width: 200px;
   margin: auto;
 }
+
 </style>

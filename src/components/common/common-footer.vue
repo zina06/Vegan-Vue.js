@@ -6,7 +6,7 @@
         <div class="container py-5">
           <div class="row g-5 justify-content-center">
             <div class="col-lg-3 col-md-6">
-              <h1 class="fw-bold text-primary mb-4">Catch<p class="text-secondary">Vegan</p></h1>
+              <h1 class="fw-bold text-success mb-4">Catch<p class="text-secondary">Vegan</p></h1>
               <p>   Metanet Internship Final Project</p>
              
             </div>
