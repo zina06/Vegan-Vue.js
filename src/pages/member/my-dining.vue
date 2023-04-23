@@ -32,9 +32,10 @@
               <h4><b>{{ reservation.restaurantDTO.name }}</b></h4>
             
             <p>{{ reservation.restaurantDTO.city }}</p>
-              <h4><b>{{dataFormat(reservation.reserveDate, "YYYY-MM-DD HH:mm")}} {{ reservation.resCount }}명</b></h4><br>
+              <h4><b>방문 시간 : {{dataFormat(reservation.reserveDate, "YYYY-MM-DD HH:mm")}}</b></h4><br>
+              <h4><b>예약 인원 : {{ reservation.resCount }}명</b></h4><br>
              
-              <button class="btn btn-danger cancelbtn" @click="cancelReserve(reservation)">취소</button>
+              <button class="btn btn-danger cancelbtn" @click="cancelReserve(reservation)">예약 취소</button>
             </div>
           </li>
         </ul>
@@ -71,7 +72,7 @@
         </ul>
       </div>
       <div v-else style="text-align: center; margin-top: 50px;">
-        <p>방문 완료된 예약이 없습니다!</p>
+        <a>방문 완료된 예약이 없습니다!</a>
       </div>
     </div>
     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
@@ -93,7 +94,7 @@
         </ul>
       </div>
       <div v-else style="text-align: center; margin-top: 50px;">
-        <p>예약취소/노쇼 이력이 없습니다.</p>
+        <a>예약취소/노쇼 이력이 없습니다.</a>
       </div>
     </div>
   </div>

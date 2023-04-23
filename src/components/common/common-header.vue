@@ -109,7 +109,7 @@ export default {
           });
         })
         headerstate.value = true;
-        alert(3);
+        
         sessionStorage.clear();
         location.reload();
       }
