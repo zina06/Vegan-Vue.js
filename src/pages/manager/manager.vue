@@ -92,7 +92,7 @@
             <br>
           <label style="float: left;"><b>매장소개</b> </label><br>
           <textarea class="form-control" id="exampleFormControlTextarea1" name="restaurantinfo"
-            style="width: 100%; height: 200px;" v-model="restauranInfo" required="required"></textarea><br>
+            style="width: 100%; height: 200px;" v-model="restaurantInfo" required="required"></textarea><br>
           <div style="margin: auto; width: 200px;">
             <button class="btn btn-info update" v-if="isEditing" style="margin-right: 10px;"
               @click="uploadAPI()">저장하기</button>
@@ -116,7 +116,7 @@
           <p style="text-align: left;"><b>메뉴</b><br> {{ menu }}</p>
           <p style="width: 300px; height: 200px;"> <b>매장소개</b><br>
 
-            {{ restauranInfo }}</p>
+            {{ restaurantInfo }}</p>
 
           <button class="btn btn-secondary update" style="margin: auto; display: block;" @click="isEditing = true"
             v-if="!isEditing">수정하기</button>
@@ -147,13 +147,13 @@ export default {
     const managerIdx = route.params.managerIdx;
     const restaurantDTO = ref({
       name: '',
-      restauranInfo: '',
       menu: '',
+      restaurantInfo: '',
       images: ''
 
     })
     const restaurantName = ref('');
-    const restauranInfo = ref('');
+    const restaurantInfo = ref('');
     const menu = ref('');
     const memberList = ref([]);
     const reservedDate = ref('');
@@ -210,7 +210,7 @@ export default {
         restaurantDTO.value = {
           name: restaurantName.value,
           menu: menu.value,
-          restauranInfo: restauranInfo.value,
+          restaurantInfo: restaurantInfo.value,
           images: file.value
         }
         // 폼데이터 객체 생성
@@ -219,6 +219,7 @@ export default {
         // file 추가
         formData.append('file', file2);
         console.log(files.value);
+        
 
         // formData.append('restaurantDTO', blob);
         const blob = new Blob([JSON.stringify(restaurantDTO.value)], { type: 'application/json' });
@@ -226,8 +227,10 @@ export default {
         formData.append('managerIdx', managerIdx);
         // formData.append('name', restaurantName.value);
         // formData.append('menu', menu.value);
-        // formData.append('restaurantInfo', restauranInfo.value);
+        // formData.append('restaurantInfo', restaurantInfo.value);
         console.log(formData.get('restaurantDTO'));
+        console.log(formData.get('managerIdx'));
+        
         // Content-Type 지정
         const config = {
           headers: {
@@ -237,11 +240,13 @@ export default {
 
         console.log("formData : " + formData.toString());
         console.log(formData.entries);
-        const { data } = await axios.post('/file/update', formData, {
+        const  data  = await axios.post('/file/update', formData, {
           headers: {
             'AUTHORIZATION': 'Bearer ' + token
           }
+        
         });
+        console.log(data);
         // return data?.restaurantIdx;
       } catch (err) {
         console.log(err);
@@ -347,7 +352,7 @@ export default {
       }).then((inform) => {
         console.log(inform.data);
         restaurantName.value = inform.data.restaurantDTO.name;  //식당이름
-        restauranInfo.value = inform.data.restaurantDTO.restaurantInfo; //식당정보
+        restaurantInfo.value = inform.data.restaurantDTO.restaurantInfo; //식당정보
         menu.value = inform.data.restaurantDTO.menu;  //메뉴
         reservedDate.value = inform.data.reserveDate;
         console.log(memberList.value);
@@ -478,7 +483,7 @@ export default {
       minDate,
       isDisabled,
       restaurantName,
-      restauranInfo,
+      restaurantInfo,
       menu,
       memberList,
       reservedDate,
