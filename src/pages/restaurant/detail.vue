@@ -8,7 +8,7 @@
      
       
        
-          <img :src="require(`@/assets/img/restaurant/${restauranImg}`)" alt="이미지" class="uploadimg" style="width: 100%; height: 500px; margin-bottom: 30px;"><br>
+          <img :src="require(`@/assets/img/restaurant/${restaurantImg}`)" alt="이미지" class="uploadimg" style="width: 100%; height: 500px; margin-bottom: 30px;"><br>
           <h3 class="restaurantName"><b>{{restaurantName}}</b>
           </h3> &nbsp;&nbsp;&nbsp;&nbsp;
      
@@ -29,7 +29,7 @@
             <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
               <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
               <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
-            </svg>&nbsp;&nbsp;{{ restauranInfo }}</p>
+            </svg>&nbsp;&nbsp;{{ restaurantInfo }}</p>
             <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
               <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
               <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -112,8 +112,8 @@ export default {
     const router=useRouter();
     const route = useRoute();
     const restaurantName=ref('');
-    const restauranInfo=ref('');
-    const restauranImg=ref('');
+    const restaurantInfo=ref('');
+    const restaurantImg=ref('');
     const restauranVeganType=ref('');
     const restauranMenu=ref('');
     const longitude=ref('');
@@ -139,8 +139,8 @@ export default {
       
 
         restaurantName.value=Restaurant.data.detail.name;
-        restauranInfo.value=Restaurant.data.detail.restaurantInfo;
-        restauranImg.value=Restaurant.data.detail.images;
+        restaurantInfo.value=Restaurant.data.detail.restaurantInfo;
+        restaurantImg.value=Restaurant.data.detail.images;
         restauranVeganType.value=Restaurant.data.detail.veganType;
         restauranMenu.value=Restaurant.data.detail.menu;
         address.value=Restaurant.data.detail.address;
@@ -281,8 +281,8 @@ export default {
 
       getRestaurant,
       restaurantName,
-      restauranInfo,
-      restauranImg,
+      restaurantInfo,
+      restaurantImg,
       restauranVeganType,
       restauranMenu,
       longitude,
